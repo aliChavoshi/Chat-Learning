@@ -1,6 +1,4 @@
+bin
+obj
 API/bin/
 API/obj/
-.vscode/
-API/bin/Debug/net5.0/
-API/obj/Debug/net5.0/API.csproj.AssemblyReference.cache
-.gitignore
