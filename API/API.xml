@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>API</name>
+    </assembly>
+    <members>
+        <member name="M:API.Controllers.AccountController.Register(API.Models.RegisterDto)">
+            <summary>
+            Register a new  <see cref="T:API.Models.RegisterDto"/>
+            </summary>
+        </member>
+        <member name="M:API.Controllers.AccountController.Login(API.Models.LoginDto)">
+            <summary>
+            Login a <see cref="T:API.Models.LoginDto"/>
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -19,6 +19,9 @@ namespace API.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Register a new  <see cref="RegisterDto"/>
+        /// </summary>
         [HttpPost("register")]
         public async Task<ActionResult<UserTokenDto>> Register(RegisterDto model)
         {
@@ -41,6 +44,9 @@ namespace API.Controllers
             };
         }
 
+        /// <summary>
+        /// Login a <see cref="LoginDto"/>
+        /// </summary>
         [HttpPost("login")]
         public async Task<ActionResult<UserTokenDto>> Login([FromBody] LoginDto model)
         {
