@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
+using API.interfaces;
+using API.services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +30,8 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //depency injection
+            services.AddScoped<ITokenService, TokenService>();
             //connect to database
             services.AddDbContext<DataContext>(options =>
             {
@@ -35,9 +39,8 @@ namespace API
             });
             //add controller
             services.AddControllers();
-
+            //add cors for origin
             services.AddCors();
-
             //add swagger
             services.AddSwaggerGen(c =>
             {
@@ -59,7 +62,7 @@ namespace API
 
             app.UseRouting();
 
-            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200","http://localhost:4200"));
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200", "http://localhost:4200"));
 
             app.UseAuthorization();
 
