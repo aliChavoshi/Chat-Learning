@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AccountService } from '../_services/account.service';
 
 @Component({
   selector: 'app-nav',
@@ -20,9 +21,21 @@ export class NavComponent implements OnInit {
     ]),
   });
 
-  constructor() {}
+  constructor(private accountService: AccountService) {}
+
   onSubmit() {
-    console.log(this.form.value);
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    this.accountService.login(this.form.value).subscribe(
+      (user) => {
+        console.log(user);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
   ngOnInit(): void {}
 }
