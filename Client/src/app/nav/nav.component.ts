@@ -8,6 +8,8 @@ import { AccountService } from '../_services/account.service';
   styleUrls: ['./nav.component.css'],
 })
 export class NavComponent implements OnInit {
+  loggedIn = false;
+
   form = new FormGroup({
     userName: new FormControl('', [
       Validators.required,
@@ -31,11 +33,18 @@ export class NavComponent implements OnInit {
     this.accountService.login(this.form.value).subscribe(
       (user) => {
         console.log(user);
+        this.loggedIn = true;
       },
       (error) => {
         console.log(error);
+        this.loggedIn = false;
       }
     );
   }
+
+  logout() {
+    this.loggedIn = false;
+  }
+
   ngOnInit(): void {}
 }

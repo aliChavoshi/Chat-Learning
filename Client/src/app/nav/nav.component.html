@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Chat App</a>
     <button
@@ -18,10 +18,13 @@
         style="--bs-scroll-height: 100px"
       >
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
+          <a
+            class="nav-link"
+            routerLinkActive="active"
+            aria-current="page"
+            routerLink="/"
+            >Home</a
+          >
         </li>
         <li class="nav-item dropdown">
           <a
@@ -32,7 +35,7 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            Link
+            Dropdown
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
             <li><a class="dropdown-item" href="#">Action</a></li>
@@ -41,11 +44,29 @@
             <li><a class="dropdown-item" href="#">Something else here</a></li>
           </ul>
         </li>
-        <li class="nav-item">
-          <a class="nav-link disabled">Link</a>
-        </li>
       </ul>
-      <form (ngSubmit)="onSubmit()" [formGroup]="form" class="d-flex">
+      <div class="dropdown" *ngIf="loggedIn">
+        <a
+          class="btn btn-secondary dropdown-toggle"
+          role="button"
+          id="dropdownMenuLink"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Welcome user
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <li><a class="dropdown-item">Edit Profile</a></li>
+          <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+        </ul>
+      </div>
+
+      <form
+        *ngIf="!loggedIn"
+        (ngSubmit)="onSubmit()"
+        [formGroup]="form"
+        class="d-flex"
+      >
         <input
           type="text"
           formControlName="userName"
@@ -53,7 +74,7 @@
           placeholder="userName"
         />
         <input
-          type="text"
+          type="password"
           formControlName="password"
           class="form-control me-2"
           placeholder="password"
