@@ -2,6 +2,7 @@ import { User } from './../_services/account.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AccountService } from '../_services/account.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-nav',
@@ -9,7 +10,7 @@ import { AccountService } from '../_services/account.service';
   styleUrls: ['./nav.component.css'],
 })
 export class NavComponent implements OnInit {
-  loggedIn = false;
+  currentUser$: Observable<User>;
 
   form = new FormGroup({
     userName: new FormControl('', [
@@ -32,22 +33,8 @@ export class NavComponent implements OnInit {
       return;
     }
     this.accountService.login(this.form.value).subscribe(
-      (user: any) => {
-        this.loggedIn = !!user;
-      },
-      (error) => {
-        this.loggedIn = false;
-      }
-    );
-  }
-
-  getCurrentUser() {
-    this.accountService.currentUser$.subscribe(
-      (user) => {
-        this.loggedIn = !!user;
-      },
+      (user) => {},
       (error: any) => {
-        this.loggedIn = false;
         console.log(error);
       }
     );
@@ -55,10 +42,9 @@ export class NavComponent implements OnInit {
 
   logout() {
     this.accountService.logout();
-    this.loggedIn = false;
   }
 
   ngOnInit(): void {
-    this.getCurrentUser();
+    this.currentUser$ = this.accountService.currentUser$;
   }
 }
