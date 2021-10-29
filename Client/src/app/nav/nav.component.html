@@ -26,8 +26,9 @@
             >Home</a
           >
         </li>
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown" dropdown>
           <a
+            dropdownToggle
             class="nav-link dropdown-toggle"
             href="#"
             id="navbarScrollingDropdown"
@@ -37,7 +38,11 @@
           >
             Dropdown
           </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+          <ul
+            *dropdownMenu
+            class="dropdown-menu"
+            aria-labelledby="navbarScrollingDropdown"
+          >
             <li><a class="dropdown-item" href="#">Action</a></li>
             <li><a class="dropdown-item" href="#">Another action</a></li>
             <li><hr class="dropdown-divider" /></li>
@@ -45,17 +50,27 @@
           </ul>
         </li>
       </ul>
-      <div class="dropdown" *ngIf="loggedIn">
+      <div
+        class="dropdown mr-10"
+        *ngIf="loggedIn"
+        dropdown
+        placement="bottom left"
+      >
         <a
           class="btn btn-secondary dropdown-toggle"
           role="button"
+          dropdownToggle
           id="dropdownMenuLink"
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
           Welcome user
         </a>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <ul
+          *dropdownMenu
+          class="dropdown-menu"
+          aria-labelledby="dropdownMenuLink"
+        >
           <li><a class="dropdown-item">Edit Profile</a></li>
           <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
         </ul>
