@@ -7,6 +7,10 @@ export interface IRequestLogin {
   userName: string;
   password: string;
 }
+export interface IRequestRegister {
+  userName: string;
+  password: string;
+}
 export interface User {
   userName: string;
   token: string;
@@ -28,6 +32,18 @@ export class AccountService {
           localStorage.setItem('user', JSON.stringify(response));
           this.currentUser.next(response);
         }
+      })
+    );
+  }
+  
+  register(register: IRequestRegister) {
+    return this.http.post<User>(`${this.baseUrl}/account/register`, register).pipe(
+      map((response) => {
+        if (response.userName && response.token) {
+          localStorage.setItem('user', JSON.stringify(response));
+          this.currentUser.next(response);
+        }
+        return response;
       })
     );
   }

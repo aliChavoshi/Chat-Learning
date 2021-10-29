@@ -10,7 +10,7 @@
   <div *ngIf="registerMode">
     <div class="row justify-content-center">
       <div class="col-12">
-        <app-register></app-register>
+        <app-register (close)="toggleRegisterMode()"></app-register>
       </div>
     </div>
   </div>

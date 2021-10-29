@@ -1,5 +1,6 @@
+import { AccountService } from './../_services/account.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-register',
@@ -7,6 +8,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
+  @Output() close = new EventEmitter();
+  constructor(private accountService: AccountService) {}
+
   form = new FormGroup({
     userName: new FormControl('', [
       Validators.required,
@@ -25,10 +29,19 @@ export class RegisterComponent implements OnInit {
     ]),
   });
 
-  constructor() {}
-
   ngOnInit(): void {}
 
-  onSubmit() {}
-  cancel() {}
+  onSubmit() {
+    this.accountService.register(this.form.value).subscribe(
+      (user) => {
+        console.log(user);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+  cancel() {
+    this.close.emit();
+  }
 }
