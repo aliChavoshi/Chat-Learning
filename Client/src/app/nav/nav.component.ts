@@ -1,3 +1,4 @@
+import { User } from './../_services/account.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AccountService } from '../_services/account.service';
@@ -31,20 +32,33 @@ export class NavComponent implements OnInit {
       return;
     }
     this.accountService.login(this.form.value).subscribe(
-      (user) => {
-        console.log(user);
-        this.loggedIn = true;
+      (user: any) => {
+        this.loggedIn = !!user;
       },
       (error) => {
-        console.log(error);
         this.loggedIn = false;
       }
     );
   }
 
+  getCurrentUser() {
+    this.accountService.currentUser$.subscribe(
+      (user) => {
+        this.loggedIn = !!user;
+      },
+      (error: any) => {
+        this.loggedIn = false;
+        console.log(error);
+      }
+    );
+  }
+
   logout() {
+    this.accountService.logout();
     this.loggedIn = false;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getCurrentUser();
+  }
 }
