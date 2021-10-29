@@ -1,3 +1,10 @@
+:root {
+  --color-background: #a9d6e5;
+  --color-danger: #9a031e;
+}
 .mr-10 {
   margin-right: 10px;
+}
+.background-home {
+  background-color: var(--color-background);
 }

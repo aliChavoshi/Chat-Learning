@@ -10,9 +10,11 @@ import { NavComponent } from './nav/nav.component';
 
 //ngx-bootstrap
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { HomeComponent } from './home/home.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
-  declarations: [AppComponent, NavComponent],
+  declarations: [AppComponent, NavComponent, HomeComponent, RegisterComponent],
   imports: [
     BrowserAnimationsModule,
     BrowserModule,

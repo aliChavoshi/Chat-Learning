@@ -1,0 +1,17 @@
+<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+  <div class="text-center" *ngIf="!registerMode">
+    <h1>Welcome To Chat Room</h1>
+    <div class="text-center">
+      <button class="btn btn-primary" (click)="toggleRegisterMode()">
+        Register
+      </button>
+    </div>
+  </div>
+  <div *ngIf="registerMode">
+    <div class="row justify-content-center">
+      <div class="col-4">
+        <app-register></app-register>
+      </div>
+    </div>
+  </div>
+</div>
