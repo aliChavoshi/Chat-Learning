@@ -12,9 +12,18 @@ import { NavComponent } from './nav/nav.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+//ngx-toast
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
-  declarations: [AppComponent, NavComponent, HomeComponent, RegisterComponent],
+  declarations: [
+    AppComponent,
+    NavComponent,
+    HomeComponent,
+    RegisterComponent,
+    NotFoundComponent,
+  ],
   imports: [
     BrowserAnimationsModule,
     BrowserModule,
@@ -23,6 +32,13 @@ import { RegisterComponent } from './register/register.component';
     ReactiveFormsModule,
     //ngx-bootstrap
     BsDropdownModule.forRoot(),
+    //ngx-toastr
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right',
+      timeOut: 5000,
+      progressBar: true,
+      progressAnimation: 'increasing',
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],

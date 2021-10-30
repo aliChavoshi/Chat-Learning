@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AccountService } from '../_services/account.service';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-nav',
@@ -25,7 +27,11 @@ export class NavComponent implements OnInit {
     ]),
   });
 
-  constructor(private accountService: AccountService) {}
+  constructor(
+    private accountService: AccountService,
+    private router: Router,
+    private toast: ToastrService
+  ) {}
 
   onSubmit() {
     if (this.form.invalid) {
@@ -33,7 +39,10 @@ export class NavComponent implements OnInit {
       return;
     }
     this.accountService.login(this.form.value).subscribe(
-      (user) => {},
+      (user) => {
+        this.router.navigateByUrl('/members');
+        this.toast.success('ورود شما با موفقیت انجام شد', 'موفقیت');
+      },
       (error: any) => {
         console.log(error);
       }
@@ -42,6 +51,8 @@ export class NavComponent implements OnInit {
 
   logout() {
     this.accountService.logout();
+    this.router.navigateByUrl('/');
+    this.toast.error('با موفقیت از سایت خارج شدید');
   }
 
   ngOnInit(): void {
