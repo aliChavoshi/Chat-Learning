@@ -9,7 +9,6 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
-import { User } from '../_models/account';
 import { AccountService } from '../_services/account.service';
 
 @Injectable({
