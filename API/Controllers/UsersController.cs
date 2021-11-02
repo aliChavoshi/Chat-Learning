@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.Data;
 using API.Entities;
+using API.Errors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,10 +25,12 @@ namespace API.Controllers
         }
 
         [HttpGet("{id:int}")]
-        [Authorize]
-        public async Task<Users> GetUser(int id)
+        // [Authorize]
+        public async Task<ActionResult<Users>> GetUser(int id)
         {
-            return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            if (user == null) return BadRequest(new ApiResponse(400, "کاربری یافت نشد"));
+            return user;
         }
     }
 }
