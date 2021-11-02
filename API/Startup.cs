@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using API.Data;
+using API.Errors;
 using API.extensions;
 using API.interfaces;
 using API.Middlewares;

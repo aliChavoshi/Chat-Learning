@@ -18,7 +18,7 @@ namespace API.Controllers
         public ActionResult GetNotFoundRequest()
         {
             var thing = _context.Users.Find(-1);
-            if (thing == null) return NotFound();
+            if (thing == null) return NotFound(new ApiResponse(404,"موردی یافت نشد"));
             return Ok(thing);
         }
 
@@ -33,7 +33,7 @@ namespace API.Controllers
         [HttpGet("bad-request")]
         public ActionResult GetBadRequest()
         {
-            return BadRequest();
+            return BadRequest(new ApiResponse(400,"خطایی رخ داده است"));
         }
 
         [HttpGet("bad-request/{id}")]
