@@ -1,5 +1,6 @@
 using API.Controllers;
 using API.Data;
+using API.Errors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -14,7 +15,7 @@ namespace API.Controllers
         }
 
         [HttpGet("not-found")]
-        public ActionResult GetNotFound()
+        public ActionResult GetNotFoundRequest()
         {
             var thing = _context.Users.Find(-1);
             if (thing == null) return NotFound();
@@ -22,17 +23,24 @@ namespace API.Controllers
         }
 
         [HttpGet("server-error")]
-        public ActionResult GetServerError()
+        public ActionResult GetServerErrorRequest()
         {
             var thing = _context.Users.Find(-1); //null
-            var thingToReturn = thing.ToString(); //null . tostring
-            return Ok(thingToReturn);
+            var thingToReturn = thing.ToString();
+            return Ok();
+        }
+
+        [HttpGet("bad-request")]
+        public ActionResult GetBadRequest()
+        {
+            return BadRequest();
         }
 
         [HttpGet("bad-request/{id}")]
-        public AcceptedResult BadRequest(int id)
+        public ActionResult GetNotFoundRequest(int id)
         {
-            return Accepted();
+            return Ok();
         }
+
     }
 }
