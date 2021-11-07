@@ -11,6 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { SharedModule } from './shared/shared.module';
+import { ErrorsComponent } from './errors/errors.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { SharedModule } from './shared/shared.module';
     HomeComponent,
     RegisterComponent,
     NotFoundComponent,
+    ErrorsComponent,
   ],
   imports: [
     BrowserAnimationsModule,

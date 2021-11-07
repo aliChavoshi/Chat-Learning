@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ErrorsComponent } from './errors/errors.component';
 import { HomeComponent } from './home/home.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { AuthGuard } from './_guards/auth.guard';
@@ -26,6 +27,10 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     loadChildren: () =>
       import('./messages/messages.module').then((x) => x.MessagesModule),
+  },
+  {
+    path: 'errors',
+    component: ErrorsComponent,
   },
   {
     path: '**',
