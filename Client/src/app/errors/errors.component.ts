@@ -63,7 +63,9 @@ export class ErrorsComponent implements OnInit {
         // console.log(response);
       },
       (error) => {
-        this.validationErrors = error.error.errors;
+        console.log(error);
+
+        this.validationErrors = error;
       }
     );
   }

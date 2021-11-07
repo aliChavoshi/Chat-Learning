@@ -38,16 +38,10 @@ export class NavComponent implements OnInit {
       this.form.markAllAsTouched();
       return;
     }
-    this.accountService.login(this.form.value).subscribe(
-      (user) => {
-        this.router.navigateByUrl('/members');
-        this.toast.success('ورود شما با موفقیت انجام شد', 'موفقیت');
-      },
-      (error: any) => {
-        console.log(error);
-        this.toast.error(error.error.message);
-      }
-    );
+    this.accountService.login(this.form.value).subscribe((user) => {
+      this.router.navigateByUrl('/members');
+      this.toast.success('ورود شما با موفقیت انجام شد', 'موفقیت');
+    });
   }
 
   logout() {

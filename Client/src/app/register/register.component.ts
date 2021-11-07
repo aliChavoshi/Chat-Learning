@@ -38,15 +38,10 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit() {
-    this.accountService.register(this.form.value).subscribe(
-      (user) => {
-        this.router.navigateByUrl('/members');
-        this.toast.success('ورود شما با موفقیت انجام شد', 'موفقیت');
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.accountService.register(this.form.value).subscribe((user) => {
+      this.router.navigateByUrl('/members');
+      this.toast.success('ورود شما با موفقیت انجام شد', 'موفقیت');
+    });
   }
   cancel() {
     this.close.emit();
