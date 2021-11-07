@@ -32,6 +32,7 @@ const routes: Routes = [
     path: 'errors',
     component: ErrorsComponent,
   },
+  { path: 'not-found', component: NotFoundComponent },
   {
     path: '**',
     component: NotFoundComponent,

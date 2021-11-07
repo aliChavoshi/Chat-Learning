@@ -10,3 +10,13 @@
 <button class="btn btn-primary m-1" (click)="getValidationError()">
   Get Validation Error
 </button>
+<button class="btn btn-primary m-1" (click)="getValidationErrorRegister()">
+  Get Validation Error Register
+</button>
+<div class="row mt-5" *ngIf="validationErrors.length > 0">
+  <ul class="text-danger">
+    <li *ngFor="let error of validationErrors">
+      {{ error }}
+    </li>
+  </ul>
+</div>

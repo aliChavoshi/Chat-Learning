@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ErrorsComponent implements OnInit {
   private baseUrl = environment.baseUrl;
+  validationErrors: string[] = [];
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {}
@@ -19,7 +20,7 @@ export class ErrorsComponent implements OnInit {
         //console.log(response);
       },
       (error) => {
-        console.log(error);
+        //console.log(error);
       }
     );
   }
@@ -29,7 +30,7 @@ export class ErrorsComponent implements OnInit {
         //console.log(response);
       },
       (error) => {
-        console.log(error);
+        //console.log(error);
       }
     );
   }
@@ -40,7 +41,7 @@ export class ErrorsComponent implements OnInit {
         //console.log(response);
       },
       (error) => {
-        console.log(error);
+        //console.log(error);
       }
     );
   }
@@ -51,7 +52,18 @@ export class ErrorsComponent implements OnInit {
         //console.log(response);
       },
       (error) => {
-        console.log(error);
+        //console.log(error);
+      }
+    );
+  }
+
+  getValidationErrorRegister() {
+    return this.http.post(`${this.baseUrl}/account/register`, {}).subscribe(
+      (response) => {
+        // console.log(response);
+      },
+      (error) => {
+        this.validationErrors = error.error.errors;
       }
     );
   }
