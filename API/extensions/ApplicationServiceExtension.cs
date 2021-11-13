@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using API.Data;
 using API.Errors;
+using API.Helpers;
 using API.interfaces;
 using API.services;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,8 @@ namespace API.extensions
             //depency injection
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            //autoMapper
+            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
             //connect to database
             services.AddDbContext<DataContext>(options =>
             {

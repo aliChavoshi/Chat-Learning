@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using API.Data;
 using API.Entities;
 using API.interfaces;
+using API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.services
@@ -19,6 +20,11 @@ namespace API.services
         public async Task<IEnumerable<Users>> GetAllUsers()
         {
             return await _context.Users.ToListAsync();
+        }
+
+        public Task<IEnumerable<MemberDto>> GetAllUsersMemberDto()
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<Users> GetUserById(int id)

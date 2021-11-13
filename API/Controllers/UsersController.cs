@@ -6,6 +6,7 @@ using API.Entities;
 using API.Errors;
 using API.interfaces;
 using API.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,21 +16,19 @@ namespace API.Controllers
     public class UsersController : BaseApiController
     {
         private readonly IUserRepository _userRepository;
-        public UsersController(IUserRepository userRepository)
+        private readonly IMapper _mapper;
+        public UsersController(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IEnumerable<MemberDto>> GetUsers()
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
         {
             var users = await _userRepository.GetAllUsers();
-            return users.Select(x => new MemberDto()
-            {
-                Birthday = x.Birthday,
-                City = x.City
-            });
+            return Ok(_mapper.Map<IEnumerable<MemberDto>>(users));
         }
 
         [HttpGet("{id:int}")]
