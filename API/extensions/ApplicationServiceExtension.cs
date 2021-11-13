@@ -20,6 +20,7 @@ namespace API.extensions
         {
             //depency injection
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IUserRepository, UserRepository>();
             //connect to database
             services.AddDbContext<DataContext>(options =>
             {
