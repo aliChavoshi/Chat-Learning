@@ -31,6 +31,17 @@ namespace API.services
             return await _context.Users.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
+        public async Task<MemberDto> GetMemberDtoById(int userId)
+        {
+            return await _context.Users.ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+                .SingleOrDefaultAsync(x => x.Id == userId);
+        }
+        public async Task<MemberDto> GetMemberDtoByUserName(string userName)
+        {
+            return await _context.Users.ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
+                .SingleOrDefaultAsync(x => x.UserName.ToLower() == userName.ToLower()); ;
+        }
+
         public async Task<Users> GetUserById(int id)
         {
             return await _context.Users.FindAsync(id);

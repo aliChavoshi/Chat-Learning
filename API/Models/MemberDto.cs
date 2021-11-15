@@ -17,11 +17,7 @@ namespace API.Models
         public string City { get; set; }
         public string Country { get; set; }
         public string PhotoUrl { get; set; }
+        public int Age { get; set; }
         public ICollection<PhotoDto> Photos { get; set; }
-        //get age
-        public int GetAge()
-        {
-            return Birthday.CalculateAge();
-        }
     }
 }

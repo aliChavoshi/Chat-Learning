@@ -30,13 +30,22 @@ namespace API.Controllers
             return Ok(await _userRepository.GetAllUsersMemberDto());
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("getUserById/{id:int}")]
         // [Authorize]
-        public async Task<ActionResult<Users>> GetUser(int id)
+        public async Task<ActionResult<MemberDto>> GetUserById(int id)
         {
-            var user = await _userRepository.GetUserById(id);
-            if (user == null) return BadRequest(new ApiResponse(400, "کاربری یافت نشد"));
-            return user;
+            var user = await _userRepository.GetMemberDtoById(id);
+            if (user == null) return NotFound(new ApiResponse(404, "چنین کاربری یافت نشد"));
+            return Ok(user);
+        }
+
+        [HttpGet("getUserByUserName/{userName}")]
+        // [Authorize]
+        public async Task<ActionResult<MemberDto>> GetUserByUserName(string userName)
+        {
+            var user = await _userRepository.GetMemberDtoByUserName(userName);
+            if (user == null) return NotFound(new ApiResponse(404, "چنین کاربری یافت نشد"));
+            return Ok(user);
         }
     }
 }
