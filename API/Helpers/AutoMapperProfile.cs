@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using API.Entities;
 using API.Models;
 using AutoMapper;
@@ -12,7 +9,10 @@ namespace API.Helpers
     {
         public AutoMapperProfile()
         {
-            CreateMap<Users, MemberDto>();
+            CreateMap<Users, MemberDto>()
+                .ForMember(x => x.PhotoUrl, c => c.MapFrom(v => v.Photos.FirstOrDefault(b => b.IsMain).Url));
+
+            CreateMap<Photo, PhotoDto>();
         }
     }
 }

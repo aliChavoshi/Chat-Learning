@@ -5,6 +5,8 @@ using API.Data;
 using API.Entities;
 using API.interfaces;
 using API.Models;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.services
@@ -12,9 +14,11 @@ namespace API.services
     public class UserRepository : IUserRepository
     {
         private readonly DataContext _context;
-        public UserRepository(DataContext context)
+        private readonly IMapper _mapper;
+        public UserRepository(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<Users>> GetAllUsers()
@@ -22,9 +26,9 @@ namespace API.services
             return await _context.Users.ToListAsync();
         }
 
-        public Task<IEnumerable<MemberDto>> GetAllUsersMemberDto()
+        public async Task<IEnumerable<MemberDto>> GetAllUsersMemberDto()
         {
-            throw new NotImplementedException();
+            return await _context.Users.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
         public async Task<Users> GetUserById(int id)
