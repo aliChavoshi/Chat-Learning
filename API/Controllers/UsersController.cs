@@ -31,7 +31,7 @@ namespace API.Controllers
         }
 
         [HttpGet("getUserById/{id:int}")]
-        // [Authorize]
+        [Authorize]
         public async Task<ActionResult<MemberDto>> GetUserById(int id)
         {
             var user = await _userRepository.GetMemberDtoById(id);
@@ -40,7 +40,7 @@ namespace API.Controllers
         }
 
         [HttpGet("getUserByUserName/{userName}")]
-        // [Authorize]
+        [Authorize]
         public async Task<ActionResult<MemberDto>> GetUserByUserName(string userName)
         {
             var user = await _userRepository.GetMemberDtoByUserName(userName);
