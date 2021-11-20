@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { IRequestLogin, IRequestRegister, User } from '../_models/account';
@@ -10,7 +10,7 @@ import { IRequestLogin, IRequestRegister, User } from '../_models/account';
 })
 export class AccountService {
   private baseUrl = environment.baseUrl;
-  private currentUser = new ReplaySubject<User>(1); // for next this service
+  private currentUser = new BehaviorSubject<User>(null); // for next this service
   currentUser$ = this.currentUser.asObservable(); // for subscribe
 
   constructor(private http: HttpClient) {}
@@ -42,6 +42,10 @@ export class AccountService {
 
   setCurrentUser(user: User) {
     this.currentUser.next(user);
+  }
+
+  getCurrentUser() {
+    return this.currentUser.getValue();
   }
 
   logout() {
