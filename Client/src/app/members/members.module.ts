@@ -6,6 +6,7 @@ import { ListMemberComponent } from './list-member/list-member.component';
 import { HomeMemberComponent } from './home-member/home-member.component';
 import { DetailMemberComponent } from './detail-member/detail-member.component';
 import { CardMemberComponent } from './card-member/card-member.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,6 @@ import { CardMemberComponent } from './card-member/card-member.component';
     DetailMemberComponent,
     CardMemberComponent,
   ],
-  imports: [CommonModule, MembersRoutingModule],
+  imports: [CommonModule, MembersRoutingModule, SharedModule],
 })
 export class MembersModule {}

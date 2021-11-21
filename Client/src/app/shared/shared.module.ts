@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 //ngx-toast
 import { ToastrModule } from 'ngx-toastr';
+//tabs
+import { TabsModule } from 'ngx-bootstrap/tabs';
 
 @NgModule({
   declarations: [],
@@ -19,12 +21,15 @@ import { ToastrModule } from 'ngx-toastr';
       progressBar: true,
       progressAnimation: 'increasing',
     }),
+    //tabs
+    TabsModule.forRoot(),
   ],
   exports: [
     //ngx-bootstrap
     BsDropdownModule,
     //ngx-toastr
     ToastrModule,
+    TabsModule,
   ],
 })
 export class SharedModule {}

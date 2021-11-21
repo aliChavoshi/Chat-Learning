@@ -1,3 +1,51 @@
-<div>
-    {{member.userName}}
+<div class="p-3">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <img class="img-fluid img-thumbnail shadow" [src]=" member.photoUrl || './assets/images/user.png'"
+                    [alt]=" member.knowAs" class="card-img-top img-thumbnail">
+                <div class="card-body">
+                    <div class="mb-2">
+                        <i class="fa fa-user-circle text-success"></i> Online now
+                    </div>
+                    <div>
+                        <strong>location:</strong>
+                        <p>{{member.city}}, {{member.country}}</p>
+                    </div>
+                    <div>
+                        <strong>userName:</strong>
+                        <p>{{member.userName}}</p>
+                    </div>
+                    <div>
+                        <strong>Age:</strong>
+                        <p>{{member.age}}</p>
+                    </div>
+                    <div>
+                        <strong>Last Active:</strong>
+                        <p>{{member.lastActive | date : 'dd MMM yyyy'}}</p>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="btn-group d-flex">
+                        <button class="btn btn-primary">Like</button>
+                        <button class="btn btn-success">Message</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <tabset class="member-tabset card pt-2 pb-2">
+                <tab class="mt-3" heading="About {{member?.userName}}">
+                    <h4>Description</h4>
+                    <p>{{member.knowAs}}</p>
+                </tab>
+                <tab class="mt-3" heading="Photos">
+                    <p>images</p>
+                </tab>
+                <tab class="mt-3" heading="Messages">
+                    <p>Messages</p>
+                </tab>
+            </tabset>
+        </div>
+    </div>
 </div>
