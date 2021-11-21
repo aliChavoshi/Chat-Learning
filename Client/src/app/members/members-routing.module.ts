@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { GetMemberResolver } from '../_resolvers/get-member.resolver';
 import { DetailMemberComponent } from './detail-member/detail-member.component';
 import { HomeMemberComponent } from './home-member/home-member.component';
 import { ListMemberComponent } from './list-member/list-member.component';
@@ -12,7 +13,11 @@ const routes: Routes = [
     children: [
       { path: '', component: ListMemberComponent },
       //localhost:4200/members/lisa
-      { path: ':username', component: DetailMemberComponent },
+      {
+        path: ':username',
+        component: DetailMemberComponent,
+        resolve: { member: GetMemberResolver },
+      },
     ],
   },
 ];
