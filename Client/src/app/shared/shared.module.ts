@@ -7,7 +7,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ToastrModule } from 'ngx-toastr';
 //tabs
 import { TabsModule } from 'ngx-bootstrap/tabs';
-
+//gallery
+import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 @NgModule({
   declarations: [],
   imports: [
@@ -23,6 +24,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
     }),
     //tabs
     TabsModule.forRoot(),
+    NgxGalleryModule,
   ],
   exports: [
     //ngx-bootstrap
@@ -30,6 +32,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
     //ngx-toastr
     ToastrModule,
     TabsModule,
+    NgxGalleryModule,
   ],
 })
 export class SharedModule {}
