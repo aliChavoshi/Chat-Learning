@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { GetMemberResolver } from '../_resolvers/get-member.resolver';
 import { DetailMemberComponent } from './detail-member/detail-member.component';
+import { EditMemberComponent } from './edit-member/edit-member.component';
 import { HomeMemberComponent } from './home-member/home-member.component';
 import { ListMemberComponent } from './list-member/list-member.component';
 
@@ -12,12 +13,14 @@ const routes: Routes = [
     component: HomeMemberComponent,
     children: [
       { path: '', component: ListMemberComponent },
-      //localhost:4200/members/lisa
+      //localhost:4200/members/:username
       {
         path: ':username',
         component: DetailMemberComponent,
         resolve: { member: GetMemberResolver },
       },
+      //localhost:4200/members/edit
+      { path: 'edit', component: EditMemberComponent },
     ],
   },
 ];
