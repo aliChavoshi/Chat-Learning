@@ -13,14 +13,15 @@ const routes: Routes = [
     component: HomeMemberComponent,
     children: [
       { path: '', component: ListMemberComponent },
-      //localhost:4200/members/:username
+      //localhost:4200/members/ali
+      //localhost:4200/members/edit
+      { path: 'edit', component: EditMemberComponent, pathMatch: 'full' },
       {
         path: ':username',
         component: DetailMemberComponent,
         resolve: { member: GetMemberResolver },
+        pathMatch: 'full',
       },
-      //localhost:4200/members/edit
-      { path: 'edit', component: EditMemberComponent },
     ],
   },
 ];

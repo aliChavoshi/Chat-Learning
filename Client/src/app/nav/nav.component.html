@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" routerLink="/">Chat App</a>
+    <a class="navbar-brand" routerLink="/">چت روم</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -25,7 +25,7 @@
             aria-current="page"
             [routerLinkActiveOptions]="{ exact: true }"
             routerLink="/"
-            >Home</a
+            >خانه</a
           >
         </li>
         <li class="nav-item">
@@ -34,7 +34,7 @@
             routerLinkActive="active"
             aria-current="page"
             routerLink="/members"
-            >Members</a
+            >لیست کاربران</a
           >
         </li>
         <li class="nav-item">
@@ -43,7 +43,7 @@
             routerLinkActive="active"
             aria-current="page"
             routerLink="/lists"
-            >Lists</a
+            >لایک ها</a
           >
         </li>
         <li class="nav-item">
@@ -52,7 +52,7 @@
             routerLinkActive="active"
             aria-current="page"
             routerLink="/messages"
-            >Messages</a
+            >پیام ها</a
           >
         </li>
         <li class="nav-item">
@@ -61,7 +61,7 @@
             routerLinkActive="active"
             aria-current="page"
             routerLink="/errors"
-            >Errors</a
+            >خطا ها</a
           >
         </li>
       </ul>
@@ -79,15 +79,19 @@
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          Welcome {{ User.userName | uppercase }}
+          خوش آمدید {{ User.userName | uppercase }}
         </a>
         <ul
           *dropdownMenu
           class="dropdown-menu"
           aria-labelledby="dropdownMenuLink"
         >
-          <li><a class="dropdown-item">Edit Profile</a></li>
-          <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+          <li>
+            <a class="dropdown-item" [routerLink]="['/members', 'edit']"
+              >ویرایش پروفایل</a
+            >
+          </li>
+          <li><a class="dropdown-item" (click)="logout()"> خروج <span class="fas fa-sign-out-alt"></span></a></li>
         </ul>
       </div>
 
@@ -114,7 +118,7 @@
           type="submit"
           [disabled]="form.invalid"
         >
-          Login
+          ورود
         </button>
       </form>
     </div>
