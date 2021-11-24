@@ -1,10 +1,12 @@
 :root {
   --color-background: #ced4da;
   --color-danger: #9a031e;
-  --font-body: "B Nazanin", "JetBrains Mono";
+  --font-body: "B Koodak", "JetBrains Mono";
 }
 body {
   font-family: var(--font-body);
+  font-size: 100%;
+  font-weight: 400;
 }
 .mr-10 {
   margin-right: 10px;

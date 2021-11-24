@@ -31,11 +31,13 @@ export class EditMemberComponent implements OnInit {
       .getMemberByUsername(this.user.userName)
       .subscribe((member) => {
         this.member = member;
+        console.log(member);
+
         this.form = new FormGroup({
           city: new FormControl(member.city),
           country: new FormControl(member.country),
-          knowAs: new FormControl(member.knowAs),
-          birthday: new FormControl(member.birthday),
+          knownAs: new FormControl(member.knownAs),
+          dateOfBirth: new FormControl(member.dateOfBirth),
         });
       });
   }
