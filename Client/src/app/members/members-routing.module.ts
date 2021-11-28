@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PreventUnsavedChangesGuard } from '../_guards/prevent-unsaved-changes.guard';
 import { GetMemberResolver } from '../_resolvers/get-member.resolver';
 import { DetailMemberComponent } from './detail-member/detail-member.component';
 import { EditMemberComponent } from './edit-member/edit-member.component';
@@ -15,7 +16,12 @@ const routes: Routes = [
       { path: '', component: ListMemberComponent },
       //localhost:4200/members/ali
       //localhost:4200/members/edit
-      { path: 'edit', component: EditMemberComponent, pathMatch: 'full' },
+      {
+        path: 'edit',
+        component: EditMemberComponent,
+        pathMatch: 'full',
+        canDeactivate: [PreventUnsavedChangesGuard],
+      },
       {
         path: ':username',
         component: DetailMemberComponent,
