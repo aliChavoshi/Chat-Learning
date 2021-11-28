@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace API.Data.migrations
+namespace API.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20211113131249_UpdateUserEntity")]
-    partial class UpdateUserEntity
+    [Migration("20211128133227_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -54,23 +54,38 @@ namespace API.Data.migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Birthday")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("KnowAs")
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Interests")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Introduction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("KnownAs")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LastActive")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("LookingFor")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("PasswordHash")
                         .HasColumnType("varbinary(max)");
