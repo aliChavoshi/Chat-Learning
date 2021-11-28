@@ -25,19 +25,23 @@ export class EditMemberComponent implements OnInit {
     this.loadUser();
     this.loadMember();
   }
-
+  OnSubmit() {
+    console.log(this.form.value);
+  }
   loadMember() {
     this.memberService
       .getMemberByUsername(this.user.userName)
       .subscribe((member) => {
         this.member = member;
-        console.log(member);
-
         this.form = new FormGroup({
           city: new FormControl(member.city),
           country: new FormControl(member.country),
           knownAs: new FormControl(member.knownAs),
           dateOfBirth: new FormControl(member.dateOfBirth),
+          email: new FormControl(member.email),
+          interests: new FormControl(member.interests),
+          lookingFor: new FormControl(member.lookingFor),
+          introduction: new FormControl(member.introduction),
         });
       });
   }

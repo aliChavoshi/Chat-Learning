@@ -39,7 +39,7 @@ namespace API.services
         public async Task<MemberDto> GetMemberDtoByUserName(string userName)
         {
             return await _context.Users.ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
-                .SingleOrDefaultAsync(x => x.UserName.ToLower() == userName.ToLower()); ;
+                .SingleOrDefaultAsync(x => x.UserName.ToLower() == userName.ToLower());
         }
 
         public async Task<Users> GetUserById(int id)

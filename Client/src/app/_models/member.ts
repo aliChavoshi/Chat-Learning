@@ -9,7 +9,7 @@ export interface IMember {
   email: string;
   country: string;
   city: string;
-  gender: number;
+  gender: number; // 0 : female || 1 : male
   age: number;
   lastActive: string;
   dateOfBirth: string;
