@@ -1,6 +1,6 @@
 <div class="album py-5">
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-5 g-3">
-    <ng-container *ngFor="let member of members">
+    <ng-container *ngFor="let member of members$ | async">
       <app-card-member [member]="member"></app-card-member>
     </ng-container>
   </div>
