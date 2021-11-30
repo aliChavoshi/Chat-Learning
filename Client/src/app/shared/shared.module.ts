@@ -9,6 +9,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 //gallery
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
+//spinner loading
+import { NgxSpinnerModule } from "ngx-spinner";
 @NgModule({
   declarations: [],
   imports: [
@@ -25,6 +27,8 @@ import { NgxGalleryModule } from '@kolkov/ngx-gallery';
     //tabs
     TabsModule.forRoot(),
     NgxGalleryModule,
+    //spinner loading
+    NgxSpinnerModule
   ],
   exports: [
     //ngx-bootstrap
@@ -33,6 +37,8 @@ import { NgxGalleryModule } from '@kolkov/ngx-gallery';
     ToastrModule,
     TabsModule,
     NgxGalleryModule,
+    //spinner loading
+    NgxSpinnerModule
   ],
 })
 export class SharedModule {}

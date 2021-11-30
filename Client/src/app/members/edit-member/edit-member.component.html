@@ -184,7 +184,9 @@
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <button [disabled]="form.invalid" type="submit"
-                                                    class="btn btn-primary">Edit</button>
+                                                    class="btn btn-primary">Edit
+                                                    <span *ngIf="isSubmit" class="spinner-border spinner-border-sm"
+                                                        role="status" aria-hidden="true"></span></button>
                                             </div>
                                         </div>
                                     </div>
