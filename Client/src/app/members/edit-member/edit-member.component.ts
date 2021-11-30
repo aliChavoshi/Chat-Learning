@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { IPreventUnsavedChanges } from 'src/app/_guards/prevent-unsaved-changes.guard';
 import { User } from 'src/app/_models/account';
@@ -13,6 +14,7 @@ import { MemberService } from 'src/app/_services/member.service';
   styleUrls: ['./edit-member.component.css'],
 })
 export class EditMemberComponent implements OnInit, IPreventUnsavedChanges {
+  errors = [];
   user: User;
   member: IMember;
 
@@ -20,7 +22,8 @@ export class EditMemberComponent implements OnInit, IPreventUnsavedChanges {
 
   constructor(
     private accountService: AccountService,
-    private memberService: MemberService
+    private memberService: MemberService,
+    private toasr: ToastrService
   ) {}
 
   canDeactivate(): boolean | Observable<boolean> {
@@ -34,19 +37,36 @@ export class EditMemberComponent implements OnInit, IPreventUnsavedChanges {
     this.loadMember();
   }
   OnSubmit() {
-    console.log(this.form.value);
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    this.memberService.updateMember(this.form.value).subscribe(
+      (member) => {
+        this.errors = [];
+        this.member = member;
+        this.toasr.success('Update Member Success');
+      },
+      (error) => {
+        this.errors = error;
+      }
+    );
   }
+
   loadMember() {
     this.memberService
       .getMemberByUsername(this.user.userName)
       .subscribe((member) => {
         this.member = member;
         this.form = new FormGroup({
-          city: new FormControl(member.city),
-          country: new FormControl(member.country),
+          city: new FormControl(member.city, [Validators.required]),
+          country: new FormControl(member.country, [Validators.required]),
           knownAs: new FormControl(member.knownAs),
           dateOfBirth: new FormControl(member.dateOfBirth),
-          email: new FormControl(member.email),
+          email: new FormControl(member.email, [
+            Validators.required,
+            Validators.email,
+          ]),
           interests: new FormControl(member.interests),
           lookingFor: new FormControl(member.lookingFor),
           introduction: new FormControl(member.introduction),
