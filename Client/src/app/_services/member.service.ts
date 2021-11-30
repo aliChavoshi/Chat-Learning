@@ -11,7 +11,7 @@ export class MemberService {
   constructor(private http: HttpClient) {}
 
   getMembers() {
-    return this.http.get<IMember[]>(`${this.baseUrl}/users`);
+    return this.http.get<IMember[]>(`${this.baseUrl}/users/getAllUsers`);
   }
   getMemberByUsername(userName: string) {
     return this.http.get<IMember>(
@@ -21,4 +21,5 @@ export class MemberService {
   getMemberById(id: number) {
     return this.http.get<IMember>(`${this.baseUrl}/users/getUserById/${id}`);
   }
+  updateMember() {}
 }

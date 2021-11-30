@@ -23,8 +23,6 @@ export class PreventUnsavedChangesGuard
     currentState: RouterStateSnapshot,
     nextState?: RouterStateSnapshot
   ): Observable<boolean> | boolean {
-    console.log(component);
-
     return component.canDeactivate();
   }
 }
