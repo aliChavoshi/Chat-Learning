@@ -14,6 +14,7 @@ import { SharedModule } from './shared/shared.module';
 import { ErrorsComponent } from './errors/errors.component';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
 import { AuthInterceptor } from './_interceptors/auth.interceptor';
+import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { AuthInterceptor } from './_interceptors/auth.interceptor';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],

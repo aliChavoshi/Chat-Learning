@@ -8,9 +8,8 @@ import { BehaviorSubject } from 'rxjs';
 export class BusyService {
   constructor(private spinner: NgxSpinnerService) {}
   private busyRequestCount = new BehaviorSubject<number>(0);
-  //1 ->send
+  //1 ->send // 0
   //1-1 = 0 -> response
-
   showBusy() {
     this.busyRequestCount.next(this.busyRequestCount.value + 1);
     this.spinner.show(undefined, {
@@ -20,5 +19,11 @@ export class BusyService {
       type: 'square-jelly-box',
     });
   }
-  hideBusy() {}
+  hideBusy() {
+    this.busyRequestCount.next(this.busyRequestCount.value - 1);
+    if (this.busyRequestCount.value <= 0) {
+      this.busyRequestCount.next(0);
+      this.spinner.hide();
+    }
+  }
 }
