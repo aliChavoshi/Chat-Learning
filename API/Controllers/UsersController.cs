@@ -1,16 +1,12 @@
 using System.Security.Claims;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using API.Data;
-using API.Entities;
 using API.Errors;
 using API.interfaces;
 using API.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -52,7 +48,7 @@ namespace API.Controllers
         public async Task<ActionResult<MemberDto>> UpdateUser([FromBody] MemberUpdateDto memberDto)
         {
             var username = HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var member = await _userRepository.GetUserByUserName(username);
+            var member = await _userRepository.GetUserByUserNameWithPhotos(username);
             if (member == null) return NotFound(new ApiResponse(404));
 
             member = _mapper.Map(memberDto, member);

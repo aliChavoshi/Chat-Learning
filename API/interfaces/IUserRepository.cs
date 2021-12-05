@@ -15,6 +15,7 @@ namespace API.interfaces
         Task<MemberDto> GetMemberDtoById(int userId);
         Task<MemberDto> GetMemberDtoByUserName(string userName);
         Task<Users> GetUserByUserName(string userName);
+        Task<Users> GetUserByUserNameWithPhotos(string userName);
         void Update(Users user);
         Task<bool> SaveAllAsync();
     }

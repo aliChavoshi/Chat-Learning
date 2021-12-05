@@ -53,6 +53,12 @@ namespace API.services
                 .SingleOrDefaultAsync(x => x.UserName.ToLower() == userName.ToLower());
         }
 
+        public async Task<Users> GetUserByUserNameWithPhotos(string userName)
+        {
+            return await _context.Users.Include(x => x.Photos)
+                .SingleOrDefaultAsync(x => x.UserName.ToLower() == userName.ToLower());
+        }
+
         public async Task<bool> SaveAllAsync()
         {
             return await _context.SaveChangesAsync() > 0;
