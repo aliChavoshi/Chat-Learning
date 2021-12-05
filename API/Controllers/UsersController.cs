@@ -7,6 +7,9 @@ using API.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using API.extensions;
+using Microsoft.AspNetCore.Http;
+using API.Entities;
 
 namespace API.Controllers
 {
@@ -14,11 +17,13 @@ namespace API.Controllers
     public class UsersController : BaseApiController
     {
         private readonly IUserRepository _userRepository;
+        private readonly IPhotoService _photoService;
         private readonly IMapper _mapper;
-        public UsersController(IUserRepository userRepository, IMapper mapper)
+        public UsersController(IUserRepository userRepository, IMapper mapper, IPhotoService photoService)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _photoService = photoService;
         }
 
         [HttpGet("GetAllUsers")]
@@ -44,10 +49,9 @@ namespace API.Controllers
         }
 
         [HttpPut("UpdateUser")]
-        [Authorize] // header => JWT
         public async Task<ActionResult<MemberDto>> UpdateUser([FromBody] MemberUpdateDto memberDto)
         {
-            var username = HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var username = User?.GetUserName();
             var member = await _userRepository.GetUserByUserNameWithPhotos(username);
             if (member == null) return NotFound(new ApiResponse(404));
 
@@ -57,6 +61,27 @@ namespace API.Controllers
                 return Ok(_mapper.Map<MemberDto>(member));
 
             return BadRequest(new ApiResponse(400));
+        }
+
+        [HttpPost("add-photo")]
+        public async Task<IActionResult> AddPhoto(IFormFile file)
+        {
+            var result = await _photoService.AddPhotoAsync(file);
+            if (result.Error != null) return BadRequest(new ApiResponse(400, "عملیات با شکست روبرو شد"));
+
+            var user = await _userRepository.GetUserByUserNameWithPhotos(User.GetUserName());
+            var photo = new Photo
+            {
+                Url = result.SecureUrl.AbsoluteUri,
+                PublicId = result.PublicId,
+                UserId = user.Id,
+                IsMain = user.Photos.Count == 0 ? true : false
+            };
+            user.Photos.Add(photo);
+            _userRepository.Update(user);
+            if (await _userRepository.SaveAllAsync())
+                return Ok(_mapper.Map<PhotoDto>(photo));
+            return BadRequest(new ApiResponse(400, "عملیات با شکست روبرو شد"));
         }
     }
 }
