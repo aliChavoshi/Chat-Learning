@@ -29,6 +29,9 @@ namespace API.extensions
             {
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
+            //cloudinary settings
+            services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
+            services.AddScoped<IPhotoService, PhotoService>();
             //add controller
             services.AddControllers();
             //add cors for origin
