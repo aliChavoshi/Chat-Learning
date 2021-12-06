@@ -40,7 +40,7 @@ namespace API.Controllers
             return Ok(user);
         }
 
-        [HttpGet("getUserByUserName/{userName}")]
+        [HttpGet("getUserByUserName/{userName}", Name = "GetUser")]
         public async Task<ActionResult<MemberDto>> GetUserByUserName(string userName)
         {
             var user = await _userRepository.GetMemberDtoByUserName(userName);
@@ -80,7 +80,7 @@ namespace API.Controllers
             user.Photos.Add(photo);
             _userRepository.Update(user);
             if (await _userRepository.SaveAllAsync())
-                return Ok(_mapper.Map<PhotoDto>(photo));
+                return CreatedAtRoute("GetUser", new { userName = user.UserName }, _mapper.Map<PhotoDto>(photo));
             return BadRequest(new ApiResponse(400, "عملیات با شکست روبرو شد"));
         }
     }
