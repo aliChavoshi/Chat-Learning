@@ -1,0 +1,22 @@
+<ng-container *ngIf="member">
+    <div class="row">
+        <div class="shadow col-md-4" *ngFor="let photo of member.photos">
+            <div class="card shadow-sm">
+                <img [src]="photo.url" alt="picture" class="img-thumbnail" />
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <button [routerLink]="['/members', member.userName]" type="button"
+                                class="btn btn-sm btn-outline-primary">
+                                <i class="far fa-check-square"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-danger">
+                                <i class="far fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
