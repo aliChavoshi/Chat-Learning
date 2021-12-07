@@ -10,7 +10,9 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 //gallery
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 //spinner loading
-import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxSpinnerModule } from 'ngx-spinner';
+//file uploader
+import { FileUploadModule } from 'ng2-file-upload';
 @NgModule({
   declarations: [],
   imports: [
@@ -28,7 +30,9 @@ import { NgxSpinnerModule } from "ngx-spinner";
     TabsModule.forRoot(),
     NgxGalleryModule,
     //spinner loading
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    //file uploader
+    FileUploadModule,
   ],
   exports: [
     //ngx-bootstrap
@@ -38,7 +42,9 @@ import { NgxSpinnerModule } from "ngx-spinner";
     TabsModule,
     NgxGalleryModule,
     //spinner loading
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    //file uploader
+    FileUploadModule,
   ],
 })
 export class SharedModule {}
