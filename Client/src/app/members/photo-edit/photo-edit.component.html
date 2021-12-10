@@ -1,113 +1,167 @@
 <ng-container *ngIf="member">
-    <div class="row">
-        <div class="shadow col-md-4 " *ngFor="let photo of member.photos">
-            <div class="card shadow-sm m-1">
-                <img [src]="photo.url" alt="picture" class="img-thumbnail" />
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="btn-group">
-                            <button [routerLink]="['/members', member.userName]" type="button"
-                                class="btn btn-sm btn-outline-primary">
-                                <i class="far fa-check-square"></i>
-                            </button>
-                            <button type="button" class="btn btn-sm btn-outline-danger">
-                                <i class="far fa-trash-alt"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+  <div class="row">
+    <div class="shadow col-md-4" *ngFor="let photo of member.photos">
+      <div class="card shadow-sm m-1">
+        <img [src]="photo.url" alt="picture" class="img-thumbnail" />
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+              <button
+                [routerLink]="['/members', member.userName]"
+                type="button"
+                class="btn btn-sm btn-outline-primary"
+              >
+                <i class="far fa-check-square"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-danger">
+                <i class="far fa-trash-alt"></i>
+              </button>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="row mt-3">
-        <div class="col-md-12 text-center">
-            <h3>ارسال تصاویر</h3>
-            <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)"
-                [uploader]="uploader" class="well my-drop-zone py-4">
-                عکس را برای آپلود بکشید
+  </div>
+  <div class="row mt-3">
+    <div class="col-md-12 text-center">
+      <h3>ارسال تصاویر</h3>
+      <div
+        ng2FileDrop
+        [ngClass]="{ 'nv-file-over': hasBaseDropZoneOver }"
+        (fileOver)="fileOverBase($event)"
+        [uploader]="uploader"
+        class="well my-drop-zone py-4"
+      >
+        عکس را برای آپلود بکشید
+      </div>
+      <!-- <div
+        ng2FileDrop
+        [ngClass]="{ 'another-file-over-class': hasAnotherDropZoneOver }"
+        (fileOver)="fileOverAnother($event)"
+        [uploader]="uploader"
+        class="well my-drop-zone py-4"
+      >
+        عکس را برای آپلود بکشید
+      </div> -->
+
+      انتخاب چندین عکس
+      <input
+        type="file"
+        class="form-control"
+        ng2FileSelect
+        [uploader]="uploader"
+        multiple
+      /><br />
+
+      <!-- انتخاب یک عکس
+      <input
+        type="file"
+        class="form-control mb-2"
+        ng2FileSelect
+        [uploader]="uploader"
+      /> -->
+
+      <div class="row" *ngIf="uploader?.queue?.length">
+        <div class="col-md-12">
+          <h3>تعداد صف آپلود :</h3>
+          <p>تعداد : {{ uploader?.queue?.length }}</p>
+
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th>نام فایل</th>
+                <th>سایز</th>
+                <th>پیش زوی</th>
+                <th>عملیات</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of uploader.queue">
+                <td>
+                  <strong>{{ item?.file?.name }}</strong>
+                </td>
+                <td *ngIf="uploader.options.isHTML5" nowrap>
+                  {{ item?.file?.size / 1024 / 1024 | number: ".2" }} MB
+                </td>
+                <td *ngIf="uploader.options.isHTML5">
+                  <div class="progress" style="margin-bottom: 0">
+                    <div
+                      class="progress-bar"
+                      role="progressbar"
+                      [ngStyle]="{ width: item.progress + '%' }"
+                    ></div>
+                  </div>
+                </td>
+                <!-- <td class="text-center">
+                  <span *ngIf="item.isSuccess"
+                    ><i class="glyphicon glyphicon-ok"></i
+                  ></span>
+                  <span *ngIf="item.isCancel"
+                    ><i class="glyphicon glyphicon-ban-circle"></i
+                  ></span>
+                  <span *ngIf="item.isError"
+                    ><i class="glyphicon glyphicon-remove"></i
+                  ></span>
+                </td> -->
+                <td nowrap>
+                  <button
+                    type="button"
+                    class="btn btn-success btn-sm"
+                    (click)="item.upload()"
+                    [disabled]="
+                      item.isReady || item.isUploading || item.isSuccess
+                    "
+                  >
+                    <span class="glyphicon glyphicon-upload"></span> ارسال
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-danger btn-sm"
+                    (click)="item.remove()"
+                  >
+                    <span class="glyphicon glyphicon-trash"></span> حذف
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div>
+            پیش روی صف آپلود:
+            <div class="progress">
+              <div
+                class="progress-bar"
+                role="progressbar"
+                [ngStyle]="{ width: uploader.progress + '%' }"
+              ></div>
             </div>
-            <div ng2FileDrop [ngClass]="{'another-file-over-class': hasAnotherDropZoneOver}"
-                (fileOver)="fileOverAnother($event)" [uploader]="uploader" class="well my-drop-zone py-4">
-                عکس را برای آپلود بکشید
-            </div>
-
-            انتخاب چندین عکس
-            <input type="file" class="form-control" ng2FileSelect [uploader]="uploader" multiple /><br />
-
-            انتخاب یک عکس
-            <input type="file" class="form-control mb-2" ng2FileSelect [uploader]="uploader" />
-
-            <div class="row" *ngIf="uploader?.queue?.length">
-                <div class="col-md-12">
-
-                    <h3>تعداد صف آپلود :</h3>
-                    <p>تعداد : {{ uploader?.queue?.length }}</p>
-
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>نام فایل</th>
-                                <th>سایز</th>
-                                <th>پیش زوی</th>
-                                <th>.ضعیت</th>
-                                <th>عملیات</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let item of uploader.queue">
-                                <td><strong>{{ item?.file?.name }}</strong></td>
-                                <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 |
-                                    number:'.2' }} MB</td>
-                                <td *ngIf="uploader.options.isHTML5">
-                                    <div class="progress" style="margin-bottom: 0;">
-                                        <div class="progress-bar" role="progressbar"
-                                            [ngStyle]="{ 'width': item.progress + '%' }"></div>
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                                    <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-                                    <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-                                </td>
-                                <td wrap>
-                                    <button type="button" class="btn btn-success btn-xs" (click)="item.upload()"
-                                        [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                                        <span class="glyphicon glyphicon-upload"></span> Upload
-                                    </button>
-                                    <!-- <button type="button" class="btn btn-warning btn-xs" (click)="item.cancel()"
-                                        [disabled]="!item.isUploading">
-                                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
-                                    </button> -->
-                                    <button type="button" class="btn btn-danger btn-xs" (click)="item.remove()">
-                                        <span class="glyphicon glyphicon-trash"></span> Remove
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <div>
-                        Queue progress:
-                        <div class="progress">
-                            <div class="progress-bar" role="progressbar"
-                                [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-success btn-sm mt-1" (click)="uploader.uploadAll()"
-                        [disabled]="!uploader.getNotUploadedItems().length">
-                        <span class="glyphicon glyphicon-upload"></span> Upload all
-                    </button>
-                    <button type="button" class="btn btn-warning btn-sm mt-1" (click)="uploader.cancelAll()"
-                        [disabled]="!uploader.isUploading">
-                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
-                    </button>
-                    <button type="button" class="btn btn-danger btn-sm mt-1" (click)="uploader.clearQueue()"
-                        [disabled]="!uploader.queue.length">
-                        <span class="glyphicon glyphicon-trash"></span> Remove all
-                    </button>
-
-                </div>
-            </div>
+          </div>
+          <button
+            type="button"
+            class="btn btn-success btn-sm mt-1"
+            (click)="uploader.uploadAll()"
+            [disabled]="!uploader.getNotUploadedItems().length"
+          >
+            <span class="glyphicon glyphicon-upload"></span> ارسال تصاویر
+          </button>
+          <button
+            type="button"
+            class="btn btn-warning btn-sm mt-1"
+            (click)="uploader.cancelAll()"
+            [disabled]="!uploader.isUploading"
+          >
+            <span class="glyphicon glyphicon-ban-circle"></span> انصراف
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger btn-sm mt-1"
+            (click)="uploader.clearQueue()"
+            [disabled]="!uploader.queue.length"
+          >
+            <span class="glyphicon glyphicon-trash"></span> حذف همه
+          </button>
         </div>
+      </div>
     </div>
+  </div>
 </ng-container>

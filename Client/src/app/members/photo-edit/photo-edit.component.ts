@@ -20,14 +20,14 @@ export class PhotoEditComponent implements OnInit {
   hasBaseDropZoneOver: boolean;
   hasAnotherDropZoneOver: boolean;
 
+  constructor(private accountService: AccountService) {}
+
   ngOnInit(): void {
     this.accountService.currentUser$
       .pipe(take(1))
       .subscribe((user) => (this.user = user));
     this.initializeUploader();
   }
-
-  constructor(private accountService: AccountService) {}
 
   initializeUploader() {
     this.uploader = new FileUploader({
