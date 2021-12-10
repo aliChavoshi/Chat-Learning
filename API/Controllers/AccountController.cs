@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using API.Data;
@@ -13,12 +14,13 @@ namespace API.Controllers
 {
     public class AccountController : BaseApiController
     {
-        private readonly DataContext _context;
         private readonly ITokenService _tokenService;
-        public AccountController(ITokenService tokenService, DataContext context)
+        private readonly IAccountRepository _accountRepository;
+
+        public AccountController(ITokenService tokenService, IAccountRepository accountRepository)
         {
             _tokenService = tokenService;
-            _context = context;
+            _accountRepository = accountRepository;
         }
 
         /// <summary>
@@ -29,7 +31,7 @@ namespace API.Controllers
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<UserTokenDto>> Register(RegisterDto model)
         {
-            if (await IsExistUserName(model.userName))
+            if (await _accountRepository.IsExistUserName(model.userName))
                 return BadRequest(new ApiResponse(400, model.userName + "یافت نشد"));
 
             using var hmac = new HMACSHA512();
@@ -39,8 +41,8 @@ namespace API.Controllers
                 PasswordSalt = hmac.Key,
                 PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(model.Password)),
             };
-            await _context.Users.AddAsync(user);
-            if (await _context.SaveChangesAsync() > 0)
+            await _accountRepository.AddUser(user);
+            if (await _accountRepository.SaveChangeAsync())
             {
                 return Ok(new UserTokenDto
                 {
@@ -59,7 +61,7 @@ namespace API.Controllers
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<UserTokenDto>> Login([FromBody] LoginDto model)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName.ToLower() == model.userName.ToLower());
+            var user = await _accountRepository.GetUserByUserNameWithPhotos(model.userName);
             if (user == null) return BadRequest(new ApiResponse(400, "نام کاربری یافت نشد"));
 
             using var hmac = new HMACSHA512(user.PasswordSalt);
@@ -71,13 +73,9 @@ namespace API.Controllers
             return Ok(new UserTokenDto
             {
                 userName = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                PhotoUrl = user?.Photos?.FirstOrDefault(x => x.IsMain)?.Url
             });
-        }
-
-        private async Task<bool> IsExistUserName(string userName)
-        {
-            return await _context.Users.AnyAsync(x => x.UserName.ToLower() == userName.ToLower());
         }
     }
 }

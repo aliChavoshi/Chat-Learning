@@ -22,6 +22,7 @@ namespace API.extensions
             //depency injection
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
             //autoMapper
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
             //connect to database
