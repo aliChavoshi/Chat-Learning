@@ -71,6 +71,12 @@
         dropdown
         placement="bottom left"
       >
+        <img
+          style="max-width: 60px;margin-right: 5px;"
+          class="img-thumbnail p-1"
+          [src]="User.photoUrl || './assets/images/user.png'"
+          [alt]="User.userName"
+        />
         <a
           class="btn btn-secondary dropdown-toggle"
           role="button"
@@ -81,6 +87,7 @@
         >
           خوش آمدید {{ User.userName | uppercase }}
         </a>
+
         <ul
           *dropdownMenu
           class="dropdown-menu"
@@ -91,7 +98,11 @@
               >ویرایش پروفایل</a
             >
           </li>
-          <li><a class="dropdown-item" (click)="logout()"> خروج <span class="fas fa-sign-out-alt"></span></a></li>
+          <li>
+            <a class="dropdown-item" (click)="logout()">
+              خروج <span class="fas fa-sign-out-alt"></span
+            ></a>
+          </li>
         </ul>
       </div>
 

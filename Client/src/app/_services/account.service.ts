@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, ReplaySubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { IRequestLogin, IRequestRegister, User } from '../_models/account';
@@ -19,8 +19,7 @@ export class AccountService {
     return this.http.post<User>(`${this.baseUrl}/account/login`, login).pipe(
       map((response: User) => {
         if (response.userName && response.token) {
-          localStorage.setItem('user', JSON.stringify(response));
-          this.currentUser.next(response);
+          this.setCurrentUser(response);
         }
       })
     );
@@ -32,8 +31,7 @@ export class AccountService {
       .pipe(
         map((response) => {
           if (response.userName && response.token) {
-            localStorage.setItem('user', JSON.stringify(response));
-            this.currentUser.next(response);
+            this.setCurrentUser(response);
           }
           return response;
         })
@@ -41,7 +39,10 @@ export class AccountService {
   }
 
   setCurrentUser(user: User) {
-    this.currentUser.next(user);
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+      this.currentUser.next(user);
+    }
   }
 
   getCurrentUser() {
