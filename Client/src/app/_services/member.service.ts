@@ -1,4 +1,4 @@
-import { IMember, IMemberUpdate } from './../_models/member';
+import { IMember, IMemberUpdate, Photo } from './../_models/member';
 import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -45,10 +45,14 @@ export class MemberService {
       );
   }
   setMainPhoto(photoId: number) {
-    return this.http.put(`${this.baseUrl}/users/setMainPhoto/${photoId}`, {});
+    return this.http.put<Photo>(
+      `${this.baseUrl}/users/setMainPhoto/${photoId}`,
+      {}
+    );
   }
-
   deletePhoto(photoId: number) {
-    
+    return this.http.delete<Photo>(
+      `${this.baseUrl}/users/deletePhoto/${photoId}`
+    );
   }
 }

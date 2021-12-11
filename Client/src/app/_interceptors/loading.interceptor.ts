@@ -8,7 +8,7 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BusyService } from '../_services/Busy.service';
-import { tap } from 'rxjs/operators';
+import { finalize, tap } from 'rxjs/operators';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {
@@ -20,6 +20,9 @@ export class LoadingInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<unknown>> {
     this.busyService.showBusy();
     return next.handle(request).pipe(
+      finalize(() => {
+        this.busyService.hideBusy();
+      }),
       tap((event) => {
         //send request
         if (event.type === HttpEventType.Sent) {

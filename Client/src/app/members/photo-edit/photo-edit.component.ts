@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
 import { AccountService } from 'src/app/_services/account.service';
 import { User } from 'src/app/_models/account';
@@ -23,7 +24,8 @@ export class PhotoEditComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
-    private memberService: MemberService
+    private memberService: MemberService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -53,6 +55,9 @@ export class PhotoEditComponent implements OnInit {
       if (response) {
         const photo: Photo = JSON.parse(response);
         this.member.photos.push(photo);
+        if (this.member.photos.length === 1) {
+          this.updateUserAndMemberPhotoUrl(photo);
+        }
       }
     };
   }
@@ -68,22 +73,31 @@ export class PhotoEditComponent implements OnInit {
 
   onSetMainPhoto(photoId: number) {
     this.memberService.setMainPhoto(photoId).subscribe((photo: Photo) => {
-      //update user
-      this.user.photoUrl = photo.url;
-      this.accountService.setCurrentUser(this.user);
-      //update member
-      this.member.photoUrl = photo.url;
-      this.member.photos.forEach((item) => {
-        if (item.isMain) {
-          item.isMain = false;
-        } else if (item.id === photo.id) {
-          item.isMain = true;
-        }
-      });
+      this.updateUserAndMemberPhotoUrl(photo);
     });
   }
 
-  onDeletePhoto(photoId : number){
-    
+  onDeletePhoto(photoId: number) {
+    this.memberService.deletePhoto(photoId).subscribe((photo) => {
+      //update member
+      //this.member.photos = this.member.photos.filter((x) => x.id != photo.id);
+      this.member.photos.splice(
+        this.member.photos.findIndex((x) => x.id == photo.id),
+        1
+      );
+      this.toastr.warning('تصویر با موفقیت حذف گردید');
+    });
+  }
+
+  private updateUserAndMemberPhotoUrl(photo: Photo) {
+    //update user
+    this.user.photoUrl = photo.url;
+    this.accountService.setCurrentUser(this.user);
+    //update member
+    this.member.photoUrl = photo.url;
+    this.member.photos.forEach((x) => {
+      if (x.isMain) x.isMain = false;
+      if (x.id === photo.id) x.isMain = true;
+    });
   }
 }

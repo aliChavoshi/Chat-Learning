@@ -1,6 +1,6 @@
 <div class="col shadow" *ngIf="member">
   <div class="card shadow-sm">
-    <img [src]="member.photoUrl" alt="picture" class="img-thumbnail" />
+    <img [src]="member.photoUrl || '/assets/images/user.png'" alt="picture" class="img-thumbnail" />
     <div class="card-body">
       <p class="card-text">{{ member.userName }} - {{ member.age }}</p>
       <div class="d-flex justify-content-between align-items-center">

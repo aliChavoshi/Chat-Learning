@@ -1,206 +1,265 @@
 <div class="container" *ngIf="member">
-    <div class="main-body">
-        <div class="row gutters-sm">
-            <div class="col-md-4 mb-3 mt-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex flex-column align-items-center text-center">
-                            <img [src]="member.photoUrl" alt="Admin" class="rounded-circle" width="150" />
-                            <div class="mt-3">
-                                <h5>userName : {{ member.userName }}</h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card mt-3">
-                    <ul class="list-group list-group-flush">
-                        <li class="
-                list-group-item
-                d-flex
-                justify-content-between
-                align-items-center
-                flex-wrap
-              ">
-                            <h6 class="mb-0">
-                                <span class="fas fa-city"></span>
-                                City :
-                                {{ member.city }}
-                            </h6>
-                            <span class="text-secondary">https://bootdey.com</span>
-                        </li>
-                        <li class="
-                list-group-item
-                d-flex
-                justify-content-between
-                align-items-center
-                flex-wrap
-              ">
-                            <h6 class="mb-0">
-                                <span class="fas fa-city"></span>
-                                Country : {{ member.country }}
-                            </h6>
-                            <span class="text-secondary">bootdey</span>
-                        </li>
-                        <li class="
-                list-group-item
-                d-flex
-                justify-content-between
-                align-items-center
-                flex-wrap
-              ">
-                            <h6 class="mb-0">
-                                <span class="fas fa-user"></span>
-                                Age : {{member.age}}
-                            </h6>
-                            <span class="text-secondary">@bootdey</span>
-                        </li>
-                        <li class="
-                list-group-item
-                d-flex
-                justify-content-between
-                align-items-center
-                flex-wrap
-              ">
-                            <h6 class="mb-0">
-                                <span class="fas fa-birthday-cake"></span>
-                                dateOfBirth : {{member.dateOfBirth}}
-                            </h6>
-                            <span class="text-secondary">bootdey</span>
-                        </li>
-                        <li class="
-                list-group-item
-                d-flex
-                justify-content-between
-                align-items-center
-                flex-wrap
-              ">
-                            <h6 class="mb-0">
-                                <span class="fas fa-user"></span>
-                                Gender : {{member.gender === 0 ? 'female' : 'male'}}
-                            </h6>
-                            <span class="text-secondary">bootdey</span>
-                        </li>
-                        <li *ngIf="member?.email" class="
-                list-group-item
-                d-flex
-                justify-content-between
-                align-items-center
-                flex-wrap
-              ">
-                            <h6 class="mb-0">
-                                <span class="fas fa-mail-bulk"></span>
-                                email : {{member.email}}
-                            </h6>
-                            <span class="text-secondary">bootdey</span>
-                        </li>
-                    </ul>
-                </div>
+  <div class="main-body">
+    <div class="row gutters-sm">
+      <div class="col-md-4 mb-3 mt-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex flex-column align-items-center text-center">
+              <img
+                [src]="member.photoUrl || '/assets/images/user.png'"
+                alt="Admin"
+                class="rounded-circle"
+                width="150"
+              />
+              <div class="mt-3">
+                <h5>userName : {{ member.userName }}</h5>
+              </div>
             </div>
-            <div class="col-md-8 mt-3">
-                <div class="col-md-8">
-                    <tabset class="member-tabset card pt-2 pb-2">
-                        <tab class="mt-3 p-2" heading="About">
-                            <form [formGroup]="form" (submit)="OnSubmit()">
-                                <div class="card mb-3 ">
-                                    <div class="card-body shadow">
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">City</h6>
-                                            </div>
-                                            <div class="col-sm-9 text-secondary">
-                                                <input class="form-control" type="text" formControlName="city" />
-                                            </div>
-                                        </div>
-                                        <hr />
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">Country</h6>
-                                            </div>
-                                            <div class="col-sm-9 text-secondary">
-                                                <input class="form-control" type="text" formControlName="country" />
-                                            </div>
-                                        </div>
-                                        <hr />
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">knownAs</h6>
-                                            </div>
-                                            <div class="col-sm-9 text-secondary">
-                                                <input class="form-control" type="text" formControlName="knownAs" />
-                                            </div>
-                                        </div>
-                                        <hr />
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">dateOfBirth</h6>
-                                            </div>
-                                            <div class="col-sm-9 text-secondary">
-                                                <input readonly class="form-control" type="text"
-                                                    formControlName="dateOfBirth" />
-                                            </div>
-                                        </div>
-                                        <hr />
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">Email</h6>
-                                            </div>
-                                            <div class="col-sm-9 text-secondary">
-                                                <input class="form-control" type="text" formControlName="email" />
-                                            </div>
-                                        </div>
-                                        <hr />
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">interests</h6>
-                                            </div>
-                                            <div class="col-sm-9 text-secondary">
-                                                <input class="form-control" type="text" formControlName="interests" />
-                                            </div>
-                                        </div>
-                                        <hr />
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">lookingFor</h6>
-                                            </div>
-                                            <div class="col-sm-9 text-secondary">
-                                                <input class="form-control" type="text" formControlName="lookingFor" />
-                                            </div>
-                                        </div>
-                                        <hr />
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">introduction</h6>
-                                            </div>
-                                            <div class="col-sm-9 text-secondary">
-                                                <input class="form-control" type="text"
-                                                    formControlName="introduction" />
-                                            </div>
-                                        </div>
-                                        <div class="row" *ngIf="errors">
-                                            <div *ngFor="let item of errors"><span
-                                                    class="text text-danger">{{item}}</span></div>
-                                        </div>
-                                        <hr />
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <button [disabled]="form.invalid" type="submit"
-                                                    class="btn btn-primary">Edit
-                                                    <span *ngIf="isSubmit" class="spinner-border spinner-border-sm"
-                                                        role="status" aria-hidden="true"></span></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </tab>
-                        <tab class="mt-3 p-2" heading="Photos">
-                            <div class="album">
-                                <app-photo-edit [member]="member"></app-photo-edit>
-                            </div>
-                        </tab>
-                    </tabset>
-                </div>
-            </div>
+          </div>
         </div>
+        <div class="card mt-3">
+          <ul class="list-group list-group-flush">
+            <li
+              class="
+                list-group-item
+                d-flex
+                justify-content-between
+                align-items-center
+                flex-wrap
+              "
+            >
+              <h6 class="mb-0">
+                <span class="fas fa-city"></span>
+                City :
+                {{ member.city }}
+              </h6>
+              <span class="text-secondary">https://bootdey.com</span>
+            </li>
+            <li
+              class="
+                list-group-item
+                d-flex
+                justify-content-between
+                align-items-center
+                flex-wrap
+              "
+            >
+              <h6 class="mb-0">
+                <span class="fas fa-city"></span>
+                Country : {{ member.country }}
+              </h6>
+              <span class="text-secondary">bootdey</span>
+            </li>
+            <li
+              class="
+                list-group-item
+                d-flex
+                justify-content-between
+                align-items-center
+                flex-wrap
+              "
+            >
+              <h6 class="mb-0">
+                <span class="fas fa-user"></span>
+                Age : {{ member.age }}
+              </h6>
+              <span class="text-secondary">@bootdey</span>
+            </li>
+            <li
+              class="
+                list-group-item
+                d-flex
+                justify-content-between
+                align-items-center
+                flex-wrap
+              "
+            >
+              <h6 class="mb-0">
+                <span class="fas fa-birthday-cake"></span>
+                dateOfBirth : {{ member.dateOfBirth }}
+              </h6>
+              <span class="text-secondary">bootdey</span>
+            </li>
+            <li
+              class="
+                list-group-item
+                d-flex
+                justify-content-between
+                align-items-center
+                flex-wrap
+              "
+            >
+              <h6 class="mb-0">
+                <span class="fas fa-user"></span>
+                Gender : {{ member.gender === 0 ? "female" : "male" }}
+              </h6>
+              <span class="text-secondary">bootdey</span>
+            </li>
+            <li
+              *ngIf="member?.email"
+              class="
+                list-group-item
+                d-flex
+                justify-content-between
+                align-items-center
+                flex-wrap
+              "
+            >
+              <h6 class="mb-0">
+                <span class="fas fa-mail-bulk"></span>
+                email : {{ member.email }}
+              </h6>
+              <span class="text-secondary">bootdey</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-8 mt-3">
+        <div class="col-md-8">
+          <tabset class="member-tabset card pt-2 pb-2">
+            <tab class="mt-3 p-2" heading="About">
+              <form [formGroup]="form" (submit)="OnSubmit()">
+                <div class="card mb-3">
+                  <div class="card-body shadow">
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">City</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <input
+                          class="form-control"
+                          type="text"
+                          formControlName="city"
+                        />
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">Country</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <input
+                          class="form-control"
+                          type="text"
+                          formControlName="country"
+                        />
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">knownAs</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <input
+                          class="form-control"
+                          type="text"
+                          formControlName="knownAs"
+                        />
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">dateOfBirth</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <input
+                          readonly
+                          class="form-control"
+                          type="text"
+                          formControlName="dateOfBirth"
+                        />
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">Email</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <input
+                          class="form-control"
+                          type="text"
+                          formControlName="email"
+                        />
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">interests</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <input
+                          class="form-control"
+                          type="text"
+                          formControlName="interests"
+                        />
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">lookingFor</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <input
+                          class="form-control"
+                          type="text"
+                          formControlName="lookingFor"
+                        />
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <h6 class="mb-0">introduction</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <input
+                          class="form-control"
+                          type="text"
+                          formControlName="introduction"
+                        />
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="errors">
+                      <div *ngFor="let item of errors">
+                        <span class="text text-danger">{{ item }}</span>
+                      </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <button
+                          [disabled]="form.invalid"
+                          type="submit"
+                          class="btn btn-primary"
+                        >
+                          Edit
+                          <span
+                            *ngIf="isSubmit"
+                            class="spinner-border spinner-border-sm"
+                            role="status"
+                            aria-hidden="true"
+                          ></span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </tab>
+            <tab class="mt-3 p-2" heading="Photos">
+              <div class="album">
+                <app-photo-edit [member]="member"></app-photo-edit>
+              </div>
+            </tab>
+          </tabset>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
