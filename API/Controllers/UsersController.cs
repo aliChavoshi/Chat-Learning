@@ -86,7 +86,7 @@ namespace API.Controllers
         }
 
         [HttpPut("SetMainPhoto/{photoId}")]
-        public async Task<IActionResult> SetMainPhoto(int photoId)
+        public async Task<ActionResult<PhotoDto>> SetMainPhoto(int photoId)
         {
             var user = await _userRepository.GetUserByUserNameWithPhotos(HttpContext.User.GetUserName());
             if (user == null) return NotFound(new ApiResponse(404, "کاربری یافت نشد"));
@@ -98,7 +98,7 @@ namespace API.Controllers
             mainPhoto.IsMain = false;
             photo.IsMain = true;
             _userRepository.Update(user);
-            if (await _userRepository.SaveAllAsync()) return NoContent();
+            if (await _userRepository.SaveAllAsync()) return Ok(_mapper.Map<PhotoDto>(photo));
             return BadRequest(new ApiResponse(400));
         }
     }

@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { IMember, Photo } from 'src/app/_models/member';
 import { Component, Input, OnInit } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload';
+import { MemberService } from 'src/app/_services/member.service';
 
 @Component({
   selector: 'app-photo-edit',
@@ -20,7 +21,10 @@ export class PhotoEditComponent implements OnInit {
   hasBaseDropZoneOver: boolean;
   hasAnotherDropZoneOver: boolean;
 
-  constructor(private accountService: AccountService) {}
+  constructor(
+    private accountService: AccountService,
+    private memberService: MemberService
+  ) {}
 
   ngOnInit(): void {
     this.accountService.currentUser$
@@ -28,7 +32,7 @@ export class PhotoEditComponent implements OnInit {
       .subscribe((user) => (this.user = user));
     this.initializeUploader();
   }
-
+  //#region For upload
   initializeUploader() {
     this.uploader = new FileUploader({
       url: `${this.backendUrl}/users/add-photo`,
@@ -58,5 +62,23 @@ export class PhotoEditComponent implements OnInit {
 
   public fileOverAnother(e: any): void {
     this.hasAnotherDropZoneOver = e;
+  }
+  //#endregion
+
+  onSetMainPhoto(photoId: number) {
+    this.memberService.setMainPhoto(photoId).subscribe((photo: Photo) => {
+      //update user
+      this.user.photoUrl = photo.url;
+      this.accountService.setCurrentUser(this.user);
+      //update member
+      this.member.photoUrl = photo.url;
+      this.member.photos.forEach((item) => {
+        if (item.isMain) {
+          item.isMain = false;
+        } else if (item.id === photo.id) {
+          item.isMain = true;
+        }
+      });
+    });
   }
 }
