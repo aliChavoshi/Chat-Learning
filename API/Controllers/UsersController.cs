@@ -101,5 +101,22 @@ namespace API.Controllers
             if (await _userRepository.SaveAllAsync()) return Ok(_mapper.Map<PhotoDto>(photo));
             return BadRequest(new ApiResponse(400));
         }
+
+
+        [HttpDelete("DeletePhoto/{photoId}")]
+        public async Task<IActionResult> DeletePhoto(int photoId)
+        {
+            var user = await _userRepository.GetUserByUserNameWithPhotos(User.GetUserName());
+            if (user == null) return NotFound(new ApiResponse(404));
+            var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
+            if (photo == null) return NotFound(new ApiResponse(404));
+            if (photo.IsMain) return BadRequest(new ApiResponse(400, "شما نمیتوانید عکس پیش فرض را پاک کنید"));
+            var result = await _photoService.DeletePhotoAsync(photo.PublicId);
+            //TODO : Check image for Delete from cloudinary
+            user.Photos.Remove(photo);
+            _userRepository.Update(user);
+            if (await _userRepository.SaveAllAsync()) return Ok(_mapper.Map<PhotoDto>(photo));
+            return BadRequest(new ApiResponse(400));
+        }
     }
 }

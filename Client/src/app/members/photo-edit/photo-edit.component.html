@@ -9,7 +9,8 @@
               <button
                 type="button"
                 (click)="onSetMainPhoto(photo.id)"
-                class="btn btn-sm btn-outline-primary"
+                [class]="photo.isMain ? 'btn-primary' : 'btn-outline-primary'"
+                class="btn btn-sm"
               >
                 <i class="far fa-check-square"></i>
               </button>

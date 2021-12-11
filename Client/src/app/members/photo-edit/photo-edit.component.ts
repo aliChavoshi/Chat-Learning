@@ -32,6 +32,7 @@ export class PhotoEditComponent implements OnInit {
       .subscribe((user) => (this.user = user));
     this.initializeUploader();
   }
+
   //#region For upload
   initializeUploader() {
     this.uploader = new FileUploader({
@@ -80,5 +81,9 @@ export class PhotoEditComponent implements OnInit {
         }
       });
     });
+  }
+
+  onDeletePhoto(photoId : number){
+    
   }
 }
