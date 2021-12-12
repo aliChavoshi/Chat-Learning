@@ -9,6 +9,9 @@
                 <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
                   Sign up
                 </p>
+                {{form.value | json}}<br>
+                {{form.status | json}}<br>
+                {{form.errors | json}}
 
                 <form class="mx-1 mx-md-4" [formGroup]="form" (ngSubmit)="onSubmit()">
                   <div class="d-flex flex-row align-items-center mb-4">
@@ -34,7 +37,9 @@
                         formControlName="passwordConfirm" />
                     </div>
                   </div>
-
+                  <ng-container *ngIf="form.errors">
+                    <span *ngIf="form.errors.matchPassword">Password no Match</span>
+                  </ng-container>
                   <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                     <button [disabled]="form.invalid" type="button" (click)="onSubmit()"
                       class="btn btn-primary btn-sm m-1">

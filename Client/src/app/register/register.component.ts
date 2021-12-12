@@ -37,7 +37,7 @@ export class RegisterComponent implements OnInit {
         Validators.maxLength(20),
       ]),
     },
-    { validators: [this.matchPassword.validate.bind(this)] }
+    { validators: [this.matchPassword.validate.bind(this.matchPassword)] }
   );
 
   ngOnInit(): void {}
