@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -76,6 +77,13 @@ namespace API.Controllers
                 Token = _tokenService.CreateToken(user),
                 PhotoUrl = user?.Photos?.FirstOrDefault(x => x.IsMain)?.Url
             });
+        }
+
+
+        [HttpGet("IsExistUserName/{userName}")]
+        public async Task<ActionResult<bool>> IsExistUserName(string userName)
+        {
+            return await _accountRepository.IsExistUserName(userName);
         }
     }
 }

@@ -4,6 +4,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { MatchPasswordService } from '../_validators/match-password.service';
+import { UniqueUserNameService } from '../_validators/unique-user-name.service';
 
 @Component({
   selector: 'app-register',
@@ -16,16 +17,21 @@ export class RegisterComponent implements OnInit {
     private accountService: AccountService,
     private router: Router,
     private toast: ToastrService,
-    private matchPassword: MatchPasswordService
+    private matchPassword: MatchPasswordService,
+    private uniqUserName: UniqueUserNameService
   ) {}
 
   form = new FormGroup(
     {
-      userName: new FormControl('', [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(50),
-      ]),
+      userName: new FormControl(
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(50),
+        ],
+        [this.uniqUserName.validate.bind(this.uniqUserName)]
+      ),
       password: new FormControl('', [
         Validators.required,
         Validators.minLength(5),

@@ -38,6 +38,10 @@ export class AccountService {
       );
   }
 
+  isExistUserName(userName: string) {
+    
+  }
+
   setCurrentUser(user: User) {
     if (user) {
       localStorage.setItem('user', JSON.stringify(user));
