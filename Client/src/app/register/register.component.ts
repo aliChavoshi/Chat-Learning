@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { MatchPasswordService } from '../_validators/match-password.service';
 
 @Component({
   selector: 'app-register',
@@ -14,26 +15,30 @@ export class RegisterComponent implements OnInit {
   constructor(
     private accountService: AccountService,
     private router: Router,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private matchPassword: MatchPasswordService
   ) {}
 
-  form = new FormGroup({
-    userName: new FormControl('', [
-      Validators.required,
-      Validators.minLength(3),
-      Validators.maxLength(50),
-    ]),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(5),
-      Validators.maxLength(20),
-    ]),
-    passwordConfirm: new FormControl('', [
-      Validators.required,
-      Validators.minLength(5),
-      Validators.maxLength(20),
-    ]),
-  });
+  form = new FormGroup(
+    {
+      userName: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(50),
+      ]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(20),
+      ]),
+      passwordConfirm: new FormControl('', [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(20),
+      ]),
+    },
+    { validators: [this.matchPassword.validate.bind(this)] }
+  );
 
   ngOnInit(): void {}
 
