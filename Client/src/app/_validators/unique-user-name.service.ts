@@ -1,10 +1,16 @@
+import { map, catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import {
   AbstractControl,
   AsyncValidator,
   ValidationErrors,
 } from '@angular/forms';
-import { Observable } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  Observable,
+  switchMap,
+} from 'rxjs';
 import { AccountService } from '../_services/account.service';
 
 @Injectable({
@@ -16,6 +22,19 @@ export class UniqueUserNameService implements AsyncValidator {
   validate(
     control: AbstractControl
   ): Promise<ValidationErrors> | Observable<ValidationErrors> {
-    throw new Error('Method not implemented.');
+    return control.valueChanges.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap((value) => {
+        return this.accountService.isExistUserName(value);
+      }),
+      map((response) => {
+        if (!!response) control.setErrors({ uniqueUsername: true });
+        return null;
+      }),
+      catchError((error) => {
+        return null;
+      })
+    );
   }
 }

@@ -39,7 +39,9 @@ export class AccountService {
   }
 
   isExistUserName(userName: string) {
-    
+    return this.http.get<boolean>(
+      `${this.baseUrl}/account/isExistUsername/${userName}`
+    );
   }
 
   setCurrentUser(user: User) {

@@ -10,6 +10,7 @@
                   Sign up
                 </p>
                 {{form.value | json}}<br>
+                {{form.controls?.userName?.errors | json}}<br>
                 {{form.status | json}}<br>
                 {{form.errors | json}}
 
