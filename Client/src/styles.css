@@ -3,3 +3,4 @@
 @import "ngx-toastr/toastr.css";
 @import "bootswatch/dist/zephyr/bootstrap.min.css";
 @import "./styles/_base.css";
+@import "../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css"

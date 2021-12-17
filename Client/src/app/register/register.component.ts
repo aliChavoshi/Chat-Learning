@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { MatchPasswordService } from '../_validators/match-password.service';
 import { UniqueUserNameService } from '../_validators/unique-user-name.service';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 
 @Component({
   selector: 'app-register',
@@ -13,13 +14,19 @@ import { UniqueUserNameService } from '../_validators/unique-user-name.service';
 })
 export class RegisterComponent implements OnInit {
   @Output() close = new EventEmitter();
+  bsConfig: Partial<BsDatepickerConfig>;
+  maxDate: Date = new Date(); // 2021
+
   constructor(
     private accountService: AccountService,
     private router: Router,
     private toast: ToastrService,
     private matchPassword: MatchPasswordService,
     private uniqUserName: UniqueUserNameService
-  ) {}
+  ) {
+    this.configDate();
+  }
+  ngOnInit(): void {}
 
   form = new FormGroup(
     {
@@ -42,29 +49,26 @@ export class RegisterComponent implements OnInit {
         Validators.minLength(5),
         Validators.maxLength(20),
       ]),
-      dateOfBirth: new FormControl('', [Validators.required]),
-      gender: new FormControl(0, [Validators.required]), //radio select option
       knownAs: new FormControl('', [
         Validators.required,
         Validators.minLength(3),
-        Validators.maxLength(10),
+        Validators.maxLength(20),
       ]),
       city: new FormControl('', [
         Validators.required,
         Validators.minLength(3),
-        Validators.maxLength(10),
+        Validators.maxLength(20),
       ]),
       country: new FormControl('', [
         Validators.required,
         Validators.minLength(3),
-        Validators.maxLength(10),
+        Validators.maxLength(20),
       ]),
+      dateOfBirth: new FormControl('', [Validators.required]),
+      gender: new FormControl('0', [Validators.required]), //radio select option
     },
     { validators: [this.matchPassword.validate.bind(this.matchPassword)] }
   );
-
-  ngOnInit(): void {}
-
   onSubmit() {
     this.accountService.register(this.form.value).subscribe((user) => {
       this.router.navigateByUrl('/members');
@@ -74,7 +78,6 @@ export class RegisterComponent implements OnInit {
   cancel() {
     this.close.emit();
   }
-
   showValidatorForMatchPassword() {
     return (
       this.form.dirty &&
@@ -84,5 +87,17 @@ export class RegisterComponent implements OnInit {
       this.form.get('passwordConfirm').dirty &&
       this.form.errors
     );
+  }
+
+  private configDate() {
+    this.bsConfig = Object.assign(
+      {},
+      {
+        containerClass: 'theme-dark-blue',
+        dateInputFormat: 'DD/MM/YYYY',
+        Animation: 'true',
+      }
+    );
+    this.maxDate.setFullYear(this.maxDate.getFullYear() - 18); //2021-18 = 2003
   }
 }

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 //ngx-bootstrap
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 //ngx-toast
 import { ToastrModule } from 'ngx-toastr';
 //tabs
@@ -19,6 +20,7 @@ import { FileUploadModule } from 'ng2-file-upload';
     CommonModule,
     //ngx-bootstrap
     BsDropdownModule.forRoot(),
+    BsDatepickerModule.forRoot(),
     //ngx-toastr
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
@@ -37,6 +39,7 @@ import { FileUploadModule } from 'ng2-file-upload';
   exports: [
     //ngx-bootstrap
     BsDropdownModule,
+    BsDatepickerModule,
     //ngx-toastr
     ToastrModule,
     TabsModule,
