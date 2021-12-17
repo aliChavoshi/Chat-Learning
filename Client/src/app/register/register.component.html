@@ -9,15 +9,12 @@
                 <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
                   Sign up
                 </p>
-                {{ form.value | json }}<br />
-                {{ form.controls?.userName?.errors | json }}<br />
-                {{ form.status | json }}<br />
-                {{ form.errors | json }}
                 <form
                   class="mx-1 mx-md-4"
                   [formGroup]="form"
                   (ngSubmit)="onSubmit()"
                 >
+                  <!-- userName -->
                   <div class="d-flex flex-row align-items-center mb-4">
                     <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                     <div class="form-outline flex-fill mb-0">
@@ -33,44 +30,49 @@
                         class="form-control"
                         formControlName="userName"
                       />
+                      <ng-container
+                        *ngIf="
+                          form.get('userName').hasError &&
+                          form.get('userName').dirty &&
+                          form.get('userName').touched &&
+                          form.get('userName').invalid
+                        "
+                      >
+                        <div
+                          class="text-danger"
+                          *ngIf="form.get('userName').errors.required"
+                        >
+                          Username is required
+                        </div>
+                        <div
+                          class="text-danger"
+                          *ngIf="form.get('userName').errors.minlength"
+                        >
+                          Username must be at least
+                          {{
+                            form.get("userName").errors.minlength.requiredLength
+                          }}
+                          characters
+                          {{
+                            form.get("userName").errors.minlength.actualLength
+                          }}
+                        </div>
+                        <div
+                          class="text-danger"
+                          *ngIf="form.get('userName').errors.maxlength"
+                        >
+                          Username must be less than 50 characters
+                        </div>
+                        <div
+                          class="text-danger"
+                          *ngIf="form.get('userName').errors.uniqueUsername"
+                        >
+                          Username is already taken
+                        </div>
+                      </ng-container>
                     </div>
                   </div>
-                  <div
-                    *ngIf="
-                      form.hasError &&
-                      form.dirty &&
-                      form.touched &&
-                      form.invalid
-                    "
-                  >
-                    <div
-                      class="text-danger"
-                      *ngIf="form.get('userName').errors.required"
-                    >
-                      Username is required
-                    </div>
-                    <div
-                      class="text-danger"
-                      *ngIf="form.get('userName').errors.minlength"
-                    >
-                      Username must be at least
-                      {{ form.get("userName").errors.minlength.requiredLength }}
-                      characters
-                      {{ form.get("userName").errors.minlength.actualLength }}
-                    </div>
-                    <div
-                      class="text-danger"
-                      *ngIf="form.get('userName').errors.maxlength"
-                    >
-                      Username must be less than 50 characters
-                    </div>
-                    <div
-                      class="text-danger"
-                      *ngIf="form.get('userName').errors.uniqueUsername"
-                    >
-                      Username is already taken
-                    </div>
-                  </div>
+                  <!-- Password -->
                   <div class="d-flex flex-row align-items-center mb-4">
                     <i class="fas fa-key fa-lg me-3 fa-fw"></i>
                     <div class="form-outline flex-fill mb-0">
@@ -80,9 +82,43 @@
                         class="form-control"
                         formControlName="password"
                       />
+                      <ng-container
+                        *ngIf="
+                          form.get('password').hasError &&
+                          form.get('password').dirty &&
+                          form.get('password').touched &&
+                          form.get('password').invalid
+                        "
+                      >
+                        <div
+                          class="text-danger"
+                          *ngIf="form.get('password').errors.required"
+                        >
+                          password is required
+                        </div>
+                        <div
+                          class="text-danger"
+                          *ngIf="form.get('password').errors.minlength"
+                        >
+                          password must be at least
+                          {{
+                            form.get("password").errors.minlength.requiredLength
+                          }}
+                          characters
+                          {{
+                            form.get("password").errors.minlength.actualLength
+                          }}
+                        </div>
+                        <div
+                          class="text-danger"
+                          *ngIf="form.get('password').errors.maxlength"
+                        >
+                          password must be less than 50 characters
+                        </div>
+                      </ng-container>
                     </div>
                   </div>
-
+                  <!-- Password Confirm -->
                   <div class="d-flex flex-row align-items-center mb-4">
                     <i class="fas fa-key fa-lg me-3 fa-fw"></i>
                     <div class="form-outline flex-fill mb-0">
@@ -92,13 +128,52 @@
                         class="form-control"
                         formControlName="passwordConfirm"
                       />
+                      <ng-container
+                        *ngIf="
+                          form.get('passwordConfirm').hasError &&
+                          form.get('passwordConfirm').dirty &&
+                          form.get('passwordConfirm').touched &&
+                          form.get('passwordConfirm').invalid
+                        "
+                      >
+                        <div
+                          class="text-danger"
+                          *ngIf="form.get('passwordConfirm').errors.required"
+                        >
+                          Password Confirm is required
+                        </div>
+                        <div
+                          class="text-danger"
+                          *ngIf="form.get('passwordConfirm').errors.minlength"
+                        >
+                          Password Confirm must be at least
+                          {{
+                            form.get("passwordConfirm").errors.minlength
+                              .requiredLength
+                          }}
+                          characters
+                          {{
+                            form.get("passwordConfirm").errors.minlength
+                              .actualLength
+                          }}
+                        </div>
+                        <div
+                          class="text-danger"
+                          *ngIf="form.get('passwordConfirm').errors.maxlength"
+                        >
+                          Password Confirm must be less than 50 characters
+                        </div>
+                      </ng-container>
+                      <!-- Validator Form -->
+                      <div
+                        class="text-danger"
+                        *ngIf="showValidatorForMatchPassword()"
+                      >
+                        Password Confirm must match password
+                      </div>
                     </div>
                   </div>
-                  <ng-container *ngIf="form.errors">
-                    <span *ngIf="form.errors.matchPassword"
-                      >Password no Match</span
-                    >
-                  </ng-container>
+                  <!-- Submit -->
                   <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                     <button
                       [disabled]="form.invalid"

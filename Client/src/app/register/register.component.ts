@@ -57,4 +57,15 @@ export class RegisterComponent implements OnInit {
   cancel() {
     this.close.emit();
   }
+
+  showValidatorForMatchPassword() {
+    return (
+      this.form.dirty &&
+      this.form.get('password').touched &&
+      this.form.get('passwordConfirm').touched &&
+      this.form.get('password').dirty &&
+      this.form.get('passwordConfirm').dirty &&
+      this.form.errors
+    );
+  }
 }

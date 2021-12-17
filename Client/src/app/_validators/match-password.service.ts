@@ -14,8 +14,6 @@ export class MatchPasswordService implements Validator {
   constructor() {}
 
   validate(formGroup: FormGroup): ValidationErrors {
-    console.log(formGroup);
-
     const { password, passwordConfirm } = formGroup.value;
     if (password === passwordConfirm) {
       return null;
