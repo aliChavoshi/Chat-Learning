@@ -10,18 +10,21 @@ using API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 namespace API.Controllers
 {
     public class AccountController : BaseApiController
     {
         private readonly ITokenService _tokenService;
+        private readonly IMapper _mapper;
         private readonly IAccountRepository _accountRepository;
 
-        public AccountController(ITokenService tokenService, IAccountRepository accountRepository)
+        public AccountController(ITokenService tokenService, IAccountRepository accountRepository, IMapper mapper)
         {
             _tokenService = tokenService;
             _accountRepository = accountRepository;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -32,23 +35,20 @@ namespace API.Controllers
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<UserTokenDto>> Register(RegisterDto model)
         {
-            if (await _accountRepository.IsExistUserName(model.userName))
-                return BadRequest(new ApiResponse(400, model.userName + "یافت نشد"));
+            if (await _accountRepository.IsExistUserName(model.UserName))
+                return BadRequest(new ApiResponse(400, model.UserName + "یافت نشد"));
 
             using var hmac = new HMACSHA512();
-            var user = new Users
-            {
-                UserName = model.userName,
-                PasswordSalt = hmac.Key,
-                PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(model.Password)),
-            };
-            await _accountRepository.AddUser(user);
+            var userEntity = _mapper.Map<Users>(model);
+            userEntity.PasswordSalt = hmac.Key;
+            userEntity.PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(model.Password));
+            await _accountRepository.AddUser(userEntity);
             if (await _accountRepository.SaveChangeAsync())
             {
                 return Ok(new UserTokenDto
                 {
-                    userName = user.UserName,
-                    Token = _tokenService.CreateToken(user)
+                    userName = userEntity.UserName,
+                    Token = _tokenService.CreateToken(userEntity)
                 });
             }
             return BadRequest(new ApiResponse(400, "خطا در ثبت اطلاعات"));

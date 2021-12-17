@@ -42,6 +42,23 @@ export class RegisterComponent implements OnInit {
         Validators.minLength(5),
         Validators.maxLength(20),
       ]),
+      dateOfBirth: new FormControl('', [Validators.required]),
+      gender: new FormControl(0, [Validators.required]), //radio select option
+      knownAs: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(10),
+      ]),
+      city: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(10),
+      ]),
+      country: new FormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(10),
+      ]),
     },
     { validators: [this.matchPassword.validate.bind(this.matchPassword)] }
   );

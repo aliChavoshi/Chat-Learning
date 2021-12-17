@@ -5,6 +5,11 @@ export interface IRequestLogin {
 export interface IRequestRegister {
   userName: string;
   password: string;
+  gender: number;
+  dateOfBirth: string;
+  knownAs: string;
+  city: string;
+  country: string;
 }
 export interface User {
   userName: string;
