@@ -11,10 +11,11 @@ using Microsoft.AspNetCore.Mvc;
 using API.extensions;
 using Microsoft.AspNetCore.Http;
 using API.Entities;
+using API.Helpers;
 
 namespace API.Controllers
 {
-    [Authorize]
+    // [Authorize]
     public class UsersController : BaseApiController
     {
         private readonly IUserRepository _userRepository;
@@ -28,9 +29,11 @@ namespace API.Controllers
         }
 
         [HttpGet("GetAllUsers")]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers(UserParams userParams)
+        public async Task<ActionResult<PagedList<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
         {
-            return Ok(await _userRepository.GetAllUsersMemberDto());
+            var users = await _userRepository.GetAllUsersMemberDto(userParams);
+            Response.AddPaginationHeader(users.CurrentPage, itemsPerPage: users.PageSize, totalItems: users.TotalCount, totalPages: users.TotalPage);
+            return Ok(users);
         }
 
         [HttpGet("getUserById/{id:int}")]
