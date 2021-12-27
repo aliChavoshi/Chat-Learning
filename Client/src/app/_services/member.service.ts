@@ -1,7 +1,8 @@
+import { PaginatedResult } from './../_models/pagination';
 import { IMember, IMemberUpdate, Photo } from './../_models/member';
 import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 @Injectable({
@@ -10,16 +11,27 @@ import { map, tap } from 'rxjs/operators';
 export class MemberService {
   private baseUrl = environment.baseUrl;
   private members: IMember[] = [];
+  paginationResult: PaginatedResult<IMember[]> = new PaginatedResult<
+    IMember[]
+  >();
 
   constructor(private http: HttpClient) {}
 
-  getMembers() {
-    if (this.members.length > 0) return of(this.members);
-    return this.http.get<IMember[]>(`${this.baseUrl}/users/getAllUsers`).pipe(
-      tap((members) => {
-        this.members = members;
-      })
-    );
+  getMembers(pageNumber?: number, pageSize?: number) {
+    // if (this.members.length > 0) return of(this.members);
+    let params = new HttpParams();
+    if (pageNumber !== null && pageSize !== null) {
+      params = params.append('pageNumber', pageNumber.toString());
+      params = params.append('pageSize', pageSize.toString());
+    }
+    return this.http
+      .get<IMember[]>(`${this.baseUrl}/users/getAllUsers`, { params })
+      .pipe(
+        map((response) => {
+          this.members = response;
+          return response;
+        })
+      );
   }
   getMemberByUsername(userName: string) {
     const member = this.members.find((x) => x.userName === userName);

@@ -30,7 +30,8 @@ namespace API.services
         public async Task<PagedList<MemberDto>> GetAllUsersMemberDto(UserParams userParams)
         {
             var query = _context.Users.ProjectTo<MemberDto>(_mapper.ConfigurationProvider);
-            return await PagedList<MemberDto>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
+            var items = await PagedList<MemberDto>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
+            return items;
         }
 
         public async Task<MemberDto> GetMemberDtoById(int userId)
