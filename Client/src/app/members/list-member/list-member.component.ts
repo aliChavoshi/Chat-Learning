@@ -1,8 +1,7 @@
 import { IMember } from './../../_models/member';
 import { Component, OnInit } from '@angular/core';
 import { MemberService } from 'src/app/_services/member.service';
-import { Observable } from 'rxjs';
-import { IPagination } from 'src/app/_models/pagination';
+import { PaginatedResult } from 'src/app/_models/pagination';
 
 @Component({
   selector: 'app-list-member',
@@ -10,19 +9,24 @@ import { IPagination } from 'src/app/_models/pagination';
   styleUrls: ['./list-member.component.css'],
 })
 export class ListMemberComponent implements OnInit {
-  members: IMember[] = [];
-  pagination: IPagination;
+  result: PaginatedResult<IMember[]>;
   pageNumber = 1;
   pageSize = 6;
 
   constructor(private memberService: MemberService) {}
 
   ngOnInit(): void {
+    this.loadMembers();
+  }
+  pageChanged(event: any): void {
+    this.pageNumber = event.page;
+    this.loadMembers();
+  }
+  private loadMembers() {
     this.memberService
       .getMembers(this.pageNumber, this.pageSize)
       .subscribe((response) => {
-        this.members = response.items;
-        this.pagination = response.pagination;
+        this.result = response;
       });
   }
 }

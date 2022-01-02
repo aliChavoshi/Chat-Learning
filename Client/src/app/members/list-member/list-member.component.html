@@ -1,7 +1,14 @@
 <div class="album py-5">
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-5 g-3">
-    <ng-container *ngFor="let member of members">
+    <ng-container *ngFor="let member of result?.items">
       <app-card-member [member]="member"></app-card-member>
     </ng-container>
   </div>
+  <ng-container *ngIf="result">
+    <div class="d-flex justify-content-center mt-3">
+      <pagination [totalItems]="result.totalCount"
+       [(ngModel)]="result.currentPage" (pageChanged)="pageChanged($event)">
+      </pagination>
+    </div>
+  </ng-container>
 </div>

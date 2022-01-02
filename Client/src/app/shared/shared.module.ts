@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 //ngx-bootstrap
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 //ngx-toast
 import { ToastrModule } from 'ngx-toastr';
 //tabs
@@ -21,6 +22,7 @@ import { FileUploadModule } from 'ng2-file-upload';
     //ngx-bootstrap
     BsDropdownModule.forRoot(),
     BsDatepickerModule.forRoot(),
+    PaginationModule.forRoot(),
     //ngx-toastr
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
@@ -40,6 +42,7 @@ import { FileUploadModule } from 'ng2-file-upload';
     //ngx-bootstrap
     BsDropdownModule,
     BsDatepickerModule,
+    PaginationModule,
     //ngx-toastr
     ToastrModule,
     TabsModule,

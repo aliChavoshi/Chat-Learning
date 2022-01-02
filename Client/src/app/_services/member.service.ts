@@ -11,16 +11,13 @@ import { map } from 'rxjs/operators';
 export class MemberService {
   private baseUrl = environment.baseUrl;
   private members: IMember[] = [];
-  private paginationResult: PaginatedResult<IMember[]> = new PaginatedResult<
+  paginationResult: PaginatedResult<IMember[]> = new PaginatedResult<
     IMember[]
   >();
 
   constructor(private http: HttpClient) {}
 
-  getMembers(
-    pageNumber: number,
-    pageSize: number
-  ): Observable<PaginatedResult<IMember[]>> {
+  getMembers(pageNumber: number, pageSize: number) {
     // if (this.members.length > 0) return of(this.members);
     let params = new HttpParams();
     if (pageNumber !== null && pageSize !== null) {
