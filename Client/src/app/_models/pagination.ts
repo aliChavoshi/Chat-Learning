@@ -1,17 +1,10 @@
-export interface PaginationHeader {
-  currentPage: number;
-  itemsPerPage: number;
-  totalItems: number;
-  totalPages: number;
-}
-export interface PaginationBody {
+export interface IPagination {
   currentPage: number;
   totalPage: number;
   pageSize: number;
   totalCount: number;
 }
 export class PaginatedResult<T> {
-  result: T;
-  paginationBody: PaginationBody;
-  paginationHeader?: PaginationHeader;
+  items: T;
+  pagination: IPagination;
 }
