@@ -15,7 +15,7 @@ using API.Helpers;
 
 namespace API.Controllers
 {
-    // [Authorize]
+    [Authorize]
     public class UsersController : BaseApiController
     {
         private readonly IUserRepository _userRepository;
@@ -31,8 +31,9 @@ namespace API.Controllers
         [HttpGet("GetAllUsers")]
         public async Task<ActionResult<PagedList<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
         {
+            userParams.currentUserName = User.GetUserName();
             var users = await _userRepository.GetAllUsersMemberDto(userParams);
-            Response.AddPaginationHeader(users.CurrentPage, itemsPerPage: users.PageSize, totalItems: users.TotalCount, totalPages: users.TotalPage);
+            // Response.AddPaginationHeader(users.CurrentPage, itemsPerPage: users.PageSize, totalItems: users.TotalCount, totalPages: users.TotalPage);
             return Ok(users);
         }
 

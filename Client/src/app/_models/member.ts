@@ -12,7 +12,7 @@ export interface IMember {
   gender: number; // 0 : female || 1 : male
   age: number;
   lastActive: string;
-  dateOfBirth: string;
+  dateOfBirth: Date;
   created: string;
   photos: Photo[];
 }

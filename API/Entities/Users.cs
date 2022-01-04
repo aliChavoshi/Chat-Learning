@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using API.Enums;
 using API.extensions;
 
 namespace API.Entities
@@ -10,7 +11,7 @@ namespace API.Entities
     {
         [Key]
         public int Id { get; set; }
-        public int Gender { get; set; }
+        public GenderEnum Gender { get; set; }
         public string UserName { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
