@@ -1,75 +1,118 @@
 <div class="album py-5">
-  <div class="row">
-    <div class="col-md-4">
-      <div class="input-group mb-3">
-        <span class="input-group-text">min Age</span>
-        <input
-          value="18"
-          min="18"
-          type="number"
-          class="form-control"
-          placeholder="min age"
-        />
+  <!-- filters -->
+  <form #form="ngForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text">min Age</span>
+          <input
+            value="18"
+            min="18"
+            name="minAge"
+            [(ngModel)]="userParams.minAge"
+            type="number"
+            class="form-control"
+            placeholder="min age"
+          />
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text">max Age</span>
+          <input
+            value="150"
+            max="150"
+            name="maxAge"
+            [(ngModel)]="userParams.maxAge"
+            type="number"
+            class="form-control"
+            placeholder="max age"
+          />
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text">gender</span>
+          <select
+            [(ngModel)]="userParams.gender"
+            name="gender"
+            class="form-control"
+          >
+            <ng-container *ngFor="let gender of genders | showEnum">
+              <option [value]="gender?.key">{{ gender?.value }}</option>
+            </ng-container>
+          </select>
+        </div>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="input-group mb-3">
-        <span class="input-group-text">max Age</span>
-        <input
-          value="150"
-          max="150"
-          type="number"
-          class="form-control"
-          placeholder="max age"
-        />
+    <div class="row">
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text">order By</span>
+          <select
+            [(ngModel)]="userParams.orderBy"
+            name="orderBy"
+            class="form-control"
+          >
+            <ng-container *ngFor="let order of orderBy | showEnum">
+              <option [value]="order?.key">{{ order.value }}</option>
+            </ng-container>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text">type Sort</span>
+          <select
+            [(ngModel)]="userParams.typeSort"
+            name="typeSort"
+            class="form-control"
+          >
+            <ng-container *ngFor="let type of typeSort | showEnum">
+              <option [value]="type?.key">
+                {{ type.value }}
+              </option>
+            </ng-container>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text">page Size</span>
+          <select
+            [(ngModel)]="userParams.pageSize"
+            name="pageSize"
+            class="form-control"
+          >
+            <option value="8">8</option>
+            <option value="15">15</option>
+            <option value="30">30</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="input-group mb-3">
-        <span class="input-group-text">gender</span>
-        <select class="form-control">
-          <ng-container *ngFor="let gender of genders | keyvalue">
-            <option [value]="gender?.key">{{ gender.value }}</option>
-          </ng-container>
-        </select>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text">search</span>
+          <input type="text" class="form-control" placeholder="search" />
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="input-group mb-3">
+          <button class="btn btn-primary" type="submit">
+            <span class="fas fa-search"></span> search
+          </button>
+          <button class="btn btn-danger">
+            <span class="fas fa-trash"></span> clear
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-4">
-      <div class="input-group mb-3">
-        <span class="input-group-text">order By</span>
-        <select class="form-control">
-          <ng-container *ngFor="let order of orderBy | keyvalue">
-            <option [value]="order?.key">{{ order.value }}</option>
-          </ng-container>
-        </select>
-      </div>
-    </div>
-    {{ typeSort | json }}
-    <div class="col-md-4">
-      <div class="input-group mb-3">
-        <span class="input-group-text">type Sort</span>
-        <select class="form-control">
-          <ng-container *ngFor="let type of typeSort | keyvalue; let i = index">
-            <option [value]="type?.key">{{ type.value }}</option>
-          </ng-container>
-        </select>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="input-group mb-3">
-        <span class="input-group-text">page Size</span>
-        <select class="form-control">
-          <option value="8">8</option>
-          <option value="15">15</option>
-          <option value="30">30</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
-        </select>
-      </div>
-    </div>
-  </div>
+  </form>
+  <!-- end filters -->
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-5 g-3">
     <ng-container *ngFor="let member of result?.items">
       <app-card-member [member]="member"></app-card-member>

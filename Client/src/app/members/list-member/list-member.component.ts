@@ -36,4 +36,7 @@ export class ListMemberComponent implements OnInit {
       this.result = response;
     });
   }
+  onSubmit() {
+    this.loadMembers();
+  }
 }

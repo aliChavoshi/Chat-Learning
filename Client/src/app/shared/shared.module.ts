@@ -15,8 +15,10 @@ import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { NgxSpinnerModule } from 'ngx-spinner';
 //file uploader
 import { FileUploadModule } from 'ng2-file-upload';
+//pipes
+import { ShowEnumPipe } from './_pipes/show-enum.pipe';
 @NgModule({
-  declarations: [],
+  declarations: [ShowEnumPipe],
   imports: [
     CommonModule,
     //ngx-bootstrap
@@ -51,6 +53,8 @@ import { FileUploadModule } from 'ng2-file-upload';
     NgxSpinnerModule,
     //file uploader
     FileUploadModule,
+    //pipes
+    ShowEnumPipe,
   ],
 })
 export class SharedModule {}
