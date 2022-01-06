@@ -36,8 +36,19 @@ export class UserParams {
   minAge = 18;
   maxAge = 150;
   pageSize = 8;
+  orderBy = OrderBy.age;
+  typeSort = TypeSort.desc;
 }
 export enum Gender {
   female,
   male,
+}
+export enum OrderBy {
+  lastActive,
+  created,
+  age,
+}
+export enum TypeSort {
+  asc,
+  desc,
 }

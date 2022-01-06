@@ -6,8 +6,11 @@
   </div>
   <ng-container *ngIf="result">
     <div class="d-flex justify-content-center mt-3">
-      <pagination [totalItems]="result.totalCount"
-       [(ngModel)]="result.currentPage" (pageChanged)="pageChanged($event)">
+      <pagination
+        [totalItems]="result.totalCount"
+        [(ngModel)]="result.currentPage"
+        (pageChanged)="pageChanged($event)"
+      >
       </pagination>
     </div>
   </ng-container>

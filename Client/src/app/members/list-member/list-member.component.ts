@@ -11,8 +11,6 @@ import { PaginatedResult } from 'src/app/_models/pagination';
 export class ListMemberComponent implements OnInit {
   result: PaginatedResult<IMember[]>;
   userParams = new UserParams();
-  pageNumber = 1;
-  pageSize = 6;
 
   constructor(private memberService: MemberService) {}
 
@@ -20,7 +18,7 @@ export class ListMemberComponent implements OnInit {
     this.loadMembers();
   }
   pageChanged(event: any): void {
-    this.pageNumber = event.page;
+    this.userParams.pageNumber = event.page;
     this.loadMembers();
   }
   private loadMembers() {
