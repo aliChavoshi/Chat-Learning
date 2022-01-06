@@ -6,7 +6,8 @@
 		<DocumentationFile>D:\Angular Record\Chat\Dating-App\API\API.xml</DocumentationFile>
 	</PropertyGroup> -->
 	<ItemGroup>
-		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+		<PackageReference Include="AutoMapper" Version="11.0.0" />
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
 		<PackageReference Include="CloudinaryDotNet" Version="1.15.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.11" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.11" />

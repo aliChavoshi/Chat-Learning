@@ -30,3 +30,14 @@ export interface Photo {
   url: string;
   isMain: boolean;
 }
+export class UserParams {
+  pageNumber = 1;
+  gender = Gender.female;
+  minAge = 18;
+  maxAge = 150;
+  pageSize = 8;
+}
+export enum Gender {
+  female,
+  male,
+}

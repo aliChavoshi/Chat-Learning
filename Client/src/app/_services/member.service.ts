@@ -1,5 +1,5 @@
 import { PaginatedResult } from './../_models/pagination';
-import { IMember, IMemberUpdate, Photo } from './../_models/member';
+import { IMember, IMemberUpdate, Photo, UserParams } from './../_models/member';
 import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -17,12 +17,15 @@ export class MemberService {
 
   constructor(private http: HttpClient) {}
 
-  getMembers(pageNumber: number, pageSize: number) {
+  getMembers(userParams: UserParams) {
     // if (this.members.length > 0) return of(this.members);
     let params = new HttpParams();
-    if (pageNumber !== null && pageSize !== null) {
-      params = params.append('pageNumber', pageNumber.toString());
-      params = params.append('pageSize', pageSize.toString());
+    if (userParams.pageNumber !== null && userParams.pageSize !== null) {
+      params = params.append('pageNumber', userParams.pageNumber.toString());
+      params = params.append('pageSize', userParams.pageSize.toString());
+      params = params.append('minAge', userParams.minAge.toString());
+      params = params.append('maxAge', userParams.maxAge.toString());
+      params = params.append('gender', userParams.gender.toString());
     }
     return this.http
       .get<PaginatedResult<IMember[]>>(`${this.baseUrl}/users/getAllUsers`, {

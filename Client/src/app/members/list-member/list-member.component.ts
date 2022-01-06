@@ -1,4 +1,4 @@
-import { IMember } from './../../_models/member';
+import { Gender, IMember, UserParams } from './../../_models/member';
 import { Component, OnInit } from '@angular/core';
 import { MemberService } from 'src/app/_services/member.service';
 import { PaginatedResult } from 'src/app/_models/pagination';
@@ -10,6 +10,7 @@ import { PaginatedResult } from 'src/app/_models/pagination';
 })
 export class ListMemberComponent implements OnInit {
   result: PaginatedResult<IMember[]>;
+  userParams = new UserParams();
   pageNumber = 1;
   pageSize = 6;
 
@@ -23,10 +24,8 @@ export class ListMemberComponent implements OnInit {
     this.loadMembers();
   }
   private loadMembers() {
-    this.memberService
-      .getMembers(this.pageNumber, this.pageSize)
-      .subscribe((response) => {
-        this.result = response;
-      });
+    this.memberService.getMembers(this.userParams).subscribe((response) => {
+      this.result = response;
+    });
   }
 }
