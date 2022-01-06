@@ -17,6 +17,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { FileUploadModule } from 'ng2-file-upload';
 //pipes
 import { ShowEnumPipe } from './_pipes/show-enum.pipe';
+//timeage
+import { TimeagoModule } from 'ngx-timeago';
 @NgModule({
   declarations: [ShowEnumPipe],
   imports: [
@@ -39,6 +41,8 @@ import { ShowEnumPipe } from './_pipes/show-enum.pipe';
     NgxSpinnerModule,
     //file uploader
     FileUploadModule,
+    //timeage
+    TimeagoModule.forRoot(),
   ],
   exports: [
     //ngx-bootstrap
@@ -55,6 +59,7 @@ import { ShowEnumPipe } from './_pipes/show-enum.pipe';
     FileUploadModule,
     //pipes
     ShowEnumPipe,
+    TimeagoModule,
   ],
 })
 export class SharedModule {}
