@@ -32,10 +32,10 @@ export interface Photo {
 }
 export class UserParams {
   pageNumber = 1;
-  gender = Gender.female;
+  pageSize = 8;
   minAge = 18;
   maxAge = 150;
-  pageSize = 8;
+  gender = Gender.female;
   orderBy = OrderBy.age;
   typeSort = TypeSort.desc;
 }

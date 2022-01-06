@@ -1,4 +1,10 @@
-import { Gender, IMember, UserParams } from './../../_models/member';
+import {
+  Gender,
+  IMember,
+  UserParams,
+  OrderBy,
+  TypeSort,
+} from './../../_models/member';
 import { Component, OnInit } from '@angular/core';
 import { MemberService } from 'src/app/_services/member.service';
 import { PaginatedResult } from 'src/app/_models/pagination';
@@ -11,6 +17,10 @@ import { PaginatedResult } from 'src/app/_models/pagination';
 export class ListMemberComponent implements OnInit {
   result: PaginatedResult<IMember[]>;
   userParams = new UserParams();
+  //for view
+  genders = Gender;
+  orderBy = OrderBy;
+  typeSort = TypeSort;
 
   constructor(private memberService: MemberService) {}
 
