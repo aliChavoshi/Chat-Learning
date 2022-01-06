@@ -6,6 +6,7 @@ using API.Data;
 using API.Errors;
 using API.Helpers;
 using API.interfaces;
+using API.Middlewares;
 using API.services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,8 @@ namespace API.extensions
             {
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
             });
+            //user Activity
+            services.AddScoped<LogUserActivity>();
             //cloudinary settings
             services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
             services.AddScoped<IPhotoService, PhotoService>();
@@ -46,8 +49,7 @@ namespace API.extensions
                 // var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 // c.IncludeXmlComments(xmlPath);
             });
-            //add identity extension
-            services.AddIdentityService(configuration);
+
             //validation error handling
             services.Configure<ApiBehaviorOptions>(options =>
                 options.InvalidModelStateResponseFactory = actionContext =>
@@ -60,6 +62,8 @@ namespace API.extensions
                     };
                     return new BadRequestObjectResult(errorResponse);
                 });
+            //add identity extension
+            services.AddIdentityService(configuration);
             //return
             return services;
         }

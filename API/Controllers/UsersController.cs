@@ -12,10 +12,12 @@ using API.extensions;
 using Microsoft.AspNetCore.Http;
 using API.Entities;
 using API.Helpers;
+using API.Middlewares;
 
 namespace API.Controllers
 {
     [Authorize]
+    [ServiceFilter(typeof(LogUserActivity))]
     public class UsersController : BaseApiController
     {
         private readonly IUserRepository _userRepository;

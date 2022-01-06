@@ -36,6 +36,10 @@ export class ListMemberComponent implements OnInit {
       this.result = response;
     });
   }
+  onClear() {
+    this.userParams = new UserParams();
+    this.loadMembers();
+  }
   onSubmit() {
     this.loadMembers();
   }
