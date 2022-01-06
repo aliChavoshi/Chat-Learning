@@ -11,14 +11,19 @@ import { map } from 'rxjs/operators';
 export class MemberService {
   private baseUrl = environment.baseUrl;
   private members: IMember[] = [];
+  private cacheMember = new Map<string, PaginatedResult<IMember[]>>();
   paginationResult: PaginatedResult<IMember[]> = new PaginatedResult<
     IMember[]
   >();
 
   constructor(private http: HttpClient) {}
 
-  getMembers(userParams: UserParams) {
-    // if (this.members.length > 0) return of(this.members);
+  getMembers(userParams: UserParams): Observable<PaginatedResult<IMember[]>> {
+    const key = Object.values(userParams).join('-');
+    //get from cache
+    var response = this.cacheMember.get(key);
+    if (response && response != null) return of(response);
+    //get data from api
     let params = this.setParams(userParams);
     return this.http
       .get<PaginatedResult<IMember[]>>(`${this.baseUrl}/users/getAllUsers`, {
@@ -28,6 +33,10 @@ export class MemberService {
         map((response) => {
           this.members = response.items;
           this.paginationResult = response;
+          //set to cache
+          this.cacheMember.set(key, response);
+          console.log(this.cacheMember);
+          
           return response;
         })
       );
