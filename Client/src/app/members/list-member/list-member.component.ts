@@ -16,19 +16,22 @@ import { PaginatedResult } from 'src/app/_models/pagination';
 })
 export class ListMemberComponent implements OnInit {
   result: PaginatedResult<IMember[]>;
-  userParams = new UserParams();
+  userParams: UserParams;
   //for view
   genders = Gender;
   orderBy = OrderBy;
   typeSort = TypeSort;
 
-  constructor(private memberService: MemberService) {}
+  constructor(private memberService: MemberService) {
+    this.userParams = this.memberService.getUserParams();
+  }
 
   ngOnInit(): void {
     this.loadMembers();
   }
   pageChanged(event: any): void {
     this.userParams.pageNumber = event.page;
+    this.memberService.setUserParams(this.userParams);
     this.loadMembers();
   }
   private loadMembers() {
@@ -37,7 +40,7 @@ export class ListMemberComponent implements OnInit {
     });
   }
   onClear() {
-    this.userParams = new UserParams();
+    this.userParams = this.memberService.resetUserParams();
     this.loadMembers();
   }
   onSubmit() {

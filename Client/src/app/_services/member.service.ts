@@ -11,6 +11,7 @@ import { map } from 'rxjs/operators';
 export class MemberService {
   private baseUrl = environment.baseUrl;
   private members: IMember[] = [];
+  private userParams: UserParams = new UserParams();
   private cacheMember = new Map<string, PaginatedResult<IMember[]>>();
   paginationResult: PaginatedResult<IMember[]> = new PaginatedResult<
     IMember[]
@@ -77,6 +78,17 @@ export class MemberService {
     return this.http.delete<Photo>(
       `${this.baseUrl}/users/deletePhoto/${photoId}`
     );
+  }
+  //user params
+  setUserParams(userParams: UserParams) {
+    this.userParams = userParams;
+  }
+  getUserParams() {
+    return this.userParams;
+  }
+  resetUserParams() {
+    this.userParams = new UserParams();
+    return this.userParams;
   }
   private setParams(userParams: UserParams) {
     let params = new HttpParams();
