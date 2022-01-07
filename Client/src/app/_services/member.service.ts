@@ -35,13 +35,16 @@ export class MemberService {
           this.paginationResult = response;
           //set to cache
           this.cacheMember.set(key, response);
-          console.log(this.cacheMember);
-          
           return response;
         })
       );
   }
   getMemberByUsername(userName: string) {
+    let user = [...this.cacheMember]
+      .reduce((arr, [key, value]) => arr.concat(value.items), [])
+      .find((x) => x.userName === userName);
+    if (user) return of(user);
+
     const member = this.members.find((x) => x.userName === userName);
     if (member !== undefined) return of(member);
     return this.http.get<IMember>(
