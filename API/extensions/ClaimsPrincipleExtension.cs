@@ -12,5 +12,9 @@ namespace API.extensions
         {
             return principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
+        public static int GetUserId(this ClaimsPrincipal principal)
+        {
+            return Convert.ToInt32(principal.FindFirst(ClaimTypes.Sid)?.Value);
+        }
     }
 }
