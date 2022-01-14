@@ -14,11 +14,14 @@ namespace API.Helpers
                 .ForMember(x => x.Age, c => c.MapFrom(v => v.GetAge()))
                 .ForMember(x => x.PhotoUrl, c => c.MapFrom(v => v.Photos.FirstOrDefault(b => b.IsMain).Url));
             //create Register
-            CreateMap<RegisterDto,Users>();
-
+            CreateMap<RegisterDto, Users>();
 
             CreateMap<Photo, PhotoDto>();
             CreateMap<MemberUpdateDto, Users>();
+            //user Likes
+            CreateMap<Users, LikeDto>()
+                .ForMember(x => x.Age, c => c.MapFrom(v => v.GetAge()))
+                .ForMember(x => x.PictureUrl, c => c.MapFrom(v => v.Photos.FirstOrDefault(x => x.IsMain).Url));
         }
     }
 }

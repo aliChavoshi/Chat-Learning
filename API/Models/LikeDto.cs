@@ -12,5 +12,6 @@ namespace API.Models
         public string KnownAs { get; set; }
         public string PictureUrl { get; set; }
         public string City { get; set; }
+        public int Age { get; set; }
     }
 }
