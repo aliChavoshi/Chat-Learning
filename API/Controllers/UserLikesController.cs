@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Entities;
 using API.extensions;
+using API.Helpers;
 using API.interfaces;
+using API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,6 +39,12 @@ namespace API.Controllers
             if (await _userLikeRepository.SaveAsync())
                 return Ok();
             return BadRequest();
+        }
+
+        [HttpGet("get-likes")]
+        public async Task<ActionResult<PagedList<LikeDto>>> GetUserLikes([FromQuery] GetLikeParams getLikeParams)
+        {
+            return Ok(await _userLikeRepository.GetUserLikes(getLikeParams, User.GetUserId()));
         }
     }
 }

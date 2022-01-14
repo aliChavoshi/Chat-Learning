@@ -14,7 +14,9 @@ namespace API.extensions
         }
         public static int GetUserId(this ClaimsPrincipal principal)
         {
-            return Convert.ToInt32(principal.FindFirst(ClaimTypes.Sid)?.Value);
+            var userId = principal?.Claims.ToList().FirstOrDefault(x => x.Type == "sid")?.Value;
+            return int.Parse(userId);
+            // return Convert.ToInt32(principal.FindFirst(ClaimTypes.Sid)?.Value);
         }
     }
 }

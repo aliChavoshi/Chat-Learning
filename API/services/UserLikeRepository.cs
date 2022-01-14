@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using API.Data;
 using API.Entities;
 using API.Enums;
+using API.Helpers;
 using API.interfaces;
 using API.Models;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.services
@@ -33,11 +35,11 @@ namespace API.services
             return await _dataContext.UserLike.FindAsync(sourceId, targetId);
         }
 
-        public async Task<IEnumerable<LikeDto>> GetUserLikes(PredicateLikeEnum predicate, int userId)
+        public async Task<PagedList<LikeDto>> GetUserLikes(GetLikeParams getLikeParams, int userId)
         {
             var users = _dataContext.Users.AsQueryable();
             var likes = _dataContext.UserLike.AsQueryable();
-            if (predicate == PredicateLikeEnum.Liked)
+            if (getLikeParams.PredicateUserLike == PredicateLikeEnum.Liked)
             {
                 //کاربر چه افرادی را لایک کرده است
                 likes = likes.Include(x => x.TargetUser)
@@ -45,7 +47,7 @@ namespace API.services
                     .Where(x => x.SourceUserId == userId);
                 users = likes.Select(x => x.TargetUser);
             }
-            if (predicate == PredicateLikeEnum.LikeBy)
+            if (getLikeParams.PredicateUserLike == PredicateLikeEnum.LikeBy)
             {
                 //چه افرادی من را لایک کرده اند
                 likes = likes.Include(x => x.SourceUser)
@@ -53,8 +55,8 @@ namespace API.services
                     .Where(x => x.TargetUserId == userId);
                 users = likes.Select(x => x.SourceUser);
             }
-            return (await users.ToListAsync())
-            .Select(x => _mapper.Map<LikeDto>(x));
+            var result = users.ProjectTo<LikeDto>(_mapper.ConfigurationProvider);
+            return await PagedList<LikeDto>.CreateAsync(result, getLikeParams.PageNumber, getLikeParams.PageSize);
         }
 
         public async Task<Users> GetUserWithLikes(int userId)
