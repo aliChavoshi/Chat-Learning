@@ -24,6 +24,7 @@ namespace API.extensions
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IUserLikeRepository,UserLikeRepository>();
             //autoMapper
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             //connect to database
