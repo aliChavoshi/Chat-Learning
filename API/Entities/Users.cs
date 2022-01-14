@@ -26,9 +26,13 @@ namespace API.Entities
         public string Country { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;
 
+        #region Relations
         [InverseProperty("Users")]
         public ICollection<Photo> Photos { get; set; }
-
+        public ICollection<UserLike> SourceUserLikes { get; set; }
+        public ICollection<UserLike> TargetUserLikes { get; set; }
+        #endregion
+        
         //get age
         public int GetAge()
         {
