@@ -19,7 +19,7 @@ namespace API.services
         private readonly DataContext _dataContext;
         private readonly IMapper _mapper;
 
-        public UserLikeRepository(DataContext dataContext, IMapper mapper = null)
+        public UserLikeRepository(DataContext dataContext, IMapper mapper)
         {
             _dataContext = dataContext;
             _mapper = mapper;
@@ -27,7 +27,7 @@ namespace API.services
 
         public async Task AddLike(int sourceId, int targetId)
         {
-            await _dataContext.UserLike.AddAsync(new UserLike(sourceId, targetId));
+            await _dataContext.UserLike.AddAsync(new UserLike { SourceUserId = sourceId, TargetUserId = targetId });
         }
 
         public async Task<UserLike> GetUserLike(int sourceId, int targetId)

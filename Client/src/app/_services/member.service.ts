@@ -79,6 +79,11 @@ export class MemberService {
       `${this.baseUrl}/users/deletePhoto/${photoId}`
     );
   }
+  //user Likes
+  addLike(targetUserName: string) {
+    const params = new HttpParams().append('targetUserName', targetUserName);
+    return this.http.post(`${this.baseUrl}/UserLikes/Add-Like`, {}, { params });
+  }
   //user params
   setUserParams(userParams: UserParams) {
     this.userParams = userParams;

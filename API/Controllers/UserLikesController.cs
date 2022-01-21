@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Entities;
+using API.Errors;
 using API.extensions;
 using API.Helpers;
 using API.interfaces;
@@ -18,7 +19,7 @@ namespace API.Controllers
         private readonly IUserLikeRepository _userLikeRepository;
         private readonly IUserRepository _userRepository;
 
-        public UserLikesController(IUserLikeRepository userLikeRepository, IUserRepository userRepository = null)
+        public UserLikesController(IUserLikeRepository userLikeRepository, IUserRepository userRepository)
         {
             _userLikeRepository = userLikeRepository;
             _userRepository = userRepository;
@@ -33,7 +34,7 @@ namespace API.Controllers
             if (sourceUserId == targetUser.Id) return BadRequest("you cannot like yourSelf");
 
             var userLike = await _userLikeRepository.GetUserLike(sourceUserId, targetUser.Id);
-            if (userLike != null) return BadRequest("you already liked this user");
+            if (userLike != null) return BadRequest(new ApiResponse(400, "you already liked this user"));
 
             await _userLikeRepository.AddLike(sourceUserId, targetUser.Id);
             if (await _userLikeRepository.SaveAsync())
