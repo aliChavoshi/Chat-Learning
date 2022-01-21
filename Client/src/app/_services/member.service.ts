@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -83,6 +84,13 @@ export class MemberService {
   addLike(targetUserName: string) {
     const params = new HttpParams().append('targetUserName', targetUserName);
     return this.http.post(`${this.baseUrl}/UserLikes/Add-Like`, {}, { params });
+  }
+  getUserLikes(predicateLikeEnum: PredicateLikeEnum) {
+    let params = new HttpParams();
+    params = params.append('PageNumber', 1);
+    params = params.append('PageSize', 6);
+    params = params.append('PredicateUserLike', predicateLikeEnum.toString());
+    return this.http.get(`${this.baseUrl}/UserLikes/get-likes`, { params });
   }
   //user params
   setUserParams(userParams: UserParams) {

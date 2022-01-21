@@ -1,0 +1,4 @@
+enum PredicateLikeEnum {
+  Liked,
+  LikeBy,
+}

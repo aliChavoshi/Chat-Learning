@@ -115,7 +115,7 @@
   <!-- end filters -->
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-5 g-3">
     <ng-container *ngFor="let member of result?.items">
-      <app-card-member [member]="member"></app-card-member>
+      <app-member-card-shared [member]="member"></app-member-card-shared>
     </ng-container>
   </div>
   <ng-container *ngIf="result">

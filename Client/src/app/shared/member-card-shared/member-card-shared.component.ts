@@ -1,14 +1,14 @@
-import { ToastrService } from 'ngx-toastr';
-import { MemberService } from 'src/app/_services/member.service';
 import { IMember } from './../../_models/member';
 import { Component, Input, OnInit } from '@angular/core';
+import { MemberService } from 'src/app/_services/member.service';
+import { ToastrService } from 'ngx-toastr/toastr/toastr.service';
 
 @Component({
-  selector: 'app-card-member',
-  templateUrl: './card-member.component.html',
-  styleUrls: ['./card-member.component.css'],
+  selector: 'app-member-card-shared',
+  templateUrl: './member-card-shared.component.html',
+  styles: [],
 })
-export class CardMemberComponent implements OnInit {
+export class MemberCardSharedComponent implements OnInit {
   @Input() member: IMember;
 
   constructor(

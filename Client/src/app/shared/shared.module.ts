@@ -19,10 +19,13 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { ShowEnumPipe } from './_pipes/show-enum.pipe';
 //timeage
 import { TimeagoModule } from 'ngx-timeago';
+import { MemberCardSharedComponent } from './member-card-shared/member-card-shared.component';
+import { RouterModule } from '@angular/router';
 @NgModule({
-  declarations: [ShowEnumPipe],
+  declarations: [ShowEnumPipe, MemberCardSharedComponent],
   imports: [
     CommonModule,
+    RouterModule,
     //ngx-bootstrap
     BsDropdownModule.forRoot(),
     BsDatepickerModule.forRoot(),
@@ -60,6 +63,8 @@ import { TimeagoModule } from 'ngx-timeago';
     //pipes
     ShowEnumPipe,
     TimeagoModule,
+    //components
+    MemberCardSharedComponent,
   ],
 })
 export class SharedModule {}
