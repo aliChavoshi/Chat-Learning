@@ -1,7 +1,7 @@
 import { IMember } from './../../_models/member';
 import { Component, Input, OnInit } from '@angular/core';
 import { MemberService } from 'src/app/_services/member.service';
-import { ToastrService } from 'ngx-toastr/toastr/toastr.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-member-card-shared',
