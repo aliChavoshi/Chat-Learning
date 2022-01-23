@@ -46,6 +46,7 @@ import { RouterModule } from '@angular/router';
     FileUploadModule,
     //timeage
     TimeagoModule.forRoot(),
+    //components
   ],
   exports: [
     //ngx-bootstrap

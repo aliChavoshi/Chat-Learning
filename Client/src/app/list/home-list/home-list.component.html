@@ -1,4 +1,4 @@
-<div class="album py-5">
+<div class="album py-5" *ngIf="result?.items?.length > 0;else noItems">
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-lg-5 g-3">
     <ng-container *ngFor="let member of result?.items">
       <app-member-card-shared [member]="member"></app-member-card-shared>
@@ -6,12 +6,14 @@
   </div>
   <ng-container *ngIf="result">
     <div class="d-flex justify-content-center mt-3">
-      <pagination
-        [totalItems]="result.totalCount"
-        [(ngModel)]="result.currentPage"
-        (pageChanged)="pageChanged($event)"
-      >
+      <pagination [totalItems]="result?.totalCount" [(ngModel)]="result.currentPage"
+        (pageChanged)="pageChanged($event)">
       </pagination>
     </div>
   </ng-container>
 </div>
+<ng-template #noItems>
+  <div class="alert alert-primary py-5 mt-3" role="alert">
+    No items found!
+  </div>
+</ng-template>

@@ -35,7 +35,7 @@ namespace API.services
             return await _dataContext.UserLike.FindAsync(sourceId, targetId);
         }
 
-        public async Task<PagedList<LikeDto>> GetUserLikes(GetLikeParams getLikeParams, int userId)
+        public async Task<PagedList<MemberDto>> GetUserLikes(GetLikeParams getLikeParams, int userId)
         {
             var users = _dataContext.Users.AsQueryable();
             var likes = _dataContext.UserLike.AsQueryable();
@@ -55,8 +55,8 @@ namespace API.services
                     .Where(x => x.TargetUserId == userId);
                 users = likes.Select(x => x.SourceUser);
             }
-            var result = users.ProjectTo<LikeDto>(_mapper.ConfigurationProvider);
-            return await PagedList<LikeDto>.CreateAsync(result, getLikeParams.PageNumber, getLikeParams.PageSize);
+            var result = users.ProjectTo<MemberDto>(_mapper.ConfigurationProvider);
+            return await PagedList<MemberDto>.CreateAsync(result, getLikeParams.PageNumber, getLikeParams.PageSize);
         }
 
         public async Task<Users> GetUserWithLikes(int userId)

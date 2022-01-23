@@ -20,7 +20,6 @@ export class HomeListComponent implements OnInit {
     this.memberService.getUserLikes(this.userLikeParams).subscribe((res) => {
       this.result = res;
       console.log(res);
-      
     });
   }
   pageChanged(event: any) {

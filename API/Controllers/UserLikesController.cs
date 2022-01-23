@@ -43,7 +43,7 @@ namespace API.Controllers
         }
 
         [HttpGet("get-likes")]
-        public async Task<ActionResult<PagedList<LikeDto>>> GetUserLikes([FromQuery] GetLikeParams getLikeParams)
+        public async Task<ActionResult<PagedList<MemberDto>>> GetUserLikes([FromQuery] GetLikeParams getLikeParams)
         {
             return Ok(await _userLikeRepository.GetUserLikes(getLikeParams, User.GetUserId()));
         }
