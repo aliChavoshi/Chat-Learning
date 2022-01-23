@@ -3,3 +3,4 @@ obj
 API/bin/
 API/obj/
 Client/.angular/
+.vs/
