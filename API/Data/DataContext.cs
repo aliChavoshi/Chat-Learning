@@ -13,6 +13,7 @@ namespace API.Data
         public DbSet<Users> Users { get; set; }
         public DbSet<Photo> Photo { get; set; }
         public DbSet<UserLike> UserLike { get; set; }
+        public DbSet<Message> Message { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
