@@ -18,6 +18,6 @@ namespace API.interfaces
         // message between two users
         Task<IEnumerable<MessageDto>> GetMessageThread(string currentUserName, string recipientName);
         Task<bool> SaveAll();
-        Task UpdateMessageToRead(List<Message> messages,string userName);
+        Task UpdateMessageToRead(List<MessageDto> messages, string userName);
     }
 }

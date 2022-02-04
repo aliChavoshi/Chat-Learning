@@ -38,7 +38,7 @@ namespace API.services
 
         public async Task<Message> GetMessageById(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Message.FindAsync(id);
         }
 
         public async Task<PagedList<MessageDto>> GetMessageForUser(MessageParams messageParams)
@@ -57,11 +57,16 @@ namespace API.services
 
         public async Task<IEnumerable<MessageDto>> GetMessageThread(string currentUserName, string recipientName)
         {
-            var query = await _context.Message.Where(
-                x => x.ReceiverUserName == currentUserName && x.SenderUserName == recipientName ||
-                x.SenderUserName == currentUserName && x.ReceiverUserName == recipientName).OrderBy(x => x.MessageSent).ToListAsync();
-            await UpdateMessageToRead(query, currentUserName);
-            return
+            var messages = await _context.Message.Where(
+                    x => x.ReceiverUserName == currentUserName &&
+                    x.SenderUserName == recipientName ||
+                    x.SenderUserName == currentUserName &&
+                    x.ReceiverUserName == recipientName)
+                .ProjectTo<MessageDto>(_mapper.ConfigurationProvider)
+                .OrderBy(x => x.MessageSent)
+                .ToListAsync();
+            await UpdateMessageToRead(messages, currentUserName);
+            return messages;
         }
 
         public async Task<bool> SaveAll()
@@ -69,16 +74,19 @@ namespace API.services
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task UpdateMessageToRead(List<Message> messages, string userName)
+        public async Task UpdateMessageToRead(List<MessageDto> messages, string userName)
         {
             messages = messages.Where(x => !x.DateRead.HasValue && x.ReceiverUserName == userName).ToList(); //دریافت ککنده خودم باشم
-            messages.ForEach(x =>
+            if (messages.Any())
             {
-                x.DateRead = DateTime.Now;
-                x.IsRead = true;
-            });
-            _context.UpdateRange(messages);
-            await _context.SaveChangesAsync();
+                messages.ForEach(x =>
+                {
+                    x.DateRead = DateTime.Now;
+                    x.IsRead = true;
+                });
+                _context.UpdateRange(_mapper.Map<List<Message>>(messages));
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }
