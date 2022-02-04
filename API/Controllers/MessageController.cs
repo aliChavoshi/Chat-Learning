@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
+using API.Helpers;
 
 namespace API.Controllers
 {
@@ -49,10 +50,23 @@ namespace API.Controllers
             };
             await _messageRepository.AddMessage(message);
             if (await _messageRepository.SaveAll())
-            {
                 return Ok(_mapper.Map<Message, MessageDto>(message));
-            }
             return BadRequest(new ApiResponse(400, "Failed to send message"));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<PagedList<MessageDto>>> GetMessages([FromQuery] MessageParams messageParams)
+        {
+            var currnetUserName = User.GetUserName();
+            messageParams.UserName = currnetUserName;
+            return Ok(await _messageRepository.GetMessageForUser(messageParams));
+        }
+
+        [HttpGet("thread/{UserName}")]
+        public async Task<ActionResult<IEnumerable<MessageDto>>> GetMessageThread(string userName)
+        {
+            var currnetUserName = User.GetUserName();
+            return Ok(await _messageRepository.GetMessageThread(currnetUserName, userName));
         }
     }
 }
