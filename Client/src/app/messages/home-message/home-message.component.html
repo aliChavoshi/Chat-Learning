@@ -1,1 +1,23 @@
-<p>home-message works!</p>
+<div class="row m-4">
+  <div class="btn-group">
+    <button class="btn btn-primary">
+      <i class="fa fa-envelope"></i> Unread
+    </button>
+    <button class="btn btn-primary">
+      <i class="fa fa-envelope-open"></i> Inbox
+    </button>
+    <button class="btn btn-primary">
+      <i class="fa fa-paper-plane"></i> Outbox
+    </button>
+  </div>
+</div>
+<ng-container *ngIf="result.totalCount > 0">
+  <div class="d-flex justify-content-center mt-3">
+    <pagination
+      [totalItems]="result?.totalCount"
+      [(ngModel)]="result.currentPage"
+      (pageChanged)="pageChanged($event)"
+    >
+    </pagination>
+  </div>
+</ng-container>
