@@ -40,24 +40,35 @@
         <td>
           <!-- outbox -->
           <div *ngIf="messageParams?.container === 'Outbox'">
-            <img
-              class="img-ciecle rounded-circle mr-2 pr-5"
-              [src]="item?.receiverPhotoUrl || './assets/images/user.png'"
-              [alt]="item?.receiverUserName"
-            />
-            <strong>{{ item?.receiverUserName | titlecase }}</strong>
+            <a
+              [routerLink]="['/members', item?.receiverUserName]"
+              [queryParams]="{ tab: '2' }"
+              routerLinkActive="router-link-active"
+            >
+              <img
+                class="img-ciecle rounded-circle mr-2 pr-5"
+                [src]="item?.receiverPhotoUrl || './assets/images/user.png'"
+                [alt]="item?.receiverUserName"
+              />
+              <strong>{{ item?.receiverUserName | titlecase }}</strong>
+            </a>
           </div>
           <!-- inbox -->
           <div *ngIf="messageParams?.container !== 'Outbox'">
-            <img
-              class="img-ciecle rounded-circle mr-2 pr-5"
-              [src]="item?.senderPhotoUrl || './assets/images/user.png'"
-              [alt]="item?.senderUserName"
-            />
-            <strong>{{ item?.senderUserName | titlecase }}</strong>
+            <a
+              [routerLink]="['/members', item?.senderUserName]"
+              [queryParams]="{ tab: '2' }"
+            >
+              <img
+                class="img-ciecle rounded-circle mr-2 pr-5"
+                [src]="item?.senderPhotoUrl || './assets/images/user.png'"
+                [alt]="item?.senderUserName"
+              />
+              <strong>{{ item?.senderUserName | titlecase }}</strong>
+            </a>
           </div>
         </td>
-        <td>{{ item?.messageSent }}</td>
+        <td>{{ item?.messageSent | timeago }}</td>
         <td>
           <div class="btn-group">
             <button class="btn btn-danger btn-sm">

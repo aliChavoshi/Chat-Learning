@@ -36,9 +36,9 @@ namespace API.Controllers
         {
             var currentUser = User.GetUserName();
             if (currentUser == createMessage.RecipientUserName) return BadRequest(new ApiResponse(400, "You cannot send message to yourself"));
-            var sender = await _userRepository.GetUserByUserName(currentUser);
+            var sender = await _userRepository.GetUserByUserNameWithPhotos(currentUser);
             if (sender == null) return BadRequest(new ApiResponse(404, "Sender not found"));
-            var recipient = await _userRepository.GetUserByUserName(createMessage.RecipientUserName);
+            var recipient = await _userRepository.GetUserByUserNameWithPhotos(createMessage.RecipientUserName);
             if (recipient == null) return BadRequest(new ApiResponse(404, "Recipient not found"));
             var message = new Message
             {

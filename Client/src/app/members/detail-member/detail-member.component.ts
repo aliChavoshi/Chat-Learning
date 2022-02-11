@@ -1,7 +1,13 @@
 import { Subscription } from 'rxjs';
 import { MessageService } from './../../_services/message.service';
 import { IMessage } from './../../_models/message';
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  OnDestroy,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   NgxGalleryAnimation,
