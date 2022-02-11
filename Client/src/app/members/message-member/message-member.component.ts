@@ -10,22 +10,14 @@ import { MessageService } from 'src/app/_services/message.service';
 })
 export class MessageMemberComponent implements OnInit {
   private sub = new Subscription();
-  @Input() userName = null;
   messageContent = '';
   loading = false;
-  messages: IMessage[] = [];
+  @Input() messages: IMessage[] = [];
+  @Input() userName : string;
 
-  constructor(private messageService: MessageService) {}
+  constructor() {}
 
   ngOnInit(): void {}
-  loadMessageThread() {
-    const sub$ = this.messageService
-      .getMessageThread(this.userName)
-      .subscribe((res) => {
-        this.messages = res;
-      });
-    this.sub.add(sub$);
-  }
   onSubmit() {}
   ngOnDestroy(): void {
     this.sub?.unsubscribe();

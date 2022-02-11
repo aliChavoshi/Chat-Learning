@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { MessageService } from './../../_services/message.service';
+import { IMessage } from './../../_models/message';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
   NgxGalleryAnimation,
   NgxGalleryImage,
   NgxGalleryOptions,
 } from '@kolkov/ngx-gallery';
+import { TabDirective, TabsetComponent } from 'ngx-bootstrap/tabs';
 import { IMember } from 'src/app/_models/member';
 
 @Component({
@@ -12,12 +16,21 @@ import { IMember } from 'src/app/_models/member';
   templateUrl: './detail-member.component.html',
   styleUrls: ['./detail-member.component.css'],
 })
-export class DetailMemberComponent implements OnInit {
+export class DetailMemberComponent implements OnInit, OnDestroy {
+  private sub = new Subscription();
   member: IMember;
+  messages: IMessage[] = [];
+  //gallery
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
+  //tabset
+  @ViewChild('staticTabs', { static: false }) staticTabs?: TabsetComponent;
+  activeTab?: TabDirective;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {
     this.loadMember();
@@ -29,7 +42,23 @@ export class DetailMemberComponent implements OnInit {
     });
     this.galleryImages = this.getImages();
   }
-
+  loadMessageThread() {
+    const sub$ = this.messageService
+      .getMessageThread(this.member?.userName)
+      .subscribe((res) => {
+        this.messages = res;
+      });
+    this.sub?.add(sub$);
+  }
+  onTabChange(tab: TabDirective) {
+    this.activeTab = tab;
+    if (
+      this?.activeTab?.heading === 'Messages' &&
+      this?.messages?.length === 0
+    ) {
+      this.loadMessageThread();
+    }
+  }
   private loadOptions() {
     this.galleryOptions = [
       {
@@ -51,5 +80,8 @@ export class DetailMemberComponent implements OnInit {
       });
     }
     return images;
+  }
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 }

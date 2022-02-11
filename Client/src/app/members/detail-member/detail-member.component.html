@@ -38,7 +38,7 @@
       </div>
     </div>
     <div class="col-md-8">
-      <tabset class="member-tabset card pt-2 pb-2">
+      <tabset class="member-tabset card pt-2 pb-2" #staticTabs>
         <tab class="mt-3 p-2" heading="About {{ member?.userName }}">
           <h4>Description</h4>
           <p>{{ member.knownAs }}</p>
@@ -50,8 +50,13 @@
             class="ngx-gallery d-inline-block mb-5"
           ></ngx-gallery>
         </tab>
-        <tab class="mt-3 p-2" heading="Messages">
+        <tab
+          (selectTab)="onTabChange($event)"
+          class="mt-3 p-2"
+          heading="Messages"
+        >
           <app-message-member
+            [messages]="messages"
             [userName]="member?.userName"
           ></app-message-member>
         </tab>
