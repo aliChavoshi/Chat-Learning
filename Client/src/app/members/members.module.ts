@@ -9,6 +9,7 @@ import { SharedModule } from '../shared/shared.module';
 import { EditMemberComponent } from './edit-member/edit-member.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PhotoEditComponent } from './photo-edit/photo-edit.component';
+import { MessageMemberComponent } from './message-member/message-member.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { PhotoEditComponent } from './photo-edit/photo-edit.component';
     DetailMemberComponent,
     EditMemberComponent,
     PhotoEditComponent,
+    MessageMemberComponent,
   ],
   imports: [
     CommonModule,

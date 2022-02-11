@@ -51,7 +51,9 @@
           ></ngx-gallery>
         </tab>
         <tab class="mt-3 p-2" heading="Messages">
-          <p>Messages</p>
+          <app-message-member
+            [userName]="member?.userName"
+          ></app-message-member>
         </tab>
       </tabset>
     </div>

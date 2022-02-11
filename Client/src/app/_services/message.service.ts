@@ -23,6 +23,11 @@ export class MessageService {
       }
     );
   }
+  getMessageThread(userName: string) {
+    return this.http.get<IMessage[]>(
+      `${this.baseUrl}/Message/Thread/${userName}`
+    );
+  }
   private setParams(messageParams: MessageParams) {
     let params = new HttpParams();
     if (messageParams.pageNumber !== null && messageParams.pageSize !== null) {
