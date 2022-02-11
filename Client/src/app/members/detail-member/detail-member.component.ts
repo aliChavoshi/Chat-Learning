@@ -24,8 +24,9 @@ export class DetailMemberComponent implements OnInit, OnDestroy {
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
   //tabset
-  @ViewChild('staticTabs', { static: false }) staticTabs?: TabsetComponent;
-  activeTab?: TabDirective;
+  @ViewChild('staticTabs', { static: true }) staticTabs: TabsetComponent;
+  activeTab: TabDirective;
+  tabId = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,6 +36,12 @@ export class DetailMemberComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadMember();
     this.loadOptions();
+    this.route.queryParams.subscribe((params) => {
+      this.tabId = +params['tab'] ?? 0;
+      if (params['tab']) {
+        this.selectTab(this.tabId);
+      }
+    });
   }
   loadMember() {
     this.route.data.subscribe((data) => {
@@ -50,13 +57,18 @@ export class DetailMemberComponent implements OnInit, OnDestroy {
       });
     this.sub?.add(sub$);
   }
+  selectTab(tabId: number) {
+    this.staticTabs.tabs[tabId].active = true;
+  }
   onTabChange(tab: TabDirective) {
-    this.activeTab = tab;
-    if (
-      this?.activeTab?.heading === 'Messages' &&
-      this?.messages?.length === 0
-    ) {
-      this.loadMessageThread();
+    this.activeTab = tab ?? null;
+    if (this.activeTab) {
+      if (
+        this?.activeTab?.heading === 'Messages' &&
+        this?.messages?.length === 0
+      ) {
+        this.loadMessageThread();
+      }
     }
   }
   private loadOptions() {

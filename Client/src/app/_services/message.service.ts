@@ -28,6 +28,7 @@ export class MessageService {
       `${this.baseUrl}/Message/Thread/${userName}`
     );
   }
+  sendMessage(recipientUserName: string, content: string) {}
   private setParams(messageParams: MessageParams) {
     let params = new HttpParams();
     if (messageParams.pageNumber !== null && messageParams.pageSize !== null) {
