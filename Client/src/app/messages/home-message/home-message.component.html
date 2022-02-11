@@ -11,7 +11,47 @@
     </button>
   </div>
 </div>
-<ng-container *ngIf="result.totalCount > 0">
+<!-- no message -->
+<div
+  class="alert alert-danger d-flex align-items-center"
+  role="alert"
+  *ngIf="result?.items?.length === 0"
+>
+  <span class="fas fa-info m-2"></span>
+  <div>no message found</div>
+</div>
+<!-- have messages -->
+<div class="row" *ngIf="result?.items?.length > 0">
+  <table class="table table-hover table-bordered" style="cursor: pointer">
+    <thead>
+      <tr>
+        <th style="width: 40%">message</th>
+        <th style="width: 20%">From / To</th>
+        <th style="width: 20%">Sent / Received</th>
+        <th style="width: 20%"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr [hidden]="loading" *ngFor="let item of result?.items">
+        <td>{{ item?.content }}</td>
+        <td>
+          <div *ngIf="messageParams?.container === 'Outbox'"></div>
+          <div *ngIf="messageParams?.container !== 'Outbox'"></div>
+        </td>
+        <td>{{ item?.messageSent }}</td>
+        <td>
+          <button class="btn btn-danger">
+            <span class="fas fa-trash"></span>
+          </button>
+          <button class="btn btn-warning">
+            <span class="fas fa-trash"></span>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<ng-container *ngIf="result?.totalCount > 0">
   <div class="d-flex justify-content-center mt-3">
     <pagination
       [totalItems]="result?.totalCount"
