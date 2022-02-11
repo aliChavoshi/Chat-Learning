@@ -1,1 +1,82 @@
-<p>message-member works!</p>
+<div class="card">
+  <div
+    class="card-body"
+    #scrollMe
+    [scrollTop]="scrollMe.scrollHeight"
+    style="overflow-y: scroll; height: 535px"
+  >
+    <!-- no message thread -->
+    <div
+      *ngIf="messages?.length === 0"
+      class="alert alert-primary py-4 text-center"
+    >
+      No messages yet... say hi by using the message box below
+    </div>
+    <!-- has message thread -->
+    <ul class="chat" *ngIf="messages.length > 0">
+      <li *ngFor="let message of messages">
+        <div>
+          <span class="chat-img float-right">
+            <img
+              class="rounded-circle"
+              [src]="message?.senderPhotoUrl"
+              [alt]="message?.senderUserName"
+            />
+          </span>
+          <div class="chat-body">
+            <div class="header">
+              <small class="text-muted">
+                <span class="fa fa-clock-o">{{
+                  message?.messageSent | timeago
+                }}</span>
+                <!-- sender is mySelf -->
+                <span
+                  class="text-danger"
+                  *ngIf="
+                    !message.dateRead && message.senderUserName !== userName
+                  "
+                >
+                  (unread)
+                </span>
+                <span
+                  class="text-success"
+                  *ngIf="
+                    message.dateRead && message.senderUserName !== userName
+                  "
+                >
+                  (read {{ message.dateRead | timeago }})
+                </span>
+              </small>
+            </div>
+            <p>{{ message?.content }}</p>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card-footer">
+    <form #messageForm="ngForm" (submit)="onSubmit()" autocomplete="off">
+      <div class="input-group">
+        <input
+          name="messageContent"
+          [(ngModel)]="messageContent"
+          required
+          type="text"
+          class="form-control input-sm"
+          placeholder="Send a private message"
+        />
+        <div class="input-group-append" style="margin-left: 5px">
+          <button
+            [disabled]="messageForm.invalid"
+            class="btn btn-primary"
+            type="submit"
+          >
+            Send
+            <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

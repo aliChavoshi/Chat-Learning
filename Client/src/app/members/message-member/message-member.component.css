@@ -1,0 +1,20 @@
+.card {
+  border: none;
+}
+
+.chat {
+  list-style-type: circle;
+  margin: 0;
+  padding: 0;
+  max-height: 500px;
+}
+
+.chat li {
+  margin-bottom: 5px;
+  padding-bottom: 10px;
+  border-bottom: 1px dotted #555;
+}
+
+.rounded-circle {
+  max-height: 50px;
+}

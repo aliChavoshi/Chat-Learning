@@ -6,11 +6,13 @@ import { MessageService } from 'src/app/_services/message.service';
 @Component({
   selector: 'app-message-member',
   templateUrl: './message-member.component.html',
-  styleUrls: ['./message-member.component.css']
+  styleUrls: ['./message-member.component.css'],
 })
 export class MessageMemberComponent implements OnInit {
   private sub = new Subscription();
-  @Input() userName;
+  @Input() userName = null;
+  messageContent = '';
+  loading = false;
   messages: IMessage[] = [];
 
   constructor(private messageService: MessageService) {}
@@ -24,6 +26,7 @@ export class MessageMemberComponent implements OnInit {
       });
     this.sub.add(sub$);
   }
+  onSubmit() {}
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
   }
