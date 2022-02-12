@@ -36,8 +36,12 @@ namespace API.extensions
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Token:Key"])),
                     };
                 });
-            return services;
             //add policy
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("RequireAdminRole", policy => policy.RequireRole("admin", "member"));
+            });
+            return services;
         }
     }
 }

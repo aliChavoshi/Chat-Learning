@@ -26,7 +26,7 @@ namespace API.Controllers
         }
 
         [HttpPost("Add-Like")]
-        [Authorize(Roles = "member")]
+        // [Authorize(Roles = "member")]
         public async Task<IActionResult> AddLike([FromQuery] string targetUserName)
         {
             var sourceUserId = User.GetUserId();
