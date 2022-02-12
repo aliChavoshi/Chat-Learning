@@ -1,17 +1,18 @@
 using System.Reflection;
 using API.Entities;
 using API.Entities.Configuration;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
 {
-    public class DataContext : IdentityDbContext
+    public class DataContext : IdentityDbContext<Users, Role, int, IdentityUserClaim<int>,
+     UserRole, IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public DataContext(DbContextOptions options) : base(options)
         {
         }
-        public  DbSet<Users> Users { get; set; }
         public DbSet<Photo> Photo { get; set; }
         public DbSet<UserLike> UserLike { get; set; }
         public DbSet<Message> Message { get; set; }
