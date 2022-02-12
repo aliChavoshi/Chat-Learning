@@ -11,7 +11,8 @@ namespace API.Entities.Configuration
     {
         public void Configure(EntityTypeBuilder<Users> builder)
         {
-            builder.Property(x=>x.UserName).IsRequired();
+            builder.Property(x => x.UserName).IsRequired();
+            builder.HasKey(x => x.Id);
         }
     }
 }

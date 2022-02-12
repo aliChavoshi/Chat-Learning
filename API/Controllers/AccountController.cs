@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 
 namespace API.Controllers
 {
@@ -18,13 +19,14 @@ namespace API.Controllers
     {
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
-        private readonly IAccountRepository _accountRepository;
-
-        public AccountController(ITokenService tokenService, IAccountRepository accountRepository, IMapper mapper)
+        private readonly UserManager<Users> _userManager;
+        private readonly SignInManager<Users> _signInManager;
+        public AccountController(ITokenService tokenService, IMapper mapper, UserManager<Users> userManager, SignInManager<Users> signInManager)
         {
             _tokenService = tokenService;
-            _accountRepository = accountRepository;
             _mapper = mapper;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         /// <summary>
@@ -35,23 +37,18 @@ namespace API.Controllers
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<UserTokenDto>> Register(RegisterDto model)
         {
-            if (await _accountRepository.IsExistUserName(model.UserName))
+            if (await IsExistUserName(model.UserName))
                 return BadRequest(new ApiResponse(400, model.UserName + "یافت نشد"));
 
-            using var hmac = new HMACSHA512();
-            var userEntity = _mapper.Map<Users>(model);
-            userEntity.PasswordSalt = hmac.Key;
-            userEntity.PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(model.Password));
-            await _accountRepository.AddUser(userEntity);
-            if (await _accountRepository.SaveChangeAsync())
+            var user = _mapper.Map<Users>(model);
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (!result.Succeeded) return BadRequest(new ApiResponse(400, "خطا در ثبت اطلاعات"));
+            return Ok(new UserTokenDto
             {
-                return Ok(new UserTokenDto
-                {
-                    userName = userEntity.UserName,
-                    Token = _tokenService.CreateToken(userEntity)
-                });
-            }
-            return BadRequest(new ApiResponse(400, "خطا در ثبت اطلاعات"));
+                userName = user.UserName,
+                Token = _tokenService.CreateToken(user),
+            });
         }
 
         /// <summary>
@@ -62,15 +59,11 @@ namespace API.Controllers
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<UserTokenDto>> Login([FromBody] LoginDto model)
         {
-            var user = await _accountRepository.GetUserByUserNameWithPhotos(model.userName);
+            var user = await _userManager.Users.Include(x => x.Photos).FirstOrDefaultAsync(x => x.UserName == model.userName);
             if (user == null) return BadRequest(new ApiResponse(400, "نام کاربری یافت نشد"));
 
-            using var hmac = new HMACSHA512(user.PasswordSalt);
-            var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(model.Password));
-            for (int i = 0; i < computedHash.Length; i++)
-            {
-                if (computedHash[i] != user.PasswordHash[i]) return BadRequest(new ApiResponse(400, "رمز عبور اشتباه است"));
-            }
+            var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+            if (!result.Succeeded) return BadRequest(new ApiResponse(400, "نام کاربری یا کلمه عبور اشتباه است"));
             return Ok(new UserTokenDto
             {
                 userName = user.UserName,
@@ -81,9 +74,9 @@ namespace API.Controllers
 
 
         [HttpGet("IsExistUserName/{userName}")]
-        public async Task<ActionResult<bool>> IsExistUserName(string userName)
+        public async Task<bool> IsExistUserName(string userName)
         {
-            return await _accountRepository.IsExistUserName(userName);
+            return await _userManager.Users.AnyAsync(x => x.UserName == userName.ToLower());
         }
     }
 }

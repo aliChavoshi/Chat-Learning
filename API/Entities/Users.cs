@@ -10,12 +10,8 @@ namespace API.Entities
 {
     public class Users : IdentityUser<int>
     {
-        [Key]
-        public override int Id { get; set; }
         public GenderEnum Gender { get; set; }
         public override string UserName { get; set; }
-        public byte[] PasswordHash { get; set; }
-        public byte[] PasswordSalt { get; set; }
         public override string Email { get; set; }
         public DateTime DateOfBirth { get; set; }
         public DateTime LastActive { get; set; }

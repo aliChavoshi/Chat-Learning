@@ -16,10 +16,10 @@ namespace API.extensions
             services.AddIdentityCore<Users>(opt =>
             {
                 //option password
-                opt.Password.RequireDigit = true;
+                // opt.Password.RequireDigit = true;
             }).AddRoles<Role>()
-                .AddRoleManager<RoleManager<Role>>()
                 .AddUserManager<UserManager<Users>>()
+                .AddRoleManager<RoleManager<Role>>()
                 .AddSignInManager<SignInManager<Users>>()
                 .AddRoleValidator<RoleValidator<Role>>()
                 .AddEntityFrameworkStores<DataContext>();
