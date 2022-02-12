@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Identity;
 namespace API.Entities
 {
     public class Role : IdentityRole<int>
-    {
+    { 
+        //member,admin
         public ICollection<UserRole> UserRole { get; set; }
     }
 }

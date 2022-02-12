@@ -21,12 +21,14 @@ namespace API.Controllers
         private readonly IMapper _mapper;
         private readonly UserManager<Users> _userManager;
         private readonly SignInManager<Users> _signInManager;
-        public AccountController(ITokenService tokenService, IMapper mapper, UserManager<Users> userManager, SignInManager<Users> signInManager)
+        private readonly RoleManager<Role> _roleManager;
+        public AccountController(ITokenService tokenService, IMapper mapper, UserManager<Users> userManager, SignInManager<Users> signInManager, RoleManager<Role> roleManager)
         {
             _tokenService = tokenService;
             _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
         }
 
         /// <summary>
@@ -42,12 +44,16 @@ namespace API.Controllers
 
             var user = _mapper.Map<Users>(model);
 
+            //add user 
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded) return BadRequest(new ApiResponse(400, "خطا در ثبت اطلاعات"));
+            //add role to user
+            var roleResult = await _userManager.AddToRoleAsync(user, "member");
+            if (!roleResult.Succeeded) return BadRequest(new ApiResponse(400, "خطا در ثبت اطلاعات"));
             return Ok(new UserTokenDto
             {
                 userName = user.UserName,
-                Token = _tokenService.CreateToken(user),
+                Token = await _tokenService.CreateToken(user),
             });
         }
 
@@ -67,7 +73,7 @@ namespace API.Controllers
             return Ok(new UserTokenDto
             {
                 userName = user.UserName,
-                Token = _tokenService.CreateToken(user),
+                Token = await _tokenService.CreateToken(user),
                 PhotoUrl = user?.Photos?.FirstOrDefault(x => x.IsMain)?.Url
             });
         }
