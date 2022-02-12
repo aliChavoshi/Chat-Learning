@@ -4,18 +4,19 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using API.Enums;
 using API.extensions;
+using Microsoft.AspNetCore.Identity;
 
 namespace API.Entities
 {
-    public class Users
+    public class Users : IdentityUser<int>
     {
         [Key]
-        public int Id { get; set; }
+        public override int Id { get; set; }
         public GenderEnum Gender { get; set; }
-        public string UserName { get; set; }
+        public override string UserName { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
-        public string Email { get; set; }
+        public override string Email { get; set; }
         public DateTime DateOfBirth { get; set; }
         public DateTime LastActive { get; set; }
         public string KnownAs { get; set; }
@@ -33,6 +34,7 @@ namespace API.Entities
         public ICollection<UserLike> TargetUserLikes { get; set; }
         public ICollection<Message> MessagesSent { get; set; }
         public ICollection<Message> MessagesReceived { get; set; }
+        public ICollection<UserRole> UserRole { get; set; }
         #endregion
 
         //get age
