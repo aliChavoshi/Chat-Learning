@@ -13,7 +13,7 @@ export class RolesModalComponent implements OnInit {
   title = 'my Title';
   closeBtnName = 'close';
   user: IUser;
-  roles: any[] = [];
+  roles: any[];
 
   constructor(public bsModalRef: BsModalRef, private toast: ToastrService) {}
 

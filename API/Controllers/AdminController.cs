@@ -41,14 +41,31 @@ namespace API.Controllers
         public async Task<IActionResult> EditRole(string userName, [FromQuery] string roles) // admin,member => split(,) => [admin,member]
         {
             var selectedRoles = roles.Split(","); //new role -> user
-            var user = await _userManager.FindByNameAsync(userName);
+            var user = await _userManager.Users.Include(x => x.UserRole).ThenInclude(x => x.Role).FirstOrDefaultAsync(x => x.UserName == userName);
             if (user == null) return NotFound(new ApiResponse(400, userName + "یافت نشد"));
-            var userRoles = await _userManager.GetRolesAsync(user); //database
+            var userRoles = user.UserRole.ToList(); //database
+            var resRoles = new List<string>();
             //delete old roles
-            var removeRes = await _userManager.RemoveFromRolesAsync(user, userRoles);
-            if (!removeRes.Succeeded) return BadRequest(new ApiResponse(400, "خطا در حذف اطلاعات"));
+            foreach (var role in selectedRoles)
+            {
+                if (userRoles.Select(x => x.Role.Name).Contains(role))
+                {
+                    await _userManager.RemoveFromRoleAsync(user, role);
+                }
+                else
+                {
+                    resRoles.Add(role);
+                }
+            }
+            var deleteRoles = userRoles.Where(x => !selectedRoles.Contains(x.Role.Name)).ToList();
+            foreach (var role in deleteRoles)
+            {
+                await _userManager.RemoveFromRoleAsync(user, role.Role.Name);
+            }
+            // var removeRes = await _userManager.RemoveFromRolesAsync(user, userRoles.Select(x => x.Role.Name).ToArray());
+            // if (!removeRes.Succeeded) return BadRequest(new ApiResponse(400, "خطا در حذف اطلاعات"));
             //add selected roles to user
-            var addRes = await _userManager.AddToRolesAsync(user, selectedRoles);
+            var addRes = await _userManager.AddToRolesAsync(user, resRoles);
             if (!addRes.Succeeded) return BadRequest(new ApiResponse(400, "خطا در ثبت اطلاعات"));
             return Ok(selectedRoles);
         }

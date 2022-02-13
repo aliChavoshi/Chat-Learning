@@ -10,7 +10,7 @@
     <span aria-hidden="true" class="visually-hidden">&times;</span>
   </button>
 </div>
-<div class="modal-body">
+<div class="modal-body" *ngIf="roles?.length > 0">
   <form #rolesForm="ngForm" id="rolesForm">
     <div class="form-check" *ngFor="let role of roles">
       <input
