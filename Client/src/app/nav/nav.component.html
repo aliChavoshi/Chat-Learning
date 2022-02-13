@@ -37,6 +37,15 @@
             >لیست کاربران</a
           >
         </li>
+        <li class="nav-item" *ngIf="true">
+          <a
+            class="nav-link"
+            routerLinkActive="active"
+            aria-current="page"
+            routerLink="/admin"
+            >پنل ادمین</a
+          >
+        </li>
         <li class="nav-item">
           <a
             class="nav-link"
@@ -72,7 +81,7 @@
         placement="bottom left"
       >
         <img
-          style="max-width: 60px;margin-right: 5px;"
+          style="max-width: 60px; margin-right: 5px"
           class="img-thumbnail p-1"
           [src]="User.photoUrl || './assets/images/user.png'"
           [alt]="User.userName"

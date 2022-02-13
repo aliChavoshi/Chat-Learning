@@ -1,3 +1,4 @@
+import { AdminGuard } from './_guards/admin.guard';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ErrorsComponent } from './errors/errors.component';
@@ -16,6 +17,12 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     loadChildren: () =>
       import('./members/members.module').then((x) => x.MembersModule),
+  },
+  {
+    path: 'admin',
+    canActivate: [AuthGuard, AdminGuard],
+    loadChildren: () =>
+      import('./admin/admin.module').then((x) => x.AdminModule),
   },
   {
     path: 'lists',

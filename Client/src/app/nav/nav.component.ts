@@ -4,7 +4,7 @@ import { AccountService } from '../_services/account.service';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { User } from '../_models/account';
+import { IUser } from '../_models/account';
 
 @Component({
   selector: 'app-nav',
@@ -12,7 +12,7 @@ import { User } from '../_models/account';
   styleUrls: ['./nav.component.css'],
 })
 export class NavComponent implements OnInit {
-  currentUser$: Observable<User>;
+  currentUser$: Observable<IUser>;
 
   form = new FormGroup({
     userName: new FormControl('', [

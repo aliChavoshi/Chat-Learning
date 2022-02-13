@@ -11,8 +11,11 @@ export interface IRequestRegister {
   city: string;
   country: string;
 }
-export interface User {
+export interface IUser {
   userName: string;
   token: string;
   photoUrl: string;
+  gender: number;
+  knownAs: string;
+  roles?: string[];
 }

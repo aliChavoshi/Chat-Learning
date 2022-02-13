@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { IPreventUnsavedChanges } from 'src/app/_guards/prevent-unsaved-changes.guard';
-import { User } from 'src/app/_models/account';
+import { IUser } from 'src/app/_models/account';
 import { IMember } from 'src/app/_models/member';
 import { AccountService } from 'src/app/_services/account.service';
 import { MemberService } from 'src/app/_services/member.service';
@@ -17,7 +17,7 @@ import { MemberService } from 'src/app/_services/member.service';
 export class EditMemberComponent implements OnInit, IPreventUnsavedChanges {
   errors = [];
   isSubmit = false;
-  user: User;
+  user: IUser;
   member: IMember;
 
   form: FormGroup;

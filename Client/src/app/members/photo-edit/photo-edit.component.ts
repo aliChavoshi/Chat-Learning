@@ -1,7 +1,7 @@
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
 import { AccountService } from 'src/app/_services/account.service';
-import { User } from 'src/app/_models/account';
+import { IUser } from 'src/app/_models/account';
 import { environment } from 'src/environments/environment';
 import { IMember, Photo } from 'src/app/_models/member';
 import { Component, Input, OnInit } from '@angular/core';
@@ -15,7 +15,7 @@ import { MemberService } from 'src/app/_services/member.service';
 })
 export class PhotoEditComponent implements OnInit {
   private backendUrl = environment.baseUrl;
-  user: User;
+  user: IUser;
   @Input() member: IMember;
 
   uploader: FileUploader;
