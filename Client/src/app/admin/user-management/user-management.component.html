@@ -11,7 +11,9 @@
           <td>{{ user.userName }}</td>
           <td class="fw-bold">{{ user?.roles }}</td>
           <td>
-            <button class="btn btn-sm btn-primary" (click)="onEditModal()">Edit Role</button>
+            <button class="btn btn-sm btn-primary" (click)="onEditModal(user)">
+              Edit Role
+            </button>
           </td>
         </tr>
       </tbody>

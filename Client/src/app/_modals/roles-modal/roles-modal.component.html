@@ -1,5 +1,6 @@
 <div class="modal-header">
-  <h4 class="modal-title pull-left">{{ title }}</h4>
+  <h4 class="modal-title pull-left">Edit Roles for {{ user?.userName }}</h4>
+  <!-- hide button -->
   <button
     type="button"
     class="btn-close close pull-right text-danger"
@@ -10,12 +11,24 @@
   </button>
 </div>
 <div class="modal-body">
-  <ul *ngIf="list.length">
-    <li *ngFor="let item of list">{{ item }}</li>
-  </ul>
+  <form #rolesForm="ngForm" id="rolesForm">
+    <div class="form-check" *ngFor="let role of roles">
+      <input
+        type="checkbox"
+        class="form-check-input"
+        [checked]="role?.checked"
+        [value]="role?.name"
+        (change)="role.checked = !role.checked"
+      />
+      <label>{{ role?.name }}</label>
+    </div>
+  </form>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-primary" (click)="bsModalRef.hide()">
+  <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">
     {{ closeBtnName }}
+  </button>
+  <button type="button" class="btn btn-primary" (click)="changeUpdatedRoles()">
+    update Roles
   </button>
 </div>

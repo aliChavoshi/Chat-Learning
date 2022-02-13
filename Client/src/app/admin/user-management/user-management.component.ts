@@ -22,19 +22,23 @@ export class UserManagementComponent implements OnInit {
   ngOnInit(): void {
     this.getUsersWithRoles();
   }
-  onEditModal() {
-    const init = {
+  onEditModal(user: IUser) {
+    const init: any = {
+      class: 'modal-dialog-centered',
       initialState: {
-        list: ['test', 'test1', 'test2'],
-        title: 'Ali Chavoshi',
+        title: 'Edit Roles',
+        user,
+        roles: this.getRolesArray(), //name,checked
       },
     };
     this.bsModalRef = this.modalService.show(RolesModalComponent, init);
-    this.bsModalRef.content.closeBtnName = 'بسته';
+    // this.bsModalRef.content.closeBtnName = 'بسته';
   }
   getUsersWithRoles() {
     this.adminService.getUsersWithRoles().subscribe((res) => {
       this.users = res;
     });
   }
+
+  private getRolesArray() {}
 }
