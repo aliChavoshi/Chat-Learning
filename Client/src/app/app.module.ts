@@ -15,6 +15,7 @@ import { ErrorsComponent } from './errors/errors.component';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
 import { AuthInterceptor } from './_interceptors/auth.interceptor';
 import { LoadingInterceptor } from './_interceptors/loading.interceptor';
+import { HasInRoleDirective } from './_directive/has-in-role.directive';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
     RegisterComponent,
     NotFoundComponent,
     ErrorsComponent,
+    HasInRoleDirective,
   ],
   imports: [
     BrowserAnimationsModule,

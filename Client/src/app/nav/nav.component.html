@@ -37,7 +37,7 @@
             >لیست کاربران</a
           >
         </li>
-        <li class="nav-item" *ngIf="true">
+        <li class="nav-item" *appHasInRole="['admin', 'superAdmin']">
           <a
             class="nav-link"
             routerLinkActive="active"
