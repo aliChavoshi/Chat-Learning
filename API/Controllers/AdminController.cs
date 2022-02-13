@@ -25,12 +25,13 @@ namespace API.Controllers
         public async Task<IActionResult> GetUsersWithRoles()
         {
             var users = await _userManager.Users.Include(x => x.UserRole).ThenInclude(x => x.Role).OrderBy(x => x.UserName)
-                .Select(x => new
+                .Select(x => new UserTokenDto
                 {
-                    id = x.Id,
                     userName = x.UserName,
-                    roles = x.UserRole.Select(y => y.Role.Name).ToList(),
-                    roleIds = x.UserRole.Select(r => r.RoleId).ToList()
+                    Roles = x.UserRole.Select(r => r.Role.Name).ToList(),
+                    Gender = x.Gender,
+                    KnownAs = x.KnownAs,
+                    Id = x.Id
                 }).ToListAsync();
             return Ok(users);
         }

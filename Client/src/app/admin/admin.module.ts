@@ -5,9 +5,11 @@ import { CommonModule } from '@angular/common';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminComponent } from './admin.component';
+import { UserManagementComponent } from './user-management/user-management.component';
+import { PhotoManagementComponent } from './photo-management/photo-management.component';
 
 @NgModule({
-  declarations: [AdminComponent],
+  declarations: [AdminComponent, UserManagementComponent, PhotoManagementComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,

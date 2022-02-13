@@ -18,4 +18,5 @@ export interface IUser {
   gender: number;
   knownAs: string;
   roles?: string[];
+  id: number;
 }
