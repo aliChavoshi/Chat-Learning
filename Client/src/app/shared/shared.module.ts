@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ModalModule } from 'ngx-bootstrap/modal';
 //ngx-toast
 import { ToastrModule } from 'ngx-toastr';
 //tabs
@@ -30,6 +31,7 @@ import { RouterModule } from '@angular/router';
     BsDropdownModule.forRoot(),
     BsDatepickerModule.forRoot(),
     PaginationModule.forRoot(),
+    ModalModule.forRoot(),
     //ngx-toastr
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
@@ -53,6 +55,7 @@ import { RouterModule } from '@angular/router';
     BsDropdownModule,
     BsDatepickerModule,
     PaginationModule,
+    ModalModule,
     //ngx-toastr
     ToastrModule,
     TabsModule,

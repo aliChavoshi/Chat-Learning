@@ -1,6 +1,6 @@
 <div class="row">
   <div class="main-body">
-    <table class="table table-responsive table-bordered table-hover">
+    <table class="table text-center table-hover">
       <thead>
         <th>userName</th>
         <th>Active Roles</th>
@@ -9,9 +9,9 @@
       <tbody>
         <tr *ngFor="let user of users">
           <td>{{ user.userName }}</td>
-          <td>{{ user?.roles }}</td>
+          <td class="fw-bold">{{ user?.roles }}</td>
           <td>
-            <button class="btn btn-sm btn-primary">Edit Role</button>
+            <button class="btn btn-sm btn-primary" (click)="onEditModal()">Edit Role</button>
           </td>
         </tr>
       </tbody>
