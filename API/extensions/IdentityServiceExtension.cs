@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System.Text;
 using API.Data;
 using API.Entities;
@@ -13,7 +14,7 @@ namespace API.extensions
     {
         public static IServiceCollection AddIdentityService(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddIdentityCore<Users>(opt =>
+            services.AddIdentityCore<Users>(options =>
             {
                 //option password
                 // opt.Password.RequireDigit = true;
@@ -34,6 +35,21 @@ namespace API.extensions
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Token:Key"])),
+                    };
+
+                    //signalR
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            var accessToken = context.Request.Query["access_token"]; //access_token : token
+                            var path = context.HttpContext.Request.Path;
+                            if (!string.IsNullOrEmpty(accessToken) && (path.StartsWithSegments("/hubs")))
+                            {
+                                context.Token = accessToken;
+                            }
+                            return Task.CompletedTask;
+                        }
                     };
                 });
             //add policy
