@@ -28,6 +28,7 @@ namespace API.extensions
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
+                    //for JWT
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = false,

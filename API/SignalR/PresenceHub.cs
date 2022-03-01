@@ -11,6 +11,7 @@ namespace API.SignalR
     [Authorize] //token ->Context ->UserName
     public class PresenceHub : Hub
     {
+        //connect to hub 
         public override async Task OnConnectedAsync()
         {
             await Clients.Others.SendAsync("UserIsOnline", Context.User.GetUserName()); //send to all except me

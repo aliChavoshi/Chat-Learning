@@ -1,3 +1,4 @@
+import { PresenceService } from './presence.service';
 import { HttpClient, JsonpClientBackend } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
@@ -13,13 +14,17 @@ export class AccountService {
   private currentUser = new BehaviorSubject<IUser>(null); // for next this service
   currentUser$ = this.currentUser.asObservable(); // for subscribe
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private presenceService: PresenceService
+  ) {}
 
   login(login: IRequestLogin) {
     return this.http.post<IUser>(`${this.baseUrl}/account/login`, login).pipe(
-      map((response: IUser) => {
-        if (response.userName && response.token) {
-          this.setCurrentUser(response);
+      map((user: IUser) => {
+        if (user.userName && user.token) {
+          this.setCurrentUser(user);
+          this.presenceService.createHubConnection(user);
         }
       })
     );
@@ -29,11 +34,12 @@ export class AccountService {
     return this.http
       .post<IUser>(`${this.baseUrl}/account/register`, register)
       .pipe(
-        map((response) => {
-          if (response.userName && response.token) {
-            this.setCurrentUser(response);
+        map((user: IUser) => {
+          if (user.userName && user.token) {
+            this.setCurrentUser(user);
+            this.presenceService.createHubConnection(user);
           }
-          return response;
+          return user;
         })
       );
   }
@@ -62,6 +68,7 @@ export class AccountService {
   logout() {
     localStorage.removeItem('user');
     this.currentUser.next(null);
+    this.presenceService.stopHubConnection();
   }
 
   private getDecodedToken(token: string) {
