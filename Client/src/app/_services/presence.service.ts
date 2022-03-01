@@ -1,3 +1,4 @@
+import { BehaviorSubject } from 'rxjs';
 import { IUser } from './../_models/account';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
@@ -11,6 +12,8 @@ export class PresenceService {
   //base
   private hubUrl = environment.hubUrl;
   private hubConnection: HubConnection;
+  private usersOnline = new BehaviorSubject<string[]>([]); //next
+  public usersOnline$ = this.usersOnline.asObservable(); //sub
 
   constructor(private toast: ToastrService) {}
 
@@ -31,6 +34,10 @@ export class PresenceService {
     });
     this.hubConnection.on('UserIsOffline', (userName: string) => {
       this.toast.error(userName + ' is offline');
+    });
+    this.hubConnection.on('GetOnlineUsers', (users: string[]) => {
+      this.usersOnline.next(users);
+      console.log(users);
     });
   }
 

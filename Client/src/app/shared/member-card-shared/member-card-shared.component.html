@@ -6,7 +6,16 @@
       class="img-thumbnail"
     />
     <div class="card-body">
+      <span
+        class="d-inline"
+        [class.is-online]="
+          (presence.usersOnline$ | async).includes(member.userName)
+        "
+      >
+        <i class="fas fa-user"> </i>
+      </span>
       <p class="card-text">{{ member.userName }} - {{ member.age }}</p>
+      <!-- is online ? -->
       <div class="d-flex justify-content-between align-items-center">
         <div class="btn-group">
           <button

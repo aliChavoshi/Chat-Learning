@@ -1,0 +1,15 @@
+@keyframes fa-blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.1;
+  }
+}
+.is-online {
+  animation: fa-blink 1.5s linear infinite reverse;
+  color: rgb(1, 189, 42, 0.9);
+}
