@@ -8,6 +8,7 @@ using API.Helpers;
 using API.interfaces;
 using API.Middlewares;
 using API.services;
+using API.SignalR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,8 @@ namespace API.extensions
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IUserLikeRepository, UserLikeRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
+            //signalR Tracker
+            services.AddSingleton<PresenceTracker>();
             //autoMapper
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             //connect to database
