@@ -28,13 +28,20 @@ export class MessageService {
       })
       .withAutomaticReconnect()
       .build();
-
+    //start hub
     this.hubConnection.start().catch((err) => {
       console.log(err);
-      console.log('Error while establishing connection');
     });
+    //ReceiveMessageThread
     this.hubConnection.on('ReceiveMessageThread', (messages: IMessage[]) => {
       this.messageThreadSource.next(messages);
+    });
+    //send message
+    this.hubConnection.on('NewMessage', (message) => {
+      this.messageThreadSource.next([
+        ...this.messageThreadSource.getValue(),
+        message,
+      ]);
     });
   }
   stopHubConnection() {
@@ -42,6 +49,16 @@ export class MessageService {
       this.hubConnection.stop().catch((err) => {
         console.log(err);
       });
+    }
+  }
+  async addMessage(content: string, recipientUserName: string) {
+    try {
+      return await this.hubConnection.invoke('SendMessage', {
+        recipientUserName,
+        content,
+      });
+    } catch (err) {
+      console.log(err);
     }
   }
   getMessages(messageParams: MessageParams) {

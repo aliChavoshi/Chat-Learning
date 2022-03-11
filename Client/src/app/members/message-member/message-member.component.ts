@@ -24,13 +24,11 @@ export class MessageMemberComponent implements OnInit {
 
   ngOnInit(): void {}
   onSubmit() {
-    // const sub$ = this.messageService
-    //   .sendMessage(this.userName, this.messageContent)
-    //   .subscribe((message) => {
-    //     this.messages.push(message);
-    //     this.messageContent = '';
-    //   });
-    // this.sub.add(sub$);
+    this.messageService
+      .addMessage(this.messageContent, this.userName)
+      .then((response) => {
+        this.messageContent = '';
+      });
   }
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
