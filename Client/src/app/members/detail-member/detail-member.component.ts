@@ -10,7 +10,7 @@ import {
   OnDestroy,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   NgxGalleryAnimation,
   NgxGalleryImage,
@@ -39,7 +39,8 @@ export class DetailMemberComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private messageService: MessageService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private router: Router
   ) {
     const sub$ = this.accountService.currentUser$
       .pipe(take(1))
@@ -47,6 +48,8 @@ export class DetailMemberComponent implements OnInit, OnDestroy {
         this.currentUser = res;
       });
     this.sub?.add(sub$);
+    //new instance of subscription
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
   ngOnInit(): void {
