@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { IUser } from './../_models/account';
 import { ToastrService } from 'ngx-toastr';
@@ -15,7 +17,7 @@ export class PresenceService {
   private usersOnline = new BehaviorSubject<string[]>([]); //next
   public usersOnline$ = this.usersOnline.asObservable(); //sub
 
-  constructor(private toast: ToastrService) {}
+  constructor(private toast: ToastrService, private router: Router) {}
 
   createHubConnection(user: IUser) {
     this.hubConnection = new HubConnectionBuilder()
@@ -37,6 +39,15 @@ export class PresenceService {
     });
     this.hubConnection.on('GetOnlineUsers', (users: string[]) => {
       this.usersOnline.next(users);
+    });
+    //notification get new message
+    this.hubConnection.on('NewMessageReceived', ({ userName, content }) => {
+      this.toast
+        .info(userName + ' ' + 'has send you a message')
+        .onTap.pipe(take(1))
+        .subscribe(() => {
+          this.router.navigateByUrl('/members/' + userName + '?tab=2');
+        });
     });
   }
 

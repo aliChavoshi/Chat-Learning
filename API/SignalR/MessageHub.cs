@@ -19,13 +19,19 @@ namespace API.SignalR
         private readonly IMessageRepository _message;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly PresenceTracker _tracker;
+        private readonly IHubContext<PresenceHub> _presence;
 
-        public MessageHub(IMessageRepository message, IMapper mapper, IUserRepository userRepository)
+        public MessageHub(IMessageRepository message, IMapper mapper, IUserRepository userRepository,
+         PresenceTracker tracker, IHubContext<PresenceHub> presence)
         {
             _message = message;
             _mapper = mapper;
             _userRepository = userRepository;
+            _tracker = tracker;
+            _presence = presence;
         }
+
         public override async Task OnConnectedAsync()
         {
             var httpContext = Context.GetHttpContext();
@@ -56,6 +62,7 @@ namespace API.SignalR
             if (sender == null) throw new HubException("Sender not found");
             var recipient = await _userRepository.GetUserByUserNameWithPhotos(model.RecipientUserName);
             if (recipient == null) throw new HubException("Sender not found");
+            //create new message
             var message = new Message
             {
                 SenderId = sender.Id,
@@ -64,6 +71,7 @@ namespace API.SignalR
                 ReceiverUserName = recipient.UserName,
                 Content = model.Content,
             };
+            await _message.AddMessage(message);
             //create groupName
             var groupName = GetGroupName(currentUser, recipient.UserName);
             //check user exist in group
@@ -73,8 +81,18 @@ namespace API.SignalR
                 message.DateRead = DateTime.Now;
                 message.IsRead = true;
             }
+            else
+            {
+                //send notification
+                //online users
+                var connectionIds = await _tracker.GetConnectionsForUser(recipient.UserName);
+                if (connectionIds != null)
+                {
+                    await _presence.Clients.Clients(connectionIds).SendAsync("NewMessageReceived",
+                        new { userName = sender.UserName, content = model.Content });
+                }
+            }
             //add new message
-            await _message.AddMessage(message);
             if (await _message.SaveAll())
             {
                 await Clients.Group(groupName).SendAsync("NewMessage", _mapper.Map<MessageDto>(message));
@@ -85,7 +103,6 @@ namespace API.SignalR
             var stringCompare = string.CompareOrdinal(caller, other) < 0; //caller >  other => true
             return stringCompare ? $"{caller}-{other}" : $"{other}-{caller}";
         }
-
         private async Task<bool> AddToGroupWithConnections(HubCallerContext context, string groupName)
         {
             var group = await _message.GetMessageGroup(groupName);
@@ -98,7 +115,6 @@ namespace API.SignalR
             group.Connections.Add(connection);
             return await _message.SaveAll();
         }
-
         private async Task RemoveFromMessageGroup(string connectionId)
         {
             var connection = await _message.GetConnection(connectionId);

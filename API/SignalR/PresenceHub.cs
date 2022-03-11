@@ -27,7 +27,6 @@ namespace API.SignalR
             //tracker get online users
             await GetOnlineUsers();
         }
-
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             await _tracker.UserDisconnected(Context.User.GetUserName(), Context.ConnectionId);
@@ -37,7 +36,6 @@ namespace API.SignalR
 
             await base.OnDisconnectedAsync(exception);
         }
-
         private async Task GetOnlineUsers()
         {
             var currentUsers = await _tracker.GetOnlineUsers();

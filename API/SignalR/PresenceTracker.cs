@@ -31,13 +31,19 @@ namespace API.SignalR
             }
             return Task.CompletedTask;
         }
-
         public Task<string[]> GetOnlineUsers()
         {
             string[] userOnline;
             lock (onlineUsers)
                 userOnline = onlineUsers.OrderBy(x => x.Key).Select(x => x.Key).ToArray(); //ley=>userName
             return Task.FromResult(userOnline);
+        }
+        public Task<List<string>> GetConnectionsForUser(string userName)
+        {
+            List<string> connectionIds = new();
+            lock (onlineUsers)
+                connectionIds = onlineUsers.GetValueOrDefault(userName);
+            return Task.FromResult(connectionIds);
         }
     }
 }
