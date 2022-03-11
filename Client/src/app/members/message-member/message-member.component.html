@@ -7,13 +7,16 @@
   >
     <!-- no message thread -->
     <div
-      *ngIf="messages?.length === 0"
+      *ngIf="(messageService.messageThreadSource$ | async)?.length === 0"
       class="alert alert-primary py-4 text-center"
     >
       No messages yet... say hi by using the message box below
     </div>
     <!-- has message thread -->
-    <ul class="chat" *ngIf="messages.length > 0">
+    <ul
+      class="chat"
+      *ngIf="messageService.messageThreadSource$ | async as messages"
+    >
       <li *ngFor="let message of messages">
         <div>
           <span class="chat-img float-right">

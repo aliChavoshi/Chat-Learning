@@ -55,10 +55,11 @@
           class="mt-3 p-2"
           heading="Messages"
         >
-          <app-message-member
+          <app-message-member [userName]="member?.userName"></app-message-member>
+          <!-- <app-message-member
             [messages]="messages"
             [userName]="member?.userName"
-          ></app-message-member>
+          ></app-message-member> -->
         </tab>
       </tabset>
     </div>

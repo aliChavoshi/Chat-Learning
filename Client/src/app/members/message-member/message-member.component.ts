@@ -18,20 +18,19 @@ export class MessageMemberComponent implements OnInit {
   private sub = new Subscription();
   messageContent = '';
   loading = false;
-  @Input() messages: IMessage[] = [];
   @Input() userName: string;
 
-  constructor(private messageService: MessageService) {}
+  constructor(public messageService: MessageService) {}
 
   ngOnInit(): void {}
   onSubmit() {
-    const sub$ = this.messageService
-      .sendMessage(this.userName, this.messageContent)
-      .subscribe((message) => {
-        this.messages.push(message);
-        this.messageContent = '';
-      });
-    this.sub.add(sub$);
+    // const sub$ = this.messageService
+    //   .sendMessage(this.userName, this.messageContent)
+    //   .subscribe((message) => {
+    //     this.messages.push(message);
+    //     this.messageContent = '';
+    //   });
+    // this.sub.add(sub$);
   }
   ngOnDestroy(): void {
     this.sub?.unsubscribe();

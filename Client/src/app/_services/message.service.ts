@@ -31,15 +31,18 @@ export class MessageService {
 
     this.hubConnection.start().catch((err) => {
       console.log(err);
+      console.log('Error while establishing connection');
     });
     this.hubConnection.on('ReceiveMessageThread', (messages: IMessage[]) => {
       this.messageThreadSource.next(messages);
     });
   }
   stopHubConnection() {
-    this.hubConnection.stop().catch((err) => {
-      console.log(err);
-    });
+    if (this.hubConnection) {
+      this.hubConnection.stop().catch((err) => {
+        console.log(err);
+      });
+    }
   }
   getMessages(messageParams: MessageParams) {
     //get data from api

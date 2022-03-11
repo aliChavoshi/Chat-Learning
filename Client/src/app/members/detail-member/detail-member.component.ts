@@ -1,4 +1,6 @@
-import { Subscription } from 'rxjs';
+import { IUser } from 'src/app/_models/account';
+import { AccountService } from 'src/app/_services/account.service';
+import { Subscription, take } from 'rxjs';
 import { MessageService } from './../../_services/message.service';
 import { IMessage } from './../../_models/message';
 import {
@@ -25,7 +27,7 @@ import { IMember } from 'src/app/_models/member';
 export class DetailMemberComponent implements OnInit, OnDestroy {
   private sub = new Subscription();
   member: IMember;
-  messages: IMessage[] = [];
+  currentUser: IUser;
   //gallery
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
@@ -36,8 +38,16 @@ export class DetailMemberComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private messageService: MessageService
-  ) {}
+    private messageService: MessageService,
+    private accountService: AccountService
+  ) {
+    const sub$ = this.accountService.currentUser$
+      .pipe(take(1))
+      .subscribe((res) => {
+        this.currentUser = res;
+      });
+    this.sub?.add(sub$);
+  }
 
   ngOnInit(): void {
     this.loadMember();
@@ -55,25 +65,21 @@ export class DetailMemberComponent implements OnInit, OnDestroy {
     });
     this.galleryImages = this.getImages();
   }
-  loadMessageThread() {
-    const sub$ = this.messageService
-      .getMessageThread(this.member?.userName)
-      .subscribe((res) => {
-        this.messages = res;
-      });
-    this.sub?.add(sub$);
-  }
+
   selectTab(tabId: number) {
     this.staticTabs.tabs[tabId].active = true;
   }
   onTabChange(tab: TabDirective) {
     this.activeTab = tab ?? null;
     if (this.activeTab) {
-      if (
-        this?.activeTab?.heading === 'Messages' &&
-        this?.messages?.length === 0
-      ) {
-        this.loadMessageThread();
+      if (this?.activeTab?.heading === 'Messages') {
+        //signalR
+        this.messageService.createHubConnection(
+          this?.currentUser,
+          this?.member?.userName
+        );
+      } else {
+        this.messageService.stopHubConnection();
       }
     }
   }
@@ -101,5 +107,6 @@ export class DetailMemberComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.sub.unsubscribe();
+    this.messageService.stopHubConnection();
   }
 }
