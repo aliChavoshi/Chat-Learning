@@ -33,6 +33,8 @@ namespace API.SignalR
             var currentUser = Context.User.GetUserName();
             //create group name
             var groupName = GetGroupName(currentUser, otherUser);
+            //add connection to group in Db
+            await AddToGroupWithConnections(Context, groupName);
             //create group
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
             //get all message between user
@@ -42,6 +44,8 @@ namespace API.SignalR
         }
         public override async Task OnDisconnectedAsync(Exception exception)
         {
+            //remove connection from group in Db
+            await RemoveFromMessageGroup(Context.ConnectionId);
             await base.OnDisconnectedAsync(exception);
         }
         public async Task SendMessage(CreateMessageDto model)
@@ -60,11 +64,19 @@ namespace API.SignalR
                 ReceiverUserName = recipient.UserName,
                 Content = model.Content,
             };
+            //create groupName
+            var groupName = GetGroupName(currentUser, recipient.UserName);
+            //check user exist in group
+            var group = await _message.GetMessageGroup(groupName);
+            if (group.Connections.Any(x => x.UserName == recipient.UserName))
+            {
+                message.DateRead = DateTime.Now;
+                message.IsRead = true;
+            }
+            //add new message
             await _message.AddMessage(message);
             if (await _message.SaveAll())
             {
-                //create groupName
-                var groupName = GetGroupName(currentUser, recipient.UserName);
                 await Clients.Group(groupName).SendAsync("NewMessage", _mapper.Map<MessageDto>(message));
             }
         }
@@ -72,6 +84,26 @@ namespace API.SignalR
         {
             var stringCompare = string.CompareOrdinal(caller, other) < 0; //caller >  other => true
             return stringCompare ? $"{caller}-{other}" : $"{other}-{caller}";
+        }
+
+        private async Task<bool> AddToGroupWithConnections(HubCallerContext context, string groupName)
+        {
+            var group = await _message.GetMessageGroup(groupName);
+            var connection = new Connection(context.ConnectionId, context.User.GetUserName());
+            if (group == null)
+            {
+                group = new Group(groupName);
+                _message.AddGroup(group);
+            }
+            group.Connections.Add(connection);
+            return await _message.SaveAll();
+        }
+
+        private async Task RemoveFromMessageGroup(string connectionId)
+        {
+            var connection = await _message.GetConnection(connectionId);
+            _message.RemoveConnection(connection);
+            await _message.SaveAll();
         }
     }
 }
