@@ -16,6 +16,8 @@ namespace API.Data
         public DbSet<Photo> Photo { get; set; }
         public DbSet<UserLike> UserLike { get; set; }
         public DbSet<Message> Message { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<Connection> Connections { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
