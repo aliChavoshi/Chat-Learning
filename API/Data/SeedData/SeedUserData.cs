@@ -9,12 +9,14 @@ using System.Text.Json;
 using API.Entities;
 using System.Text;
 using Microsoft.Extensions.Logging;
+using API.interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace API.Data.SeedData
 {
     public class SeedUserData
     {
-        public static async Task SeedUsers(DataContext context, ILoggerFactory logger)
+        public static async Task SeedUsers(DataContext context, UserManager<Users> userManager)
         {
             try
             {
@@ -23,21 +25,15 @@ namespace API.Data.SeedData
                     var userData = await File.ReadAllTextAsync("Data/SeedData/UserSeedData.json");
                     var users = JsonSerializer.Deserialize<List<Users>>(userData);
                     if (users == null) return;
-                    // foreach (var user in users)
-                    // {
-                    //     using var hmac = new HMACSHA512();
-                    //     user.UserName = user.UserName.ToLower();
-                    //     user.PasswordSalt = hmac.Key;
-                    //     user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("Pa$$w0rd"));
-                    // }
-                    await context.Users.AddRangeAsync(users);
+                    foreach (var user in users)
+                    {
+                        await userManager.CreateAsync(user, "P@$$w0rd");
+                    }
                     await context.SaveChangesAsync();
                 }
             }
             catch (Exception ex)
             {
-                var log = logger.CreateLogger<SeedUserData>();
-                log.LogError(ex.Message);
             }
         }
     }

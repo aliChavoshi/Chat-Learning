@@ -11,6 +11,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using API.Data.SeedData;
+using Microsoft.AspNetCore.Identity;
+using API.interfaces;
+using API.Entities;
 
 namespace API
 {
@@ -25,8 +28,9 @@ namespace API
             try
             {
                 var context = services.GetRequiredService<DataContext>();
+                var userManager = services.GetRequiredService<UserManager<Users>>();
                 await context.Database.MigrateAsync();
-                await SeedUserData.SeedUsers(context, loggerFactory);
+                await SeedUserData.SeedUsers(context, userManager);
             }
             catch (Exception ex)
             {
