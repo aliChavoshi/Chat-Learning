@@ -89,11 +89,6 @@ namespace API.services
             _context.Connections.Remove(connection);
         }
 
-        public async Task<bool> SaveAll()
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
-
         public async Task UpdateMessageToRead(List<MessageDto> messages, string userName)
         {
             messages = messages.Where(x => !x.DateRead.HasValue && x.ReceiverUserName == userName).ToList(); //دریافت ککنده خودم باشم

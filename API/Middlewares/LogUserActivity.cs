@@ -18,11 +18,11 @@ namespace API.Middlewares
             if (!resultContext.HttpContext.User.Identity.IsAuthenticated) return;
 
             var userName = resultContext.HttpContext.User.GetUserName();
-            var rep = resultContext.HttpContext.RequestServices.GetService<IUserRepository>();
-            var user = await rep.GetUserByUserName(userName);
+            var rep = resultContext.HttpContext.RequestServices.GetService<IUnitOfWork>();
+            var user = await rep.UserRepository.GetUserByUserName(userName);
             user.LastActive = DateTime.Now;
-            rep.Update(user);
-            await rep.SaveAllAsync();
+            rep.UserRepository.Update(user);
+            await rep.CompleteAsync();
         }
     }
 }

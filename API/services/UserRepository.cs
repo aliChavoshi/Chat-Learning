@@ -90,10 +90,7 @@ namespace API.services
                 .SingleOrDefaultAsync(x => x.UserName.ToLower() == userName.ToLower());
         }
 
-        public async Task<bool> SaveAllAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
+       
 
         public void Update(Users user)
         {

@@ -23,7 +23,6 @@ namespace API.interfaces
         Task<PagedList<MessageDto>> GetMessageForUser(MessageParams messageParams);
         // message between two users
         Task<IEnumerable<MessageDto>> GetMessageThread(string currentUserName, string recipientName);
-        Task<bool> SaveAll();
         Task UpdateMessageToRead(List<MessageDto> messages, string userName);
     }
 }

@@ -18,6 +18,5 @@ namespace API.interfaces
         Task<Users> GetUserByUserName(string userName);
         Task<Users> GetUserByUserNameWithPhotos(string userName);
         void Update(Users user);
-        Task<bool> SaveAllAsync();
     }
 }

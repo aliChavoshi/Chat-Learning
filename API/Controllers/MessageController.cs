@@ -20,15 +20,12 @@ namespace API.Controllers
     [Authorize]
     public class MessageController : BaseApiController
     {
-        private readonly IMessageRepository _messageRepository;
-        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-
-        public MessageController(IMessageRepository messageRepository, IUserRepository userRepository, IMapper mapper)
+        private readonly IUnitOfWork _uow;
+        public MessageController(IMapper mapper, IUnitOfWork uow)
         {
-            _messageRepository = messageRepository;
-            _userRepository = userRepository;
             _mapper = mapper;
+            _uow = uow;
         }
 
         [HttpPost]
@@ -36,9 +33,9 @@ namespace API.Controllers
         {
             var currentUser = User.GetUserName();
             if (currentUser == createMessage.RecipientUserName) return BadRequest(new ApiResponse(400, "You cannot send message to yourself"));
-            var sender = await _userRepository.GetUserByUserNameWithPhotos(currentUser);
+            var sender = await _uow.UserRepository.GetUserByUserNameWithPhotos(currentUser);
             if (sender == null) return BadRequest(new ApiResponse(404, "Sender not found"));
-            var recipient = await _userRepository.GetUserByUserNameWithPhotos(createMessage.RecipientUserName);
+            var recipient = await _uow.UserRepository.GetUserByUserNameWithPhotos(createMessage.RecipientUserName);
             if (recipient == null) return BadRequest(new ApiResponse(404, "Recipient not found"));
             var message = new Message
             {
@@ -48,8 +45,8 @@ namespace API.Controllers
                 ReceiverUserName = recipient.UserName,
                 Content = createMessage.Content,
             };
-            await _messageRepository.AddMessage(message);
-            if (await _messageRepository.SaveAll())
+            await _uow.MessageRepository.AddMessage(message);
+            if (await _uow.CompleteAsync())
                 return Ok(_mapper.Map<Message, MessageDto>(message));
             return BadRequest(new ApiResponse(400, "Failed to send message"));
         }
@@ -59,14 +56,14 @@ namespace API.Controllers
         {
             var currnetUserName = User.GetUserName();
             messageParams.UserName = currnetUserName;
-            return Ok(await _messageRepository.GetMessageForUser(messageParams));
+            return Ok(await _uow.MessageRepository.GetMessageForUser(messageParams));
         }
 
         [HttpGet("thread/{UserName}")]
         public async Task<ActionResult<IEnumerable<MessageDto>>> GetMessageThread(string userName)
         {
             var currnetUserName = User.GetUserName();
-            return Ok(await _messageRepository.GetMessageThread(currnetUserName, userName));
+            return Ok(await _uow.MessageRepository.GetMessageThread(currnetUserName, userName));
         }
     }
 }
