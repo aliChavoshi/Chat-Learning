@@ -27,6 +27,7 @@ namespace API.extensions
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IUserLikeRepository, UserLikeRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             //signalR Tracker
             services.AddSingleton<PresenceTracker>();
             //autoMapper
