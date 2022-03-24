@@ -1,7 +1,7 @@
+import { ConfirmService } from './../../_services/confirm.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { IPreventUnsavedChanges } from 'src/app/_guards/prevent-unsaved-changes.guard';
 import { IUser } from 'src/app/_models/account';
@@ -17,6 +17,7 @@ import { MemberService } from 'src/app/_services/member.service';
 export class EditMemberComponent implements OnInit, IPreventUnsavedChanges {
   errors = [];
   isSubmit = false;
+  resultSuccess = false;
   user: IUser;
   member: IMember;
 
@@ -25,13 +26,15 @@ export class EditMemberComponent implements OnInit, IPreventUnsavedChanges {
   constructor(
     private accountService: AccountService,
     private memberService: MemberService,
-    private toasr: ToastrService
+    private toasr: ToastrService,
+    private confirmService: ConfirmService
   ) {}
 
-  canDeactivate(): boolean | Observable<boolean> {
-    return this.form.dirty
-      ? confirm('تغییرات را ذخیره نکرده اید میخواهید خارج شودید ؟')
-      : true;
+  canDeactivate(): boolean {
+    if (this.form.dirty && !this.resultSuccess) {
+      return this.confirmService.confirm(); //true | false
+    }
+    return true;
   }
 
   ngOnInit(): void {
@@ -56,6 +59,7 @@ export class EditMemberComponent implements OnInit, IPreventUnsavedChanges {
           this.errors = [];
           this.member = member;
           this.toasr.success('Update Member Success');
+          this.resultSuccess = true;
         },
         (error) => {
           this.errors = error;
