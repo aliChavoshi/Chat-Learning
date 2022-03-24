@@ -35,7 +35,8 @@ namespace API.extensions
             //connect to database
             services.AddDbContext<DataContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+                // options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
             });
             //user Activity
             services.AddScoped<LogUserActivity>();
